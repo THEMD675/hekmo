@@ -15,10 +15,10 @@ type SuggestedActionsProps = {
 
 function PureSuggestedActions({ chatId, sendMessage }: SuggestedActionsProps) {
   const suggestedActions = [
-    "Build me a morning routine for peak performance",
-    "My WHOOP shows 45% recovery — what should I do today?",
-    "Give me the complete sleep optimization protocol",
-    "كيف أحسن نومي؟",
+    "Build me a full morning routine for peak energy",
+    "My WHOOP recovery is 42% — what should I change?",
+    "Give me a deep sleep optimization protocol",
+    "وش أفضل مكملات للطاقة والتركيز؟",
   ];
 
   return (
