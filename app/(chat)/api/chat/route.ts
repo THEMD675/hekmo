@@ -13,6 +13,7 @@ import { auth, type UserType } from "@/app/(auth)/auth";
 import { entitlementsByUserType } from "@/lib/ai/entitlements";
 import { type RequestHints, systemPrompt } from "@/lib/ai/prompts";
 import { getLanguageModel } from "@/lib/ai/providers";
+import { DEFAULT_CHAT_MODEL } from "@/lib/ai/models";
 import { createDocument } from "@/lib/ai/tools/create-document";
 import { getWeather } from "@/lib/ai/tools/get-weather";
 import { requestSuggestions } from "@/lib/ai/tools/request-suggestions";
@@ -62,8 +63,7 @@ export async function POST(request: Request) {
     const { id, message, messages, selectedVisibilityType } =
       requestBody;
 
-    // Always use the locked Hekmo model — ignore client model selection
-    const selectedChatModel = "anthropic/claude-sonnet-4.5";
+    const selectedChatModel = requestBody.selectedChatModel ?? DEFAULT_CHAT_MODEL;
 
     const session = await auth();
 
