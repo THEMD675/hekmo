@@ -33,8 +33,9 @@ export function getLanguageModel(_modelId: string) {
     const hekmo = createOpenAI({
       baseURL: `${hekmoUrl}/v1`,
       apiKey: "hekmo",
+      compatibility: "compatible",
     });
-    return hekmo("hekmo");
+    return hekmo.chat("hekmo", { structuredOutputs: false });
   }
 
   // Fallback: DeepSeek via Vercel AI Gateway
