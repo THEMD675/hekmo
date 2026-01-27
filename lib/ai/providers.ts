@@ -1,4 +1,5 @@
 import { gateway } from "@ai-sdk/gateway";
+import { createOpenAI } from "@ai-sdk/openai";
 import {
   customProvider,
   extractReasoningMiddleware,
@@ -30,7 +31,17 @@ export function getLanguageModel(_modelId: string) {
     return myProvider.languageModel("chat-model");
   }
 
-  // DeepSeek via Vercel AI Gateway
+  // Own trained model via local server + tunnel
+  const hekmoUrl = process.env.HEKMO_API_URL;
+  if (hekmoUrl) {
+    const hekmo = createOpenAI({
+      baseURL: `${hekmoUrl}/v1`,
+      apiKey: "hekmo",
+    });
+    return hekmo("hekmo");
+  }
+
+  // Fallback: DeepSeek via Vercel AI Gateway
   return gateway.languageModel("deepseek/deepseek-chat");
 }
 
