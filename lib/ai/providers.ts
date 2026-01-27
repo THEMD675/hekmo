@@ -30,8 +30,8 @@ export function getLanguageModel(_modelId: string) {
     return myProvider.languageModel("chat-model");
   }
 
-  // Enterprise: Claude Sonnet 4.5 via Vercel AI Gateway
-  return gateway.languageModel("anthropic/claude-sonnet-4.5");
+  // DeepSeek via Vercel AI Gateway
+  return gateway.languageModel("deepseek/deepseek-chat");
 }
 
 export function getTitleModel() {
@@ -45,5 +45,5 @@ export function getArtifactModel() {
   if (isTestEnvironment && myProvider) {
     return myProvider.languageModel("artifact-model");
   }
-  return gateway.languageModel("anthropic/claude-haiku-4.5");
+  return gateway.languageModel("deepseek/deepseek-chat");
 }

@@ -1,4 +1,4 @@
-export const DEFAULT_CHAT_MODEL = "anthropic/claude-sonnet-4.5";
+export const DEFAULT_CHAT_MODEL = "deepseek/deepseek-chat";
 
 export type ChatModel = {
   id: string;
@@ -9,9 +9,9 @@ export type ChatModel = {
 
 export const chatModels: ChatModel[] = [
   {
-    id: "anthropic/claude-sonnet-4.5",
+    id: "deepseek/deepseek-chat",
     name: "Hekmo",
-    provider: "anthropic",
+    provider: "deepseek",
     description: "Wellness AI powered by Hekmo",
   },
 ];
