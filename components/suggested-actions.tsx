@@ -18,7 +18,7 @@ function PureSuggestedActions({ chatId, sendMessage }: SuggestedActionsProps) {
     "Build me a full morning routine for peak energy",
     "My WHOOP recovery is 42% — what should I change?",
     "Give me a deep sleep optimization protocol",
-    "What supplements should I take for energy and focus?",
+    "وش أفضل مكملات للطاقة والتركيز؟",
   ];
 
   return (
