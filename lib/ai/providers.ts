@@ -1,10 +1,6 @@
 import { gateway } from "@ai-sdk/gateway";
 import { createOpenAI } from "@ai-sdk/openai";
-import {
-  customProvider,
-  extractReasoningMiddleware,
-  wrapLanguageModel,
-} from "ai";
+import { customProvider } from "ai";
 import { isTestEnvironment } from "../constants";
 
 export const myProvider = isTestEnvironment
