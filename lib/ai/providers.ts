@@ -33,7 +33,6 @@ export function getLanguageModel(_modelId: string) {
     const hekmo = createOpenAI({
       baseURL: `${hekmoUrl}/v1`,
       apiKey: "hekmo",
-      compatibility: "compatible",
     });
     return hekmo.chat("hekmo", { structuredOutputs: false });
   }
