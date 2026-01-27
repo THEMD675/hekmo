@@ -59,8 +59,11 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { id, message, messages, selectedChatModel, selectedVisibilityType } =
+    const { id, message, messages, selectedVisibilityType } =
       requestBody;
+
+    // Always use the locked Hekmo model — ignore client model selection
+    const selectedChatModel = "anthropic/claude-sonnet-4.5";
 
     const session = await auth();
 
