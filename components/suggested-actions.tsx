@@ -17,7 +17,7 @@ function PureSuggestedActions({ chatId, sendMessage }: SuggestedActionsProps) {
   const suggestedActions = [
     "Build me a morning routine for peak performance",
     "My WHOOP shows 45% recovery — what should I do today?",
-    "Huberman's complete sleep protocol",
+    "Give me the complete sleep optimization protocol",
     "كيف أحسن نومي؟",
   ];
 
