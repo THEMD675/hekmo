@@ -8,7 +8,7 @@ export const Greeting = () => {
     >
       <motion.div
         animate={{ opacity: 1, y: 0 }}
-        className="font-bold text-3xl tracking-tight md:text-5xl"
+        className="font-bold text-3xl tracking-tight text-primary md:text-5xl"
         exit={{ opacity: 0, y: 10 }}
         initial={{ opacity: 0, y: 10 }}
         transition={{ delay: 0.4 }}

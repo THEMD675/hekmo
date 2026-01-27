@@ -50,7 +50,7 @@ function PureChatHeader({
         />
       )}
 
-      <span className="order-3 hidden text-sm font-medium text-muted-foreground md:ml-auto md:flex md:h-fit">
+      <span className="order-3 hidden text-sm font-semibold text-primary/70 md:ml-auto md:flex md:h-fit">
         hekmo.ai
       </span>
     </header>
