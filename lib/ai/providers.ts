@@ -1,4 +1,3 @@
-import { createOpenAI } from "@ai-sdk/openai";
 import { gateway } from "@ai-sdk/gateway";
 import {
   customProvider,
@@ -6,14 +5,6 @@ import {
   wrapLanguageModel,
 } from "ai";
 import { isTestEnvironment } from "../constants";
-
-const THINKING_SUFFIX_REGEX = /-thinking$/;
-
-// Hekmo: fine-tuned 72B model via OpenAI-compatible API
-const hekmo = createOpenAI({
-  baseURL: process.env.HEKMO_API_URL || "http://localhost:8800/v1",
-  apiKey: "hekmo", // not used but required by SDK
-});
 
 export const myProvider = isTestEnvironment
   ? (() => {
@@ -34,20 +25,19 @@ export const myProvider = isTestEnvironment
     })()
   : null;
 
-export function getLanguageModel(modelId: string) {
+export function getLanguageModel(_modelId: string) {
   if (isTestEnvironment && myProvider) {
-    return myProvider.languageModel(modelId);
+    return myProvider.languageModel("chat-model");
   }
 
-  // Always use the trained Hekmo model
-  return hekmo("hekmo");
+  // Enterprise: Claude Sonnet 4.5 via Vercel AI Gateway
+  return gateway.languageModel("anthropic/claude-sonnet-4.5");
 }
 
 export function getTitleModel() {
   if (isTestEnvironment && myProvider) {
     return myProvider.languageModel("title-model");
   }
-  // Use gateway for title generation (lightweight task)
   return gateway.languageModel("google/gemini-2.5-flash-lite");
 }
 
