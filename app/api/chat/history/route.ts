@@ -13,7 +13,7 @@ export async function GET(request: Request) {
     const limit = parseInt(searchParams.get("limit") || "50", 10);
     const offset = parseInt(searchParams.get("offset") || "0", 10);
 
-    const chats = await getChatsByUserId({
+    const result = await getChatsByUserId({
       id: session.user.id,
       limit,
       startingAfter: null,
@@ -21,15 +21,15 @@ export async function GET(request: Request) {
     });
 
     return Response.json({
-      chats: chats.map((chat) => ({
+      chats: result.chats.map((chat) => ({
         id: chat.id,
         title: chat.title,
         createdAt: chat.createdAt,
         updatedAt: chat.createdAt,
         model: "gpt-4o-mini",
       })),
-      total: chats.length,
-      hasMore: chats.length === limit,
+      total: result.chats.length,
+      hasMore: result.hasMore,
     });
   } catch (error) {
     console.error("Chat history error:", error);
