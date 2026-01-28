@@ -384,7 +384,7 @@ function PureMultimodalInput({
             placeholder="اسأل Hekmo أي شيء..."
             ref={textareaRef}
             rows={1}
-            value={input}
+            value={input ?? ""}
           />
         </div>
         <PromptInputToolbar className="border-top-0! border-t-0! p-0 shadow-none dark:border-0 dark:border-transparent!">
