@@ -22,38 +22,10 @@ interface ChatTemplate {
   title: string;
   description: string;
   prompt: string;
-  category: "health" | "work" | "learning" | "lifestyle";
+  category: "work" | "learning" | "lifestyle" | "creative";
 }
 
 const TEMPLATES: ChatTemplate[] = [
-  // Health
-  {
-    id: "health-checkup",
-    icon: <Heart className="h-5 w-5" />,
-    title: "فحص صحي يومي",
-    description: "تحقق من صحتك اليومية",
-    prompt:
-      "أود إجراء فحص صحي يومي. كيف حالتي الصحية اليوم؟ اسألني عن نومي، طعامي، وتمارينني.",
-    category: "health",
-  },
-  {
-    id: "nutrition",
-    icon: <ChefHat className="h-5 w-5" />,
-    title: "نصائح غذائية",
-    description: "وجبات صحية ونظام غذائي",
-    prompt: "أريد نصائح غذائية صحية. ما هي الوجبات المناسبة لي؟",
-    category: "health",
-  },
-  {
-    id: "fitness",
-    icon: <Sparkles className="h-5 w-5" />,
-    title: "برنامج رياضي",
-    description: "تمارين مخصصة لك",
-    prompt:
-      "ساعدني في إنشاء برنامج رياضي مناسب لي. اسألني عن أهدافي ومستوى لياقتي.",
-    category: "health",
-  },
-
   // Work
   {
     id: "email",
@@ -115,6 +87,24 @@ const TEMPLATES: ChatTemplate[] = [
     prompt: "ساعدني في التخطيط لرحلة. إلى أين تريد السفر ومتى؟",
     category: "lifestyle",
   },
+
+  // Creative
+  {
+    id: "story",
+    icon: <Sparkles className="h-5 w-5" />,
+    title: "اكتب قصة",
+    description: "قصص إبداعية",
+    prompt: "اكتب لي قصة قصيرة. ما هو الموضوع الذي تريده؟",
+    category: "creative",
+  },
+  {
+    id: "image",
+    icon: <Sparkles className="h-5 w-5" />,
+    title: "صمم صورة",
+    description: "توليد صور بالذكاء الاصطناعي",
+    prompt: "أريد توليد صورة. صف لي ماذا تريد أن ترى في الصورة.",
+    category: "creative",
+  },
 ];
 
 interface ChatTemplatesProps {
@@ -125,10 +115,10 @@ export function ChatTemplates({ onSelect }: ChatTemplatesProps) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const categories = [
-    { id: "health", label: "صحة", icon: "💚" },
     { id: "work", label: "عمل", icon: "💼" },
     { id: "learning", label: "تعلم", icon: "📚" },
     { id: "lifestyle", label: "حياة", icon: "✨" },
+    { id: "creative", label: "إبداع", icon: "🎨" },
   ];
 
   const filteredTemplates = selectedCategory
@@ -201,10 +191,10 @@ export function QuickSuggestions({
   onSelect: (text: string) => void;
 }) {
   const suggestions = [
-    "كيف أحسن نومي؟",
-    "اكتب لي إيميل احترافي",
+    "اكتب لي كود بايثون",
+    "ساعدني أكتب إيميل",
     "اشرح لي الذكاء الاصطناعي",
-    "ما هي أوقات الصلاة؟",
+    "ترجم لي هذا النص",
   ];
 
   return (

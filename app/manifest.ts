@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Hekmo — مدربك الصحي الذكي",
+    name: "Hekmo — مساعدك الذكي بالعربي",
     short_name: "Hekmo",
-    description: "مدربك الصحي الذكي — النوم، التوتر، الاستشفاء، والبروتوكولات الصحية مدعومة بالذكاء الاصطناعي.",
+    description: "مساعدك الذكي بالعربي — برمجة، كتابة، بحث، وأكثر. مدعوم بالذكاء الاصطناعي المتقدم.",
     start_url: "/",
     display: "standalone",
     background_color: "#0a0f0d",
@@ -26,7 +26,7 @@ export default function manifest(): MetadataRoute.Manifest {
         purpose: "any",
       },
     ],
-    categories: ["health", "fitness", "lifestyle", "medical"],
+    categories: ["productivity", "utilities", "education"],
     screenshots: [
       {
         src: "/images/screenshot-wide.png",
