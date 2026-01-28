@@ -102,7 +102,9 @@ function PureMultimodalInput({
     if (textareaRef.current) {
       const domValue = textareaRef.current.value;
       // Prefer DOM value over localStorage to handle hydration
-      const finalValue = domValue || localStorageInput || "";
+      // Also filter out "undefined" string that may have been saved incorrectly
+      const storedValue = localStorageInput === "undefined" ? "" : localStorageInput;
+      const finalValue = domValue || storedValue || "";
       setInput(finalValue);
       adjustHeight();
     }
@@ -111,7 +113,10 @@ function PureMultimodalInput({
   }, [adjustHeight, localStorageInput, setInput]);
 
   useEffect(() => {
-    setLocalStorageInput(input);
+    // Only save valid string values, never undefined
+    if (typeof input === "string") {
+      setLocalStorageInput(input);
+    }
   }, [input, setLocalStorageInput]);
 
   const handleInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
