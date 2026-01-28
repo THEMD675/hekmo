@@ -14,19 +14,23 @@ import { cn } from "@/lib/utils";
 interface ChatHeaderProps {
   chatId: string;
   title?: string;
-  selectedModel: string;
-  onModelChange: (model: string) => void;
+  selectedModel?: string;
+  onModelChange?: (model: string) => void;
   onTitleChange?: (title: string) => void;
   className?: string;
+  isReadonly?: boolean;
+  selectedVisibilityType?: "public" | "private";
 }
 
 export function ChatHeader({
   chatId,
   title = "محادثة جديدة",
-  selectedModel,
+  selectedModel = "gpt-4o-mini",
   onModelChange,
   onTitleChange,
   className,
+  isReadonly,
+  selectedVisibilityType,
 }: ChatHeaderProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title);
@@ -92,11 +96,13 @@ export function ChatHeader({
 
       {/* Right side - Actions */}
       <div className="flex items-center gap-2">
-        <ModelSelector
-          className="hidden sm:flex"
-          onSelect={onModelChange}
-          selectedModel={selectedModel}
-        />
+        {onModelChange && (
+          <ModelSelector
+            className="hidden sm:flex"
+            onSelect={onModelChange}
+            selectedModel={selectedModel}
+          />
+        )}
 
         <SystemPromptEditor chatId={chatId} />
 

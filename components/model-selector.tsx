@@ -113,7 +113,7 @@ export function ModelSelector({
           <ChevronDown className="h-4 w-4 opacity-50" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-72" dir="rtl">
+      <DropdownMenuContent align="start" className="w-72">
         <DropdownMenuLabel>اختر النموذج</DropdownMenuLabel>
         <DropdownMenuSeparator />
 

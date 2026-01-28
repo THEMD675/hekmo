@@ -76,7 +76,7 @@ export function FeedbackDialog({ messageId, trigger }: FeedbackDialogProps) {
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md" dir="rtl">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>أرسل ملاحظاتك</DialogTitle>
           <DialogDescription>

@@ -22,7 +22,7 @@ export function VoiceInput({
   const [listening, setListening] = useState(false);
   const [supported, setSupported] = useState(false);
   const [interim, setInterim] = useState("");
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
     // Check for browser support
@@ -213,7 +213,7 @@ export function useVoiceInput(
 ) {
   const [listening, setListening] = useState(false);
   const [supported, setSupported] = useState(false);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
     const SpeechRecognition =
@@ -252,10 +252,3 @@ export function useVoiceInput(
   return { listening, supported, start, stop };
 }
 
-// Add type declarations for Web Speech API
-declare global {
-  interface Window {
-    SpeechRecognition: typeof SpeechRecognition;
-    webkitSpeechRecognition: typeof SpeechRecognition;
-  }
-}

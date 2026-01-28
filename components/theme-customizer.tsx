@@ -53,7 +53,7 @@ export function ThemeCustomizer() {
           <Palette className="h-5 w-5" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-64" dir="rtl">
+      <PopoverContent align="end" className="w-64">
         <div className="space-y-4">
           {/* Theme Mode */}
           <div className="space-y-2">

@@ -33,7 +33,7 @@ export function UpgradeBanner({
           "fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 p-4 rounded-lg bg-gradient-to-r from-primary/90 to-primary text-primary-foreground shadow-lg z-40",
           className
         )}
-        dir="rtl"
+       
       >
         {dismissible && (
           <button
@@ -72,7 +72,7 @@ export function UpgradeBanner({
           "p-6 rounded-xl border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10",
           className
         )}
-        dir="rtl"
+       
       >
         <div className="flex items-center gap-2 mb-4">
           <Crown className="h-6 w-6 text-primary" />
@@ -111,7 +111,7 @@ export function UpgradeBanner({
         "flex items-center justify-between gap-4 p-3 rounded-lg bg-primary/10 border border-primary/20",
         className
       )}
-      dir="rtl"
+     
     >
       <div className="flex items-center gap-2">
         <Crown className="h-5 w-5 text-primary" />
@@ -158,7 +158,7 @@ export function UsageLimitWarning({
           ? "bg-destructive/10 border-destructive/50"
           : "bg-yellow-500/10 border-yellow-500/50"
       )}
-      dir="rtl"
+     
     >
       <p className="text-sm">
         {isExceeded ? (

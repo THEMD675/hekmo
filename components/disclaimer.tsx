@@ -14,7 +14,7 @@ export function Disclaimer({ className }: DisclaimerProps) {
         "flex items-start gap-2 p-3 rounded-lg bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800",
         className
       )}
-      dir="rtl"
+     
     >
       <AlertCircle className="h-5 w-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
       <div className="text-sm text-yellow-800 dark:text-yellow-200">

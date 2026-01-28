@@ -42,7 +42,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       return (
         <div
           className="flex flex-col items-center justify-center min-h-[400px] p-8 text-center"
-          dir="rtl"
+         
         >
           <AlertTriangle className="h-12 w-12 text-destructive mb-4" />
           <h2 className="text-xl font-bold mb-2">حدث خطأ غير متوقع</h2>

@@ -103,7 +103,7 @@ export function SystemPromptEditor({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-96" dir="rtl">
+      <PopoverContent align="end" className="w-96">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="font-medium">تعليمات النظام</h3>

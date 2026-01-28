@@ -79,7 +79,7 @@ export function ChatInputActions({
             <Sparkles className="h-5 w-5" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent align="start" className="w-48 p-2" dir="rtl">
+        <PopoverContent align="start" className="w-48 p-2">
           <div className="space-y-1">
             {QUICK_TOOLS.map((tool) => (
               <button

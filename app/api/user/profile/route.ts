@@ -48,8 +48,7 @@ export async function GET() {
       email: userData.email,
       name: session.user.name,
       image: session.user.image,
-      tier: "free", // Get from subscription
-      createdAt: userData.createdAt,
+      tier: "free",
     });
   } catch (error) {
     console.error("Profile fetch error:", error);

@@ -91,7 +91,7 @@ export function RateLimitIndicator({
         !isLow && "bg-muted/50",
         className
       )}
-      dir="rtl"
+     
     >
       <div className="flex-shrink-0">
         {isExhausted ? (

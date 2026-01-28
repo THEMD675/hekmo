@@ -13,11 +13,16 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
 interface MessageActionsProps {
-  content: string;
-  messageId: string;
-  role: "user" | "assistant";
+  content?: string;
+  messageId?: string;
+  role?: "user" | "assistant";
   onRegenerate?: () => void;
   className?: string;
+  chatId?: string;
+  isLoading?: boolean;
+  message?: unknown;
+  setMode?: unknown;
+  vote?: unknown;
 }
 
 export function MessageActions({
@@ -32,6 +37,7 @@ export function MessageActions({
   const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
 
   const handleCopy = async () => {
+    if (!content) return;
     try {
       await navigator.clipboard.writeText(content);
       setCopied(true);

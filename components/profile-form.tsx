@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { Loader2, Save, User, Mail, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Avatar } from "@/components/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
 
 export function ProfileForm() {
@@ -100,11 +100,12 @@ export function ProfileForm() {
       {/* Avatar */}
       <div className="flex items-center gap-6">
         <div className="relative">
-          <Avatar
-            name={session.user.name || session.user.email || undefined}
-            size="xl"
-            src={session.user.image}
-          />
+          <Avatar className="h-20 w-20">
+            <AvatarImage src={session.user.image || undefined} />
+            <AvatarFallback className="text-2xl">
+              {(session.user.name || session.user.email || "U").charAt(0).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
           <label className="absolute bottom-0 right-0 p-1.5 rounded-full bg-primary text-primary-foreground cursor-pointer hover:bg-primary/90 transition-colors">
             <input
               accept="image/*"

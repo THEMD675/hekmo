@@ -116,7 +116,7 @@ export function ExportChat({ chatId, chatTitle, messages }: ExportChatProps) {
           تصدير
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" dir="rtl">
+      <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={exportAsJSON}>
           <FileJson className="h-4 w-4 ml-2" />
           JSON

@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar } from "@/components/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeCustomizer } from "@/components/theme-customizer";
 import { signOut } from "next-auth/react";
 
@@ -41,14 +41,15 @@ export function Header() {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button className="rounded-full" size="icon" variant="ghost">
-                  <Avatar
-                    name={session.user.name || session.user.email || undefined}
-                    size="sm"
-                    src={session.user.image}
-                  />
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={session.user.image || undefined} />
+                    <AvatarFallback>
+                      {(session.user.name || session.user.email || "U").charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" dir="rtl">
+              <DropdownMenuContent align="end">
                 <div className="px-2 py-1.5">
                   <p className="text-sm font-medium">{session.user.name}</p>
                   <p className="text-xs text-muted-foreground">

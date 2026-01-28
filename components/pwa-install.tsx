@@ -80,7 +80,7 @@ export function PWAInstallPrompt() {
       className={cn(
         "fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 p-4 rounded-lg border bg-card shadow-lg z-50 animate-in slide-in-from-bottom-4"
       )}
-      dir="rtl"
+     
     >
       <button
         className="absolute top-2 left-2 p-1 rounded hover:bg-muted"
@@ -141,7 +141,7 @@ export function IOSInstallInstructions() {
   return (
     <div
       className="fixed bottom-4 left-4 right-4 p-4 rounded-lg border bg-card shadow-lg z-50"
-      dir="rtl"
+     
     >
       <button
         className="absolute top-2 left-2 p-1 rounded hover:bg-muted"
