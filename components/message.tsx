@@ -33,6 +33,8 @@ const PurePreviewMessage = ({
   regenerate,
   isReadonly,
   requiresScrollPadding: _requiresScrollPadding,
+  isFirstInGroup = true,
+  isLastInGroup = true,
 }: {
   addToolApprovalResponse: UseChatHelpers<ChatMessage>["addToolApprovalResponse"];
   chatId: string;
@@ -43,6 +45,8 @@ const PurePreviewMessage = ({
   regenerate: UseChatHelpers<ChatMessage>["regenerate"];
   isReadonly: boolean;
   requiresScrollPadding: boolean;
+  isFirstInGroup?: boolean;
+  isLastInGroup?: boolean;
 }) => {
   const [mode, setMode] = useState<"view" | "edit">("view");
 
@@ -64,8 +68,14 @@ const PurePreviewMessage = ({
           "justify-start": message.role === "assistant",
         })}
       >
+        {/* Claude-style grouping: only show avatar for first message in group */}
         {message.role === "assistant" && (
-          <div className="-mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary ring-1 ring-primary/30">
+          <div
+            className={cn(
+              "-mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary ring-1 ring-primary/30",
+              { "invisible": !isFirstInGroup }
+            )}
+          >
             <SparklesIcon size={14} />
           </div>
         )}

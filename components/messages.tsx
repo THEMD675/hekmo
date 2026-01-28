@@ -1,11 +1,44 @@
 import type { UseChatHelpers } from "@ai-sdk/react";
 import { ArrowDownIcon } from "lucide-react";
+import { useMemo } from "react";
 import { useMessages } from "@/hooks/use-messages";
 import type { Vote } from "@/lib/db/schema";
 import type { ChatMessage } from "@/lib/types";
 import { useDataStream } from "./data-stream-provider";
 import { Greeting } from "./greeting";
 import { PreviewMessage, ThinkingMessage } from "./message";
+
+// Claude-style message grouping - reduces visual clutter
+type MessageGroup = {
+  role: ChatMessage["role"];
+  messages: ChatMessage[];
+};
+
+function groupConsecutiveMessages(messages: ChatMessage[]): MessageGroup[] {
+  if (messages.length === 0) return [];
+  
+  const groups: MessageGroup[] = [];
+  let currentGroup: MessageGroup = {
+    role: messages[0].role,
+    messages: [messages[0]],
+  };
+  
+  for (let i = 1; i < messages.length; i++) {
+    const message = messages[i];
+    if (message.role === currentGroup.role) {
+      currentGroup.messages.push(message);
+    } else {
+      groups.push(currentGroup);
+      currentGroup = {
+        role: message.role,
+        messages: [message],
+      };
+    }
+  }
+  
+  groups.push(currentGroup);
+  return groups;
+}
 
 type MessagesProps = {
   addToolApprovalResponse: UseChatHelpers<ChatMessage>["addToolApprovalResponse"];
@@ -43,6 +76,12 @@ function PureMessages({
 
   useDataStream();
 
+  // Claude-style message grouping for cleaner UI
+  const messageGroups = useMemo(
+    () => groupConsecutiveMessages(messages),
+    [messages]
+  );
+
   return (
     <div className="relative flex-1">
       <div
@@ -52,27 +91,42 @@ function PureMessages({
         <div className="mx-auto flex min-w-0 max-w-4xl flex-col gap-4 px-2 py-4 md:gap-6 md:px-4">
           {messages.length === 0 && <Greeting />}
 
-          {messages.map((message, index) => (
-            <PreviewMessage
-              addToolApprovalResponse={addToolApprovalResponse}
-              chatId={chatId}
-              isLoading={
-                status === "streaming" && messages.length - 1 === index
-              }
-              isReadonly={isReadonly}
-              key={message.id}
-              message={message}
-              regenerate={regenerate}
-              requiresScrollPadding={
-                hasSentMessage && index === messages.length - 1
-              }
-              setMessages={setMessages}
-              vote={
-                votes
-                  ? votes.find((vote) => vote.messageId === message.id)
-                  : undefined
-              }
-            />
+          {messageGroups.map((group, groupIndex) => (
+            <div
+              className="flex flex-col gap-1"
+              key={`group-${groupIndex}-${group.role}`}
+            >
+              {group.messages.map((message, messageIndex) => {
+                const globalIndex = messages.findIndex((m) => m.id === message.id);
+                const isFirstInGroup = messageIndex === 0;
+                const isLastInGroup = messageIndex === group.messages.length - 1;
+                
+                return (
+                  <PreviewMessage
+                    addToolApprovalResponse={addToolApprovalResponse}
+                    chatId={chatId}
+                    isFirstInGroup={isFirstInGroup}
+                    isLastInGroup={isLastInGroup}
+                    isLoading={
+                      status === "streaming" && messages.length - 1 === globalIndex
+                    }
+                    isReadonly={isReadonly}
+                    key={message.id}
+                    message={message}
+                    regenerate={regenerate}
+                    requiresScrollPadding={
+                      hasSentMessage && globalIndex === messages.length - 1
+                    }
+                    setMessages={setMessages}
+                    vote={
+                      votes
+                        ? votes.find((vote) => vote.messageId === message.id)
+                        : undefined
+                    }
+                  />
+                );
+              })}
+            </div>
           ))}
 
           {status === "submitted" &&
