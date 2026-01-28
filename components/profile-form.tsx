@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Camera, Loader2, Mail, Save, User } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { Loader2, Save, User, Mail, Camera } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { toast } from "sonner";
 
 export function ProfileForm() {
   const { data: session, update } = useSession();
@@ -103,7 +103,9 @@ export function ProfileForm() {
           <Avatar className="h-20 w-20">
             <AvatarImage src={session.user.image || undefined} />
             <AvatarFallback className="text-2xl">
-              {(session.user.name || session.user.email || "U").charAt(0).toUpperCase()}
+              {(session.user.name || session.user.email || "U")
+                .charAt(0)
+                .toUpperCase()}
             </AvatarFallback>
           </Avatar>
           <label className="absolute bottom-0 right-0 p-1.5 rounded-full bg-primary text-primary-foreground cursor-pointer hover:bg-primary/90 transition-colors">
@@ -146,11 +148,7 @@ export function ProfileForm() {
             <Mail className="h-4 w-4" />
             البريد الإلكتروني
           </label>
-          <Input
-            dir="ltr"
-            disabled
-            value={session.user.email || ""}
-          />
+          <Input dir="ltr" disabled value={session.user.email || ""} />
           <p className="text-xs text-muted-foreground">
             لا يمكن تغيير البريد الإلكتروني
           </p>

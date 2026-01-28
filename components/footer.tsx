@@ -24,7 +24,10 @@ export function Footer() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div className="space-y-4">
-            <Link className="flex items-center gap-2 font-bold text-lg" href="/">
+            <Link
+              className="flex items-center gap-2 font-bold text-lg"
+              href="/"
+            >
               <span className="text-2xl">🧠</span>
               حكمو
             </Link>

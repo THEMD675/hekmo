@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Download, X, Smartphone } from "lucide-react";
+import { Download, Smartphone, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -11,7 +11,8 @@ interface BeforeInstallPromptEvent extends Event {
 }
 
 export function PWAInstallPrompt() {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [deferredPrompt, setDeferredPrompt] =
+    useState<BeforeInstallPromptEvent | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
@@ -29,7 +30,8 @@ export function PWAInstallPrompt() {
     const dismissed = localStorage.getItem("hekmo-pwa-dismissed");
     if (dismissed) {
       const dismissedDate = new Date(dismissed);
-      const daysSinceDismissed = (Date.now() - dismissedDate.getTime()) / (1000 * 60 * 60 * 24);
+      const daysSinceDismissed =
+        (Date.now() - dismissedDate.getTime()) / (1000 * 60 * 60 * 24);
       if (daysSinceDismissed < 7) {
         return; // Don't show for 7 days after dismissal
       }
@@ -51,7 +53,10 @@ export function PWAInstallPrompt() {
     }
 
     return () => {
-      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt
+      );
     };
   }, []);
 
@@ -106,11 +111,7 @@ export function PWAInstallPrompt() {
                 <p className="mt-1">ثم اختر "إضافة إلى الشاشة الرئيسية"</p>
               </div>
             ) : (
-              <Button
-                className="mt-3 gap-2"
-                onClick={handleInstall}
-                size="sm"
-              >
+              <Button className="mt-3 gap-2" onClick={handleInstall} size="sm">
                 <Download className="h-4 w-4" />
                 تثبيت التطبيق
               </Button>

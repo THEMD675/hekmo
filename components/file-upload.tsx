@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
-import { Upload, X, File, Image, FileText, Loader2 } from "lucide-react";
+import { File, FileText, Image, Loader2, Upload, X } from "lucide-react";
+import { useCallback, useRef, useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { formatFileSize } from "@/lib/utils/format";
-import { toast } from "sonner";
 
 interface FileUploadProps {
   onUpload: (files: UploadedFile[]) => void;
@@ -123,7 +123,9 @@ export function FileUpload({
       <div
         className={cn(
           "border-2 border-dashed rounded-lg p-8 text-center transition-colors",
-          dragOver ? "border-primary bg-primary/5" : "border-muted-foreground/25",
+          dragOver
+            ? "border-primary bg-primary/5"
+            : "border-muted-foreground/25",
           uploading && "opacity-50 pointer-events-none"
         )}
         onClick={() => inputRef.current?.click()}

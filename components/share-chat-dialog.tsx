@@ -1,7 +1,8 @@
 "use client";
 
+import { Check, Copy, Edit3, Eye, Link, Users } from "lucide-react";
 import { useState } from "react";
-import { Copy, Check, Link, Users, Eye, Edit3 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,7 +12,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 interface ShareChatDialogProps {
@@ -58,7 +58,7 @@ export function ShareChatDialog({ chatId, trigger }: ShareChatDialogProps) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
         {trigger || (
           <Button size="sm" variant="outline">
@@ -96,9 +96,7 @@ export function ShareChatDialog({ chatId, trigger }: ShareChatDialogProps) {
                 <Eye className="h-4 w-4" />
                 <div className="text-right">
                   <div className="text-sm font-medium">مشاهد</div>
-                  <div className="text-xs text-muted-foreground">
-                    قراءة فقط
-                  </div>
+                  <div className="text-xs text-muted-foreground">قراءة فقط</div>
                 </div>
               </button>
               <button

@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Key, Plus, Copy, Check, Trash2, Eye, EyeOff, Loader2 } from "lucide-react";
+import { Check, Copy, Key, Loader2, Plus, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
 import { formatDateArabic } from "@/lib/utils/date";
 
 interface ApiKey {
@@ -140,7 +140,11 @@ export function ApiKeysManager() {
             >
               {newKey}
             </code>
-            <Button onClick={() => copyKey(newKey)} size="icon" variant="outline">
+            <Button
+              onClick={() => copyKey(newKey)}
+              size="icon"
+              variant="outline"
+            >
               {copied ? (
                 <Check className="h-4 w-4" />
               ) : (

@@ -1,18 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Webhook, Plus, Trash2, Loader2, Copy, Check } from "lucide-react";
+import { Check, Copy, Loader2, Plus, Trash2, Webhook } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { toast } from "sonner";
 
 interface WebhookData {
   id: string;
@@ -187,10 +180,7 @@ export function WebhooksManager() {
           </div>
         ) : (
           webhooks.map((webhook) => (
-            <div
-              className="p-4 rounded-lg border space-y-3"
-              key={webhook.id}
-            >
+            <div className="p-4 rounded-lg border space-y-3" key={webhook.id}>
               <div className="flex items-start justify-between">
                 <div>
                   <code className="text-sm" dir="ltr">

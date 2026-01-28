@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Keyboard } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -21,7 +21,11 @@ const SHORTCUTS: Shortcut[] = [
   // Navigation
   { keys: ["⌘", "K"], description: "فتح لوحة الأوامر", category: "تنقل" },
   { keys: ["⌘", "N"], description: "محادثة جديدة", category: "تنقل" },
-  { keys: ["⌘", "B"], description: "إظهار/إخفاء الشريط الجانبي", category: "تنقل" },
+  {
+    keys: ["⌘", "B"],
+    description: "إظهار/إخفاء الشريط الجانبي",
+    category: "تنقل",
+  },
   { keys: ["⌘", ","], description: "فتح الإعدادات", category: "تنقل" },
   { keys: ["Esc"], description: "إغلاق النافذة المنبثقة", category: "تنقل" },
 
@@ -134,7 +138,8 @@ export function useKeyboardShortcut(
       };
 
       const keyMatch = keys.every((key) => {
-        if (key === "⌘" || key === "cmd") return modifiers.meta || modifiers.ctrl;
+        if (key === "⌘" || key === "cmd")
+          return modifiers.meta || modifiers.ctrl;
         if (key === "shift") return modifiers.shift;
         if (key === "alt") return modifiers.alt;
         return e.key.toLowerCase() === key.toLowerCase();

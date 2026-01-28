@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Download, X, Smartphone } from "lucide-react";
+import { Download, Smartphone, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -41,7 +41,7 @@ export function PWAInstallPrompt() {
       e.preventDefault();
       setDeferredPrompt(e as BeforeInstallPromptEvent);
       // Show prompt after 30 seconds
-      setTimeout(() => setShowPrompt(true), 30000);
+      setTimeout(() => setShowPrompt(true), 30_000);
     };
 
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
@@ -80,7 +80,6 @@ export function PWAInstallPrompt() {
       className={cn(
         "fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 p-4 rounded-lg border bg-card shadow-lg z-50 animate-in slide-in-from-bottom-4"
       )}
-     
     >
       <button
         className="absolute top-2 left-2 p-1 rounded hover:bg-muted"
@@ -131,7 +130,7 @@ export function IOSInstallInstructions() {
     if (isIOS && isSafari && !isStandalone) {
       const dismissed = localStorage.getItem(PWA_PROMPT_KEY);
       if (!dismissed) {
-        setTimeout(() => setShow(true), 30000);
+        setTimeout(() => setShow(true), 30_000);
       }
     }
   }, []);
@@ -139,10 +138,7 @@ export function IOSInstallInstructions() {
   if (!show) return null;
 
   return (
-    <div
-      className="fixed bottom-4 left-4 right-4 p-4 rounded-lg border bg-card shadow-lg z-50"
-     
-    >
+    <div className="fixed bottom-4 left-4 right-4 p-4 rounded-lg border bg-card shadow-lg z-50">
       <button
         className="absolute top-2 left-2 p-1 rounded hover:bg-muted"
         onClick={() => {

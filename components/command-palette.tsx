@@ -1,20 +1,20 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
 import {
+  HelpCircle,
+  Keyboard,
+  LogOut,
   MessageSquarePlus,
+  Moon,
   Search,
   Settings,
-  Moon,
   Sun,
-  LogOut,
   User,
-  Keyboard,
-  HelpCircle,
 } from "lucide-react";
-import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
+import { useTheme } from "next-themes";
+import { useCallback, useEffect, useState } from "react";
 import {
   CommandDialog,
   CommandEmpty,
@@ -68,19 +68,21 @@ export function CommandPalette() {
         <CommandEmpty>لم يتم العثور على نتائج.</CommandEmpty>
 
         <CommandGroup heading="إجراءات سريعة">
-          <CommandItem
-            onSelect={() => runCommand(() => router.push("/"))}
-          >
+          <CommandItem onSelect={() => runCommand(() => router.push("/"))}>
             <MessageSquarePlus className="ml-2 h-4 w-4" />
             <span>محادثة جديدة</span>
             <CommandShortcut>⌘N</CommandShortcut>
           </CommandItem>
           <CommandItem
-            onSelect={() => runCommand(() => {
-              // Focus search in sidebar
-              const searchInput = document.querySelector('[data-search-input]') as HTMLInputElement;
-              searchInput?.focus();
-            })}
+            onSelect={() =>
+              runCommand(() => {
+                // Focus search in sidebar
+                const searchInput = document.querySelector(
+                  "[data-search-input]"
+                ) as HTMLInputElement;
+                searchInput?.focus();
+              })
+            }
           >
             <Search className="ml-2 h-4 w-4" />
             <span>البحث في المحادثات</span>
@@ -91,23 +93,17 @@ export function CommandPalette() {
         <CommandSeparator />
 
         <CommandGroup heading="المظهر">
-          <CommandItem
-            onSelect={() => runCommand(() => setTheme("light"))}
-          >
+          <CommandItem onSelect={() => runCommand(() => setTheme("light"))}>
             <Sun className="ml-2 h-4 w-4" />
             <span>الوضع الفاتح</span>
             {theme === "light" && <span className="mr-auto text-xs">✓</span>}
           </CommandItem>
-          <CommandItem
-            onSelect={() => runCommand(() => setTheme("dark"))}
-          >
+          <CommandItem onSelect={() => runCommand(() => setTheme("dark"))}>
             <Moon className="ml-2 h-4 w-4" />
             <span>الوضع الداكن</span>
             {theme === "dark" && <span className="mr-auto text-xs">✓</span>}
           </CommandItem>
-          <CommandItem
-            onSelect={() => runCommand(() => setTheme("system"))}
-          >
+          <CommandItem onSelect={() => runCommand(() => setTheme("system"))}>
             <Settings className="ml-2 h-4 w-4" />
             <span>تلقائي (حسب النظام)</span>
             {theme === "system" && <span className="mr-auto text-xs">✓</span>}
@@ -129,9 +125,7 @@ export function CommandPalette() {
             <User className="ml-2 h-4 w-4" />
             <span>الملف الشخصي</span>
           </CommandItem>
-          <CommandItem
-            onSelect={() => runCommand(() => signOut())}
-          >
+          <CommandItem onSelect={() => runCommand(() => signOut())}>
             <LogOut className="ml-2 h-4 w-4" />
             <span>تسجيل الخروج</span>
           </CommandItem>
@@ -146,7 +140,9 @@ export function CommandPalette() {
             <CommandShortcut>⌘/</CommandShortcut>
           </CommandItem>
           <CommandItem
-            onSelect={() => runCommand(() => window.open("mailto:support@hekmo.ai"))}
+            onSelect={() =>
+              runCommand(() => window.open("mailto:support@hekmo.ai"))
+            }
           >
             <HelpCircle className="ml-2 h-4 w-4" />
             <span>المساعدة والدعم</span>

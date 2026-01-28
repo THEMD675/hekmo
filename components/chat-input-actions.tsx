@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import {
-  Paperclip,
-  Mic,
-  Image,
+  Calculator,
   FileText,
   Globe,
-  Calculator,
+  Image,
+  Mic,
+  Paperclip,
   Sparkles,
 } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -29,7 +29,11 @@ interface ChatInputActionsProps {
 const QUICK_TOOLS = [
   { id: "image", icon: <Image className="h-4 w-4" />, label: "توليد صورة" },
   { id: "search", icon: <Globe className="h-4 w-4" />, label: "بحث الويب" },
-  { id: "calculator", icon: <Calculator className="h-4 w-4" />, label: "حاسبة" },
+  {
+    id: "calculator",
+    icon: <Calculator className="h-4 w-4" />,
+    label: "حاسبة",
+  },
   { id: "pdf", icon: <FileText className="h-4 w-4" />, label: "قراءة PDF" },
 ];
 
@@ -70,12 +74,7 @@ export function ChatInputActions({
       {/* Quick tools */}
       <Popover onOpenChange={setToolsOpen} open={toolsOpen}>
         <PopoverTrigger asChild>
-          <Button
-            size="icon"
-            title="أدوات سريعة"
-            type="button"
-            variant="ghost"
-          >
+          <Button size="icon" title="أدوات سريعة" type="button" variant="ghost">
             <Sparkles className="h-5 w-5" />
           </Button>
         </PopoverTrigger>

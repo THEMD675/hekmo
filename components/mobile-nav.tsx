@@ -1,20 +1,9 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { usePathname } from "next/navigation";
+import { Home, MessageSquare, Search, Settings, User } from "lucide-react";
 import Link from "next/link";
-import { 
-  Home, 
-  MessageSquare, 
-  Settings, 
-  User, 
-  Menu, 
-  X,
-  ChevronLeft,
-  ChevronRight,
-  Search,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface MobileNavProps {
@@ -142,10 +131,10 @@ export function PullToRefresh({
 
   const handleTouchMove = (e: React.TouchEvent) => {
     if (!isPulling) return;
-    
+
     const currentY = e.touches[0].clientY;
     const diff = currentY - startY.current;
-    
+
     if (diff > 0) {
       setPullDistance(Math.min(diff * 0.5, 100));
     }
@@ -157,7 +146,7 @@ export function PullToRefresh({
       await onRefresh();
       setIsRefreshing(false);
     }
-    
+
     setIsPulling(false);
     setPullDistance(0);
   };
@@ -189,7 +178,7 @@ export function PullToRefresh({
           }}
         />
       </div>
-      
+
       <div style={{ transform: `translateY(${pullDistance}px)` }}>
         {children}
       </div>

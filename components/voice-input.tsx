@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
-import { Mic, MicOff, Loader2, Volume2 } from "lucide-react";
+import { Loader2, Mic, MicOff, Volume2 } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
 
 interface VoiceInputProps {
   onTranscript: (text: string) => void;
@@ -251,4 +251,3 @@ export function useVoiceInput(
 
   return { listening, supported, start, stop };
 }
-

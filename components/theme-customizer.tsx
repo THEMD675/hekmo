@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Check, Monitor, Moon, Palette, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { Palette, Moon, Sun, Monitor, Check } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -130,7 +130,7 @@ export function FontSizeControl() {
   useEffect(() => {
     const saved = localStorage.getItem("hekmo-font-size");
     if (saved) {
-      const size = parseInt(saved, 10);
+      const size = Number.parseInt(saved, 10);
       setFontSize(size);
       document.documentElement.style.fontSize = `${size}px`;
     }

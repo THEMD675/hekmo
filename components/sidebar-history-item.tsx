@@ -1,6 +1,6 @@
+import { Archive, Pin } from "lucide-react";
 import Link from "next/link";
 import { memo } from "react";
-import { Pin, Archive, FolderPlus } from "lucide-react";
 import { useChatVisibility } from "@/hooks/use-chat-visibility";
 import type { Chat } from "@/lib/db/schema";
 import { cn } from "@/lib/utils";
@@ -61,9 +61,7 @@ const PureChatItem = ({
           href={`/chat/${chat.id}`}
           onClick={() => setOpenMobile(false)}
         >
-          {isPinned && (
-            <Pin className="h-3 w-3 shrink-0 text-primary" />
-          )}
+          {isPinned && <Pin className="h-3 w-3 shrink-0 text-primary" />}
           <span className={cn("truncate", isPinned && "font-medium")}>
             {chat.title}
           </span>

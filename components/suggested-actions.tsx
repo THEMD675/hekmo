@@ -2,8 +2,8 @@
 
 import type { UseChatHelpers } from "@ai-sdk/react";
 import { motion } from "framer-motion";
+import { Activity, Moon, Pill, Sunrise } from "lucide-react";
 import { memo } from "react";
-import { Sunrise, Activity, Moon, Pill } from "lucide-react";
 import type { ChatMessage } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import type { VisibilityType } from "./visibility-selector";

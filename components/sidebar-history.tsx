@@ -24,8 +24,8 @@ import {
   SidebarMenu,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { usePinnedChats } from "@/hooks/use-pinned-chats";
 import { useArchivedChats } from "@/hooks/use-archived-chats";
+import { usePinnedChats } from "@/hooks/use-pinned-chats";
 import type { Chat } from "@/lib/db/schema";
 import { fetcher } from "@/lib/utils";
 import { LoaderIcon } from "./icons";
@@ -352,14 +352,13 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
           <AlertDialogHeader>
             <AlertDialogTitle>هل أنت متأكد؟</AlertDialogTitle>
             <AlertDialogDescription>
-              لا يمكن التراجع عن هذا الإجراء. سيتم حذف المحادثة نهائياً من خوادمنا.
+              لا يمكن التراجع عن هذا الإجراء. سيتم حذف المحادثة نهائياً من
+              خوادمنا.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>إلغاء</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete}>
-              حذف
-            </AlertDialogAction>
+            <AlertDialogAction onClick={handleDelete}>حذف</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

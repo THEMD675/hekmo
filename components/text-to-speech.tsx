@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useCallback, useRef } from "react";
-import { Volume2, VolumeX, Loader2, Pause, Play } from "lucide-react";
+import { Loader2, Pause, Play, Volume2 } from "lucide-react";
+import { useCallback, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -11,7 +11,11 @@ interface TextToSpeechProps {
   lang?: string;
 }
 
-export function TextToSpeech({ text, className, lang = "ar-SA" }: TextToSpeechProps) {
+export function TextToSpeech({
+  text,
+  className,
+  lang = "ar-SA",
+}: TextToSpeechProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -134,9 +138,7 @@ export function useTextToSpeech() {
     utterance.rate = 0.9;
 
     const voices = window.speechSynthesis.getVoices();
-    const arabicVoice = voices.find(
-      (voice) => voice.lang.startsWith("ar")
-    );
+    const arabicVoice = voices.find((voice) => voice.lang.startsWith("ar"));
     if (arabicVoice) {
       utterance.voice = arabicVoice;
     }

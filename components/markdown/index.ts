@@ -1,2 +1,2 @@
-export { LaTeX, InlineMath, DisplayMath, renderLatexInText } from "./latex";
-export { Mermaid, isMermaidCodeBlock } from "./mermaid";
+export { DisplayMath, InlineMath, LaTeX, renderLatexInText } from "./latex";
+export { isMermaidCodeBlock, Mermaid } from "./mermaid";

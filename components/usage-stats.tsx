@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { BarChart3, MessageSquare, Zap, Clock, TrendingUp } from "lucide-react";
+import { BarChart3, Clock, MessageSquare, TrendingUp, Zap } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 
@@ -32,8 +32,8 @@ export function UsageStats() {
         setStats({
           messagesUsed: 147,
           messagesLimit: 500,
-          tokensUsed: 45230,
-          tokensLimit: 100000,
+          tokensUsed: 45_230,
+          tokensLimit: 100_000,
           toolCalls: 23,
           avgResponseTime: 1.2,
           streak: 5,
@@ -85,9 +85,7 @@ export function UsageStats() {
             value={messagesPercent}
           />
           <p className="text-xs text-muted-foreground mt-1">
-            {messagesPercent > 80
-              ? "اقتربت من الحد الأقصى"
-              : "استخدام عادي"}
+            {messagesPercent > 80 ? "اقتربت من الحد الأقصى" : "استخدام عادي"}
           </p>
         </div>
 

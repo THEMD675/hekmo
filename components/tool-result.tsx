@@ -1,18 +1,18 @@
 "use client";
 
-import { useState } from "react";
 import {
-  Globe,
-  Calculator,
-  Image,
-  FileText,
-  Clock,
   Book,
-  Languages,
+  Calculator,
   ChevronDown,
   ChevronUp,
+  Clock,
   ExternalLink,
+  FileText,
+  Globe,
+  Image,
+  Languages,
 } from "lucide-react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface ToolResultProps {
@@ -79,8 +79,11 @@ export function ToolResult({ toolName, result, className }: ToolResultProps) {
       typeof result === "object" &&
       "results" in (result as object)
     ) {
-      const searchResults = (result as { results: Array<{ title: string; url: string; snippet: string }> })
-        .results;
+      const searchResults = (
+        result as {
+          results: Array<{ title: string; url: string; snippet: string }>;
+        }
+      ).results;
       return (
         <div className="space-y-2">
           {searchResults.slice(0, 3).map((r, idx) => (
@@ -130,7 +133,9 @@ export function ToolResult({ toolName, result, className }: ToolResultProps) {
       const calcResult = result as { result: number; expression: string };
       return (
         <div className="text-center">
-          <p className="text-sm text-muted-foreground">{calcResult.expression}</p>
+          <p className="text-sm text-muted-foreground">
+            {calcResult.expression}
+          </p>
           <p className="text-2xl font-bold">{calcResult.result}</p>
         </div>
       );
@@ -146,10 +151,7 @@ export function ToolResult({ toolName, result, className }: ToolResultProps) {
 
   return (
     <div
-      className={cn(
-        "rounded-lg border bg-muted/30 overflow-hidden",
-        className
-      )}
+      className={cn("rounded-lg border bg-muted/30 overflow-hidden", className)}
     >
       {/* Header */}
       <button

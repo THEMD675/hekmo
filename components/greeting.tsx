@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Moon, Zap, Brain, Dumbbell, Heart, Apple } from "lucide-react";
+import { Apple, Brain, Dumbbell, Heart, Moon, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Health categories - patterns inspired by Headspace/WHOOP/Oura

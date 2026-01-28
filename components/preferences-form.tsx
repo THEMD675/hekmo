@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Loader2, Save } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { toast } from "sonner";
 
 interface Preferences {
   notifications: {

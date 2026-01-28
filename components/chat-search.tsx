@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { MessageSquare, Search, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Search, MessageSquare, X } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
 import type { Chat } from "@/lib/db/schema";
+import { cn } from "@/lib/utils";
 
 interface ChatSearchProps {
   className?: string;
@@ -27,7 +27,9 @@ export function ChatSearch({ className }: ChatSearchProps) {
 
     setIsSearching(true);
     try {
-      const response = await fetch(`/api/history/search?q=${encodeURIComponent(searchQuery)}`);
+      const response = await fetch(
+        `/api/history/search?q=${encodeURIComponent(searchQuery)}`
+      );
       if (response.ok) {
         const data = await response.json();
         setResults(data.chats || []);
@@ -59,7 +61,9 @@ export function ChatSearch({ className }: ChatSearchProps) {
       if (e.key === "f" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setIsOpen(true);
-        const input = document.querySelector('[data-search-input]') as HTMLInputElement;
+        const input = document.querySelector(
+          "[data-search-input]"
+        ) as HTMLInputElement;
         input?.focus();
       }
       if (e.key === "Escape" && isOpen) {
@@ -83,7 +87,10 @@ export function ChatSearch({ className }: ChatSearchProps) {
   if (!isOpen) {
     return (
       <Button
-        className={cn("w-full justify-start gap-2 text-muted-foreground", className)}
+        className={cn(
+          "w-full justify-start gap-2 text-muted-foreground",
+          className
+        )}
         onClick={() => setIsOpen(true)}
         variant="ghost"
       >

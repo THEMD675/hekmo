@@ -18,7 +18,7 @@ export function Mermaid({ chart, className }: MermaidProps) {
       try {
         // Dynamically import mermaid to avoid SSR issues
         const mermaid = (await import("mermaid")).default;
-        
+
         mermaid.initialize({
           startOnLoad: false,
           theme: "dark",
@@ -32,7 +32,9 @@ export function Mermaid({ chart, className }: MermaidProps) {
         setError(null);
       } catch (err) {
         console.error("Mermaid error:", err);
-        setError(err instanceof Error ? err.message : "Failed to render diagram");
+        setError(
+          err instanceof Error ? err.message : "Failed to render diagram"
+        );
       }
     };
 
@@ -43,11 +45,20 @@ export function Mermaid({ chart, className }: MermaidProps) {
 
   if (error) {
     return (
-      <div className={cn("rounded-lg border border-destructive/50 bg-destructive/10 p-4", className)}>
+      <div
+        className={cn(
+          "rounded-lg border border-destructive/50 bg-destructive/10 p-4",
+          className
+        )}
+      >
         <p className="text-sm text-destructive">خطأ في عرض الرسم البياني:</p>
-        <pre className="mt-2 text-xs text-muted-foreground overflow-auto">{error}</pre>
+        <pre className="mt-2 text-xs text-muted-foreground overflow-auto">
+          {error}
+        </pre>
         <details className="mt-2">
-          <summary className="text-xs text-muted-foreground cursor-pointer">عرض الكود</summary>
+          <summary className="text-xs text-muted-foreground cursor-pointer">
+            عرض الكود
+          </summary>
           <pre className="mt-2 text-xs overflow-auto">{chart}</pre>
         </details>
       </div>
@@ -56,18 +67,25 @@ export function Mermaid({ chart, className }: MermaidProps) {
 
   if (!svg) {
     return (
-      <div className={cn("animate-pulse rounded-lg bg-muted h-32 flex items-center justify-center", className)}>
-        <span className="text-muted-foreground text-sm">جاري تحميل الرسم البياني...</span>
+      <div
+        className={cn(
+          "animate-pulse rounded-lg bg-muted h-32 flex items-center justify-center",
+          className
+        )}
+      >
+        <span className="text-muted-foreground text-sm">
+          جاري تحميل الرسم البياني...
+        </span>
       </div>
     );
   }
 
   return (
     <div
-      ref={containerRef}
       className={cn("overflow-auto", className)}
-      // biome-ignore lint/security/noDangerouslySetInnerHtml: Mermaid SVG output
       dangerouslySetInnerHTML={{ __html: svg }}
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: Mermaid SVG output
+      ref={containerRef}
     />
   );
 }

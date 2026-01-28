@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface TypingAnimationProps {
   text: string;
@@ -31,9 +31,7 @@ export function TypingAnimation({
   return (
     <span>
       {displayedText}
-      {currentIndex < text.length && (
-        <span className="animate-pulse">▋</span>
-      )}
+      {currentIndex < text.length && <span className="animate-pulse">▋</span>}
     </span>
   );
 }

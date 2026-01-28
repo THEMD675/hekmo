@@ -1,14 +1,14 @@
 "use client";
 
+import { RotateCcw, Settings2 } from "lucide-react";
 import { useState } from "react";
-import { Settings2, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 
 export interface ModelParameters {
@@ -46,7 +46,7 @@ export function ModelParametersControl({
     parameters.topP !== DEFAULT_PARAMS.topP;
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover onOpenChange={setOpen} open={open}>
       <PopoverTrigger asChild>
         <Button
           className={cn("gap-2 relative", className)}
@@ -77,7 +77,9 @@ export function ModelParametersControl({
           {/* Temperature */}
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="text-sm font-medium">الحرارة (Temperature)</label>
+              <label className="text-sm font-medium">
+                الحرارة (Temperature)
+              </label>
               <span className="text-sm text-muted-foreground">
                 {parameters.temperature.toFixed(2)}
               </span>

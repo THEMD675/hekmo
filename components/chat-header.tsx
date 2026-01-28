@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { ArrowRight, Check, Edit2, Share2, X } from "lucide-react";
 import Link from "next/link";
-import { ArrowRight, Edit2, Check, X, MoreHorizontal, Share2 } from "lucide-react";
+import { useState } from "react";
+import { ChatActions } from "@/components/chat-actions";
+import { ModelSelector } from "@/components/model-selector";
+import { ShareChatDialog } from "@/components/share-chat-dialog";
+import { SystemPromptEditor } from "@/components/system-prompt-editor";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ModelSelector } from "@/components/model-selector";
-import { SystemPromptEditor } from "@/components/system-prompt-editor";
-import { ShareChatDialog } from "@/components/share-chat-dialog";
-import { ChatActions } from "@/components/chat-actions";
 import { cn } from "@/lib/utils";
 
 interface ChatHeaderProps {

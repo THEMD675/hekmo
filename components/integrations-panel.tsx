@@ -1,14 +1,7 @@
 "use client";
 
+import { Calendar, Check, Mail } from "lucide-react";
 import { useState } from "react";
-import {
-  MessageSquare,
-  Calendar,
-  Mail,
-  ExternalLink,
-  Check,
-  X,
-} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -97,9 +90,7 @@ export function IntegrationsPanel() {
 
   const toggleConnection = (id: string) => {
     setIntegrations((prev) =>
-      prev.map((i) =>
-        i.id === id ? { ...i, connected: !i.connected } : i
-      )
+      prev.map((i) => (i.id === id ? { ...i, connected: !i.connected } : i))
     );
   };
 

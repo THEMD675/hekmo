@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import katex from "katex";
+import { useEffect, useRef } from "react";
 import "katex/dist/katex.min.css";
 
 interface LaTeXProps {
@@ -29,25 +29,19 @@ export function LaTeX({ math, display = false, className }: LaTeXProps) {
     }
   }, [math, display]);
 
-  return (
-    <span
-      ref={containerRef}
-      className={className}
-      dir="ltr"
-    />
-  );
+  return <span className={className} dir="ltr" ref={containerRef} />;
 }
 
 // Component to render inline math $...$
 export function InlineMath({ children }: { children: string }) {
-  return <LaTeX math={children} display={false} />;
+  return <LaTeX display={false} math={children} />;
 }
 
 // Component to render display math $$...$$
 export function DisplayMath({ children }: { children: string }) {
   return (
     <div className="my-4 overflow-x-auto">
-      <LaTeX math={children} display={true} />
+      <LaTeX display={true} math={children} />
     </div>
   );
 }
@@ -56,11 +50,11 @@ export function DisplayMath({ children }: { children: string }) {
 export function renderLatexInText(text: string): React.ReactNode[] {
   const parts: React.ReactNode[] = [];
   let lastIndex = 0;
-  
+
   // Match display math $$...$$ first
   const displayRegex = /\$\$([^$]+)\$\$/g;
   let match;
-  
+
   while ((match = displayRegex.exec(text)) !== null) {
     if (match.index > lastIndex) {
       parts.push(text.slice(lastIndex, match.index));
@@ -68,25 +62,27 @@ export function renderLatexInText(text: string): React.ReactNode[] {
     parts.push(<DisplayMath key={match.index}>{match[1]}</DisplayMath>);
     lastIndex = match.index + match[0].length;
   }
-  
+
   if (lastIndex < text.length) {
     // Now handle inline math $...$
     const remaining = text.slice(lastIndex);
     const inlineRegex = /\$([^$]+)\$/g;
     let inlineLastIndex = 0;
-    
+
     while ((match = inlineRegex.exec(remaining)) !== null) {
       if (match.index > inlineLastIndex) {
         parts.push(remaining.slice(inlineLastIndex, match.index));
       }
-      parts.push(<InlineMath key={`inline-${match.index}`}>{match[1]}</InlineMath>);
+      parts.push(
+        <InlineMath key={`inline-${match.index}`}>{match[1]}</InlineMath>
+      );
       inlineLastIndex = match.index + match[0].length;
     }
-    
+
     if (inlineLastIndex < remaining.length) {
       parts.push(remaining.slice(inlineLastIndex));
     }
   }
-  
+
   return parts.length > 0 ? parts : [text];
 }

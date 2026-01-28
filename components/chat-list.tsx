@@ -1,11 +1,11 @@
 "use client";
 
+import { Archive, MessageSquare, Pin } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MessageSquare, Pin, Archive } from "lucide-react";
+import { getArchivedChats, getPinnedChats } from "@/components/chat-actions";
 import { cn } from "@/lib/utils";
 import { formatChatDate } from "@/lib/utils/date";
-import { getPinnedChats, getArchivedChats } from "@/components/chat-actions";
 
 interface Chat {
   id: string;

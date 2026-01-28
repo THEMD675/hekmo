@@ -1,18 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import { 
-  Sparkles, 
-  FileText, 
-  Code, 
-  Languages, 
-  Calculator,
-  Heart,
+import {
   BookOpen,
   Briefcase,
+  Calculator,
   ChefHat,
-  Plane
+  Code,
+  FileText,
+  Heart,
+  Languages,
+  Plane,
+  Sparkles,
 } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -32,7 +32,8 @@ const TEMPLATES: ChatTemplate[] = [
     icon: <Heart className="h-5 w-5" />,
     title: "فحص صحي يومي",
     description: "تحقق من صحتك اليومية",
-    prompt: "أود إجراء فحص صحي يومي. كيف حالتي الصحية اليوم؟ اسألني عن نومي، طعامي، وتمارينني.",
+    prompt:
+      "أود إجراء فحص صحي يومي. كيف حالتي الصحية اليوم؟ اسألني عن نومي، طعامي، وتمارينني.",
     category: "health",
   },
   {
@@ -48,7 +49,8 @@ const TEMPLATES: ChatTemplate[] = [
     icon: <Sparkles className="h-5 w-5" />,
     title: "برنامج رياضي",
     description: "تمارين مخصصة لك",
-    prompt: "ساعدني في إنشاء برنامج رياضي مناسب لي. اسألني عن أهدافي ومستوى لياقتي.",
+    prompt:
+      "ساعدني في إنشاء برنامج رياضي مناسب لي. اسألني عن أهدافي ومستوى لياقتي.",
     category: "health",
   },
 
@@ -140,9 +142,9 @@ export function ChatTemplates({ onSelect }: ChatTemplatesProps) {
         <button
           className={cn(
             "px-3 py-1.5 rounded-full text-sm whitespace-nowrap transition-colors",
-            !selectedCategory
-              ? "bg-primary text-primary-foreground"
-              : "bg-muted hover:bg-muted/80"
+            selectedCategory
+              ? "bg-muted hover:bg-muted/80"
+              : "bg-primary text-primary-foreground"
           )}
           onClick={() => setSelectedCategory(null)}
           type="button"
@@ -193,7 +195,11 @@ export function ChatTemplates({ onSelect }: ChatTemplatesProps) {
 }
 
 // Quick suggestions for empty chat
-export function QuickSuggestions({ onSelect }: { onSelect: (text: string) => void }) {
+export function QuickSuggestions({
+  onSelect,
+}: {
+  onSelect: (text: string) => void;
+}) {
   const suggestions = [
     "كيف أحسن نومي؟",
     "اكتب لي إيميل احترافي",

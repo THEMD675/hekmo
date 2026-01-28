@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { AlertTriangle, Loader2, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { AlertTriangle, Loader2, Trash2 } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -14,7 +14,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
 
 export function DeleteAccountDialog() {
   const router = useRouter();
@@ -95,9 +95,7 @@ export function DeleteAccountDialog() {
         <div className="space-y-4">
           {/* Warning */}
           <div className="p-4 rounded-lg bg-destructive/10 border border-destructive/50">
-            <h4 className="font-medium text-destructive mb-2">
-              سيتم حذف:
-            </h4>
+            <h4 className="font-medium text-destructive mb-2">سيتم حذف:</h4>
             <ul className="text-sm text-muted-foreground space-y-1">
               <li>• جميع محادثاتك ورسائلك</li>
               <li>• ملفاتك ومستنداتك</li>

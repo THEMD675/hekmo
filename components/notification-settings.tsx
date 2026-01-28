@@ -1,16 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Bell, BellOff, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { Switch } from "@/components/ui/switch";
 import {
+  getPushSubscription,
   isPushSupported,
   requestNotificationPermission,
   subscribeToPush,
   unsubscribeFromPush,
-  getPushSubscription,
 } from "@/lib/push-notifications";
 
 export function NotificationSettings() {

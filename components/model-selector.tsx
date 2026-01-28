@@ -1,7 +1,7 @@
 "use client";
 
+import { Check, ChevronDown, Crown, Sparkles, Zap } from "lucide-react";
 import { useState } from "react";
-import { ChevronDown, Sparkles, Zap, Crown, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,

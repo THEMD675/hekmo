@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { Terminal as TerminalIcon, X, Maximize2, Minimize2 } from "lucide-react";
+import { Maximize2, Minimize2, Terminal as TerminalIcon } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -96,9 +96,7 @@ export function Terminal({
             )}
             key={index}
           >
-            {line.type === "input" && (
-              <span className="text-blue-400">$ </span>
-            )}
+            {line.type === "input" && <span className="text-blue-400">$ </span>}
             {line.content}
           </div>
         ))}
@@ -146,5 +144,7 @@ export function TerminalOutput({
     lines.push({ type: "error", content: error });
   }
 
-  return <Terminal className={className} lines={lines} readonly title="Output" />;
+  return (
+    <Terminal className={className} lines={lines} readonly title="Output" />
+  );
 }

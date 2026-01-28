@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { AlertCircle, Clock, Zap } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 
@@ -38,7 +38,7 @@ export function RateLimitIndicator({
     };
 
     fetchRateLimit();
-    const interval = setInterval(fetchRateLimit, 60000); // Update every minute
+    const interval = setInterval(fetchRateLimit, 60_000); // Update every minute
 
     return () => clearInterval(interval);
   }, []);
@@ -56,8 +56,8 @@ export function RateLimitIndicator({
         return;
       }
 
-      const minutes = Math.floor(diff / 60000);
-      const seconds = Math.floor((diff % 60000) / 1000);
+      const minutes = Math.floor(diff / 60_000);
+      const seconds = Math.floor((diff % 60_000) / 1000);
 
       if (minutes > 0) {
         setTimeUntilReset(`${minutes} دقيقة`);
@@ -91,7 +91,6 @@ export function RateLimitIndicator({
         !isLow && "bg-muted/50",
         className
       )}
-     
     >
       <div className="flex-shrink-0">
         {isExhausted ? (

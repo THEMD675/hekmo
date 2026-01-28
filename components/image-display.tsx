@@ -1,14 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { Download, Loader2, Maximize2 } from "lucide-react";
 import Image from "next/image";
-import { Download, Maximize2, X, Loader2 } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
 interface GeneratedImageProps {
@@ -122,7 +118,9 @@ export function GeneratedImage({
       </Button>
 
       {/* Caption */}
-      <p className="mt-2 text-xs text-muted-foreground line-clamp-2">{prompt}</p>
+      <p className="mt-2 text-xs text-muted-foreground line-clamp-2">
+        {prompt}
+      </p>
     </div>
   );
 }
@@ -148,11 +146,7 @@ export function ImageGrid({
       )}
     >
       {images.map((img, i) => (
-        <GeneratedImage
-          imageUrl={img.url}
-          key={i}
-          prompt={img.prompt}
-        />
+        <GeneratedImage imageUrl={img.url} key={i} prompt={img.prompt} />
       ))}
     </div>
   );

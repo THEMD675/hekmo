@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { Crown, Sparkles, X, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Crown, X, Zap, Sparkles } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -33,7 +33,6 @@ export function UpgradeBanner({
           "fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-80 p-4 rounded-lg bg-gradient-to-r from-primary/90 to-primary text-primary-foreground shadow-lg z-40",
           className
         )}
-       
       >
         {dismissible && (
           <button
@@ -51,11 +50,7 @@ export function UpgradeBanner({
             <p className="text-sm opacity-90 mb-3">
               احصل على محادثات غير محدودة وأدوات متقدمة
             </p>
-            <Button
-              onClick={handleUpgrade}
-              size="sm"
-              variant="secondary"
-            >
+            <Button onClick={handleUpgrade} size="sm" variant="secondary">
               <Sparkles className="h-4 w-4 ml-1" />
               ترقية الآن
             </Button>
@@ -72,7 +67,6 @@ export function UpgradeBanner({
           "p-6 rounded-xl border-2 border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10",
           className
         )}
-       
       >
         <div className="flex items-center gap-2 mb-4">
           <Crown className="h-6 w-6 text-primary" />
@@ -111,20 +105,21 @@ export function UpgradeBanner({
         "flex items-center justify-between gap-4 p-3 rounded-lg bg-primary/10 border border-primary/20",
         className
       )}
-     
     >
       <div className="flex items-center gap-2">
         <Crown className="h-5 w-5 text-primary" />
-        <span className="text-sm">
-          ترقية للمميز للحصول على ميزات أكثر
-        </span>
+        <span className="text-sm">ترقية للمميز للحصول على ميزات أكثر</span>
       </div>
       <div className="flex items-center gap-2">
         <Button onClick={handleUpgrade} size="sm">
           ترقية
         </Button>
         {dismissible && (
-          <Button onClick={() => setDismissed(true)} size="icon" variant="ghost">
+          <Button
+            onClick={() => setDismissed(true)}
+            size="icon"
+            variant="ghost"
+          >
             <X className="h-4 w-4" />
           </Button>
         )}
@@ -158,12 +153,12 @@ export function UsageLimitWarning({
           ? "bg-destructive/10 border-destructive/50"
           : "bg-yellow-500/10 border-yellow-500/50"
       )}
-     
     >
       <p className="text-sm">
         {isExceeded ? (
           <>
-            <span className="font-medium">وصلت للحد الأقصى!</span> ترقية للمتابعة
+            <span className="font-medium">وصلت للحد الأقصى!</span> ترقية
+            للمتابعة
           </>
         ) : (
           <>

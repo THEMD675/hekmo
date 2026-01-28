@@ -1,19 +1,19 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import {
+  Archive,
+  Copy,
+  Download,
+  Edit2,
   MoreHorizontal,
   Pin,
   PinOff,
-  Archive,
   Share2,
   Trash2,
-  Copy,
-  Edit2,
-  Folder,
-  Download,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -22,7 +22,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 interface ChatActionsProps {
@@ -102,7 +101,7 @@ export function ChatActions({
 
   const handleDuplicate = async () => {
     try {
-      const response = await fetch(`/api/chat/duplicate`, {
+      const response = await fetch("/api/chat/duplicate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ chatId }),

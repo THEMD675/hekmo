@@ -1,16 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import { Copy, Check, Volume2, ThumbsUp, ThumbsDown, MoreHorizontal, RefreshCw } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
+  Check,
+  Copy,
+  RefreshCw,
+  ThumbsDown,
+  ThumbsUp,
+  Volume2,
+} from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface MessageActionsProps {
   content?: string;
@@ -88,12 +89,7 @@ export function MessageActions({
       )}
     >
       {/* Copy */}
-      <Button
-        onClick={handleCopy}
-        size="icon"
-        title="نسخ"
-        variant="ghost"
-      >
+      <Button onClick={handleCopy} size="icon" title="نسخ" variant="ghost">
         {copied ? (
           <Check className="h-4 w-4 text-green-500" />
         ) : (

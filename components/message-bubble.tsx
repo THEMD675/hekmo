@@ -3,7 +3,6 @@
 import { Bot, User } from "lucide-react";
 import { EnhancedMarkdown } from "@/components/enhanced-markdown";
 import { MessageActions } from "@/components/message-actions";
-import { VoiceOutput } from "@/components/voice-input";
 import { cn } from "@/lib/utils";
 
 interface MessageBubbleProps {
@@ -40,11 +39,7 @@ export function MessageBubble({
           isUser ? "bg-primary text-primary-foreground" : "bg-muted"
         )}
       >
-        {isUser ? (
-          <User className="h-5 w-5" />
-        ) : (
-          <Bot className="h-5 w-5" />
-        )}
+        {isUser ? <User className="h-5 w-5" /> : <Bot className="h-5 w-5" />}
       </div>
 
       {/* Content */}

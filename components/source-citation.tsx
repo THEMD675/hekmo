@@ -25,7 +25,7 @@ export function SourceCitation({ sources, className }: SourceCitationProps) {
       </h4>
       <div className="grid gap-2">
         {sources.map((source, index) => (
-          <SourceCard key={index} source={source} index={index + 1} />
+          <SourceCard index={index + 1} key={index} source={source} />
         ))}
       </div>
     </div>
@@ -83,12 +83,7 @@ export function InlineCitation({
 
   if (url) {
     return (
-      <a
-        href={url}
-        rel="noopener noreferrer"
-        target="_blank"
-        title={title}
-      >
+      <a href={url} rel="noopener noreferrer" target="_blank" title={title}>
         {content}
       </a>
     );

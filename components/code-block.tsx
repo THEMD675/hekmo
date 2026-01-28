@@ -1,7 +1,7 @@
 "use client";
 
+import { Check, Copy, Terminal } from "lucide-react";
 import { useState } from "react";
-import { Check, Copy, Play, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -31,14 +31,14 @@ export function CodeBlock({
   const lines = code.split("\n");
 
   return (
-    <div className={cn("rounded-lg border bg-zinc-950 overflow-hidden", className)}>
+    <div
+      className={cn("rounded-lg border bg-zinc-950 overflow-hidden", className)}
+    >
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-2 border-b border-zinc-800 bg-zinc-900">
         <div className="flex items-center gap-2">
           <Terminal className="h-4 w-4 text-zinc-400" />
-          <span className="text-sm text-zinc-400">
-            {filename || language}
-          </span>
+          <span className="text-sm text-zinc-400">{filename || language}</span>
         </div>
         <Button
           className="h-7 px-2 text-zinc-400 hover:text-white"
@@ -127,7 +127,9 @@ export function CodeDiff({
   const maxLines = Math.max(oldLines.length, newLines.length);
 
   return (
-    <div className={cn("rounded-lg border bg-zinc-950 overflow-hidden", className)}>
+    <div
+      className={cn("rounded-lg border bg-zinc-950 overflow-hidden", className)}
+    >
       <div className="px-4 py-2 border-b border-zinc-800 bg-zinc-900">
         <span className="text-sm text-zinc-400">التغييرات</span>
       </div>

@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Settings2, RotateCcw, Save } from "lucide-react";
+import { RotateCcw, Save, Settings2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { toast } from "sonner";
 
 interface SystemPromptEditorProps {
   chatId?: string;

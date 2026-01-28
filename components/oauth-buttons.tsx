@@ -1,8 +1,8 @@
 "use client";
 
+import { Loader2 } from "lucide-react";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
-import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -59,7 +59,10 @@ const providers = [
   },
 ];
 
-export function OAuthButtons({ className, callbackUrl = "/" }: OAuthButtonsProps) {
+export function OAuthButtons({
+  className,
+  callbackUrl = "/",
+}: OAuthButtonsProps) {
   const [loading, setLoading] = useState<string | null>(null);
 
   const handleOAuth = async (providerId: string) => {

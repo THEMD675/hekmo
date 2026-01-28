@@ -1,7 +1,8 @@
 "use client";
 
+import { Loader2, MessageSquare, Send, Star } from "lucide-react";
 import { useState } from "react";
-import { MessageSquare, Star, Send, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -11,7 +12,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 interface FeedbackDialogProps {
@@ -68,7 +68,7 @@ export function FeedbackDialog({ messageId, trigger }: FeedbackDialogProps) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
         {trigger || (
           <Button size="sm" variant="ghost">
@@ -145,11 +145,7 @@ export function FeedbackDialog({ messageId, trigger }: FeedbackDialogProps) {
           </div>
 
           {/* Submit */}
-          <Button
-            className="w-full"
-            disabled={loading}
-            onClick={handleSubmit}
-          >
+          <Button className="w-full" disabled={loading} onClick={handleSubmit}>
             {loading ? (
               <Loader2 className="h-4 w-4 animate-spin ml-2" />
             ) : (

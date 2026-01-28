@@ -16,11 +16,7 @@ export function SidebarToggle({ isOpen, onToggle }: SidebarToggleProps) {
       size="icon"
       variant="outline"
     >
-      {isOpen ? (
-        <X className="h-5 w-5" />
-      ) : (
-        <Menu className="h-5 w-5" />
-      )}
+      {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
     </Button>
   );
 }

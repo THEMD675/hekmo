@@ -2,12 +2,12 @@
 
 import { memo, useMemo } from "react";
 import ReactMarkdown from "react-markdown";
+import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
-import rehypeKatex from "rehype-katex";
-import { CodeBlock, InlineCode } from "./code-block";
-import { Mermaid, isMermaidCodeBlock } from "./markdown/mermaid";
 import { cn } from "@/lib/utils";
+import { CodeBlock, InlineCode } from "./code-block";
+import { isMermaidCodeBlock, Mermaid } from "./markdown/mermaid";
 import "katex/dist/katex.min.css";
 
 interface EnhancedMarkdownProps {
@@ -21,17 +21,17 @@ export const EnhancedMarkdown = memo(function EnhancedMarkdown({
 }: EnhancedMarkdownProps) {
   const processedContent = useMemo(() => {
     // Pre-process content for better rendering
-    return content
-      // Fix common markdown issues
-      .replace(/\n{3,}/g, "\n\n") // Reduce multiple newlines
-      .trim();
+    return (
+      content
+        // Fix common markdown issues
+        .replace(/\n{3,}/g, "\n\n") // Reduce multiple newlines
+        .trim()
+    );
   }, [content]);
 
   return (
     <div className={cn("prose prose-invert max-w-none", className)} dir="auto">
       <ReactMarkdown
-        remarkPlugins={[remarkGfm, remarkMath]}
-        rehypePlugins={[rehypeKatex]}
         components={{
           // Code blocks
           code({ node, className, children, ...props }) {
@@ -120,14 +120,10 @@ export const EnhancedMarkdown = memo(function EnhancedMarkdown({
 
           // Headings
           h1({ children }) {
-            return (
-              <h1 className="mt-6 mb-4 text-2xl font-bold">{children}</h1>
-            );
+            return <h1 className="mt-6 mb-4 text-2xl font-bold">{children}</h1>;
           },
           h2({ children }) {
-            return (
-              <h2 className="mt-5 mb-3 text-xl font-bold">{children}</h2>
-            );
+            return <h2 className="mt-5 mb-3 text-xl font-bold">{children}</h2>;
           },
           h3({ children }) {
             return (
@@ -157,6 +153,8 @@ export const EnhancedMarkdown = memo(function EnhancedMarkdown({
             );
           },
         }}
+        rehypePlugins={[rehypeKatex]}
+        remarkPlugins={[remarkGfm, remarkMath]}
       >
         {processedContent}
       </ReactMarkdown>

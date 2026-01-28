@@ -1,8 +1,10 @@
 "use client";
 
+import { Crown, HelpCircle, LogOut, Settings, User } from "lucide-react";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { Settings, LogOut, User, Crown, HelpCircle } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
+import { ThemeCustomizer } from "@/components/theme-customizer";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,9 +13,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ThemeCustomizer } from "@/components/theme-customizer";
-import { signOut } from "next-auth/react";
 
 export function Header() {
   const { data: session } = useSession();
@@ -44,7 +43,9 @@ export function Header() {
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={session.user.image || undefined} />
                     <AvatarFallback>
-                      {(session.user.name || session.user.email || "U").charAt(0).toUpperCase()}
+                      {(session.user.name || session.user.email || "U")
+                        .charAt(0)
+                        .toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                 </Button>

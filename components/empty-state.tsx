@@ -1,6 +1,6 @@
 "use client";
 
-import { MessageSquare, Search, Folder, History, Sparkles } from "lucide-react";
+import { Folder, History, MessageSquare, Search, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 

@@ -1,16 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import {
-  MessageSquare,
-  Mic,
-  Sparkles,
-  Shield,
+  Check,
   ChevronLeft,
   ChevronRight,
-  Check,
+  MessageSquare,
+  Mic,
+  Shield,
+  Sparkles,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 

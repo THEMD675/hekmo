@@ -87,7 +87,13 @@ export function TypingIndicator() {
 }
 
 // Spinner
-export function Spinner({ className, size = "md" }: { className?: string; size?: "sm" | "md" | "lg" }) {
+export function Spinner({
+  className,
+  size = "md",
+}: {
+  className?: string;
+  size?: "sm" | "md" | "lg";
+}) {
   const sizes = {
     sm: "h-4 w-4 border-2",
     md: "h-8 w-8 border-2",
@@ -120,7 +126,9 @@ export function ProgressLoader({ progress }: { progress: number }) {
 // Shimmer effect
 export function ShimmerCard({ className }: { className?: string }) {
   return (
-    <div className={cn("relative overflow-hidden rounded-lg bg-muted", className)}>
+    <div
+      className={cn("relative overflow-hidden rounded-lg bg-muted", className)}
+    >
       <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
     </div>
   );

@@ -273,10 +273,9 @@ function PureMultimodalInput({
   }, [handlePaste]);
 
   // Mode selector state - inspired by Perplexity's Search/Deep/Create pattern
-  const [responseMode, setResponseMode] = useLocalStorage<"quick" | "deep" | "action">(
-    "hekmo-response-mode",
-    "quick"
-  );
+  const [responseMode, setResponseMode] = useLocalStorage<
+    "quick" | "deep" | "action"
+  >("hekmo-response-mode", "quick");
 
   const RESPONSE_MODES = [
     { id: "quick" as const, label: "سريع", description: "إجابة مختصرة" },
@@ -649,7 +648,9 @@ function PureVoiceButton({
       variant="ghost"
     >
       <MicrophoneIcon size={16} style={{ width: 16, height: 16 }} />
-      <span className="hidden sm:inline">{isListening ? "جاري..." : "تكلم"}</span>
+      <span className="hidden sm:inline">
+        {isListening ? "جاري..." : "تكلم"}
+      </span>
     </Button>
   );
 }

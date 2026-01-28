@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   ChevronDown,
   ChevronRight,
@@ -8,6 +7,7 @@ import {
   Folder,
   FolderOpen,
 } from "lucide-react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 export interface FileTreeNode {
@@ -28,7 +28,12 @@ export function FileTree({ data, onSelect, className }: FileTreeProps) {
   return (
     <div className={cn("text-sm font-mono", className)} dir="ltr">
       {data.map((node, index) => (
-        <TreeNode key={`${node.name}-${index}`} node={node} onSelect={onSelect} depth={0} />
+        <TreeNode
+          depth={0}
+          key={`${node.name}-${index}`}
+          node={node}
+          onSelect={onSelect}
+        />
       ))}
     </div>
   );
@@ -108,8 +113,8 @@ function TreeNode({
         <div>
           {node.children.map((child, index) => (
             <TreeNode
-              key={`${child.name}-${index}`}
               depth={depth + 1}
+              key={`${child.name}-${index}`}
               node={child}
               onSelect={onSelect}
             />
@@ -138,7 +143,7 @@ export function parseFileListToTree(fileList: string): FileTreeNode[] {
       const isFolder = !isLast || trimmed.endsWith("/");
 
       let existing = current.find((n) => n.name === part);
-      
+
       if (!existing) {
         existing = {
           name: part,
@@ -157,14 +162,16 @@ export function parseFileListToTree(fileList: string): FileTreeNode[] {
 
   // Sort: folders first, then files, alphabetically
   const sortNodes = (nodes: FileTreeNode[]): FileTreeNode[] => {
-    return nodes.sort((a, b) => {
-      if (a.type === "folder" && b.type === "file") return -1;
-      if (a.type === "file" && b.type === "folder") return 1;
-      return a.name.localeCompare(b.name);
-    }).map((node) => ({
-      ...node,
-      children: node.children ? sortNodes(node.children) : undefined,
-    }));
+    return nodes
+      .sort((a, b) => {
+        if (a.type === "folder" && b.type === "file") return -1;
+        if (a.type === "file" && b.type === "folder") return 1;
+        return a.name.localeCompare(b.name);
+      })
+      .map((node) => ({
+        ...node,
+        children: node.children ? sortNodes(node.children) : undefined,
+      }));
   };
 
   return sortNodes(root);

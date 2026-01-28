@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import { Download, FileJson, FileText, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,7 +10,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { toast } from "sonner";
 
 interface Message {
   id: string;
@@ -54,13 +54,13 @@ export function ExportChat({ chatId, chatTitle, messages }: ExportChatProps) {
     try {
       let markdown = `# ${chatTitle || "محادثة حكمو"}\n\n`;
       markdown += `> تم التصدير في: ${new Date().toLocaleString("ar-SA")}\n\n`;
-      markdown += `---\n\n`;
+      markdown += "---\n\n";
 
       for (const message of messages) {
         const role = message.role === "user" ? "👤 أنت" : "🤖 حكمو";
         markdown += `### ${role}\n\n`;
         markdown += `${message.content}\n\n`;
-        markdown += `---\n\n`;
+        markdown += "---\n\n";
       }
 
       const blob = new Blob([markdown], { type: "text/markdown" });
@@ -107,7 +107,11 @@ export function ExportChat({ chatId, chatTitle, messages }: ExportChatProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button disabled={loading || messages.length === 0} size="sm" variant="outline">
+        <Button
+          disabled={loading || messages.length === 0}
+          size="sm"
+          variant="outline"
+        >
           {loading ? (
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
