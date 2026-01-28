@@ -61,7 +61,7 @@ export const authConfig: NextAuthConfig = {
       return true;
     },
     jwt({ token, user, account }) {
-      if (user) {
+      if (user?.id) {
         token.id = user.id;
         token.type = (user as { type?: string }).type || "regular";
       }
