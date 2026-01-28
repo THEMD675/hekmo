@@ -15,21 +15,21 @@ export async function GET(request: Request) {
 
     const chats = await getChatsByUserId({
       id: session.user.id,
+      limit,
+      startingAfter: null,
+      endingBefore: null,
     });
 
-    // Apply pagination
-    const paginatedChats = chats.slice(offset, offset + limit);
-
     return Response.json({
-      chats: paginatedChats.map((chat) => ({
+      chats: chats.map((chat) => ({
         id: chat.id,
         title: chat.title,
         createdAt: chat.createdAt,
-        updatedAt: chat.createdAt, // Use updatedAt when available
+        updatedAt: chat.createdAt,
         model: "gpt-4o-mini",
       })),
       total: chats.length,
-      hasMore: offset + limit < chats.length,
+      hasMore: chats.length === limit,
     });
   } catch (error) {
     console.error("Chat history error:", error);
