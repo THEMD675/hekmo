@@ -1,0 +1,15 @@
+# Hekmo.ai Robots.txt
+# https://hekmo.ai
+
+User-agent: *
+Allow: /
+
+# Disallow API routes
+Disallow: /api/
+Disallow: /_next/
+
+# Allow search engines to index main pages
+Allow: /
+
+# Sitemap
+Sitemap: https://hekmo.ai/sitemap.xml

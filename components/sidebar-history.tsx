@@ -2,6 +2,7 @@
 
 import { isToday, isYesterday, subMonths, subWeeks } from "date-fns";
 import { motion } from "framer-motion";
+import { Pin } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import type { User } from "next-auth";
 import { useState } from "react";
@@ -23,6 +24,8 @@ import {
   SidebarMenu,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { usePinnedChats } from "@/hooks/use-pinned-chats";
+import { useArchivedChats } from "@/hooks/use-archived-chats";
 import type { Chat } from "@/lib/db/schema";
 import { fetcher } from "@/lib/utils";
 import { LoaderIcon } from "./icons";
@@ -102,6 +105,10 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
   const pathname = usePathname();
   const id = pathname?.startsWith("/chat/") ? pathname.split("/")[2] : null;
 
+  // World-class chat organization hooks
+  const { pinnedChatIds, togglePin, isPinned } = usePinnedChats();
+  const { archivedChatIds, toggleArchive, isArchived } = useArchivedChats();
+
   const {
     data: paginatedChatHistories,
     setSize,
@@ -135,7 +142,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
     });
 
     toast.promise(deletePromise, {
-      loading: "Deleting chat...",
+      loading: "جاري الحذف...",
       success: () => {
         mutate((chatHistories) => {
           if (chatHistories) {
@@ -153,9 +160,9 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
           router.refresh();
         }
 
-        return "Chat deleted successfully";
+        return "تم حذف المحادثة بنجاح";
       },
-      error: "Failed to delete chat",
+      error: "فشل حذف المحادثة",
     });
   };
 
@@ -164,7 +171,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
       <SidebarGroup>
         <SidebarGroupContent>
           <div className="flex w-full flex-row items-center justify-center gap-2 px-2 text-sm text-zinc-500">
-            Login to save and revisit previous chats!
+            سجل دخولك لحفظ محادثاتك السابقة!
           </div>
         </SidebarGroupContent>
       </SidebarGroup>
@@ -175,7 +182,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
     return (
       <SidebarGroup>
         <div className="px-2 py-1 text-sidebar-foreground/50 text-xs">
-          Today
+          اليوم
         </div>
         <SidebarGroupContent>
           <div className="flex flex-col">
@@ -205,7 +212,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
       <SidebarGroup>
         <SidebarGroupContent>
           <div className="flex w-full flex-row items-center justify-center gap-2 px-2 text-sm text-zinc-500">
-            Your conversations will appear here once you start chatting!
+            محادثاتك ستظهر هنا بمجرد أن تبدأ!
           </div>
         </SidebarGroupContent>
       </SidebarGroup>
@@ -223,107 +230,93 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
                   (paginatedChatHistory) => paginatedChatHistory.chats
                 );
 
-                const groupedChats = groupChatsByDate(chatsFromHistory);
+                // Filter out archived chats from main list
+                const activeChats = chatsFromHistory.filter(
+                  (chat) => !isArchived(chat.id)
+                );
+
+                // Separate pinned chats
+                const pinnedChats = activeChats.filter((chat) =>
+                  isPinned(chat.id)
+                );
+                const unpinnedChats = activeChats.filter(
+                  (chat) => !isPinned(chat.id)
+                );
+
+                const groupedChats = groupChatsByDate(unpinnedChats);
+
+                const renderChatItem = (chat: Chat) => (
+                  <ChatItem
+                    chat={chat}
+                    isActive={chat.id === id}
+                    isArchived={isArchived(chat.id)}
+                    isPinned={isPinned(chat.id)}
+                    key={chat.id}
+                    onDelete={(chatId) => {
+                      setDeleteId(chatId);
+                      setShowDeleteDialog(true);
+                    }}
+                    onToggleArchive={toggleArchive}
+                    onTogglePin={togglePin}
+                    setOpenMobile={setOpenMobile}
+                  />
+                );
 
                 return (
                   <div className="flex flex-col gap-6">
+                    {/* Pinned section - always at top */}
+                    {pinnedChats.length > 0 && (
+                      <div>
+                        <div className="flex items-center gap-1 px-2 py-1 text-sidebar-foreground/50 text-xs">
+                          <Pin className="h-3 w-3" />
+                          <span>مثبت</span>
+                        </div>
+                        {pinnedChats.map(renderChatItem)}
+                      </div>
+                    )}
+
                     {groupedChats.today.length > 0 && (
                       <div>
                         <div className="px-2 py-1 text-sidebar-foreground/50 text-xs">
-                          Today
+                          اليوم
                         </div>
-                        {groupedChats.today.map((chat) => (
-                          <ChatItem
-                            chat={chat}
-                            isActive={chat.id === id}
-                            key={chat.id}
-                            onDelete={(chatId) => {
-                              setDeleteId(chatId);
-                              setShowDeleteDialog(true);
-                            }}
-                            setOpenMobile={setOpenMobile}
-                          />
-                        ))}
+                        {groupedChats.today.map(renderChatItem)}
                       </div>
                     )}
 
                     {groupedChats.yesterday.length > 0 && (
                       <div>
                         <div className="px-2 py-1 text-sidebar-foreground/50 text-xs">
-                          Yesterday
+                          أمس
                         </div>
-                        {groupedChats.yesterday.map((chat) => (
-                          <ChatItem
-                            chat={chat}
-                            isActive={chat.id === id}
-                            key={chat.id}
-                            onDelete={(chatId) => {
-                              setDeleteId(chatId);
-                              setShowDeleteDialog(true);
-                            }}
-                            setOpenMobile={setOpenMobile}
-                          />
-                        ))}
+                        {groupedChats.yesterday.map(renderChatItem)}
                       </div>
                     )}
 
                     {groupedChats.lastWeek.length > 0 && (
                       <div>
                         <div className="px-2 py-1 text-sidebar-foreground/50 text-xs">
-                          Last 7 days
+                          آخر ٧ أيام
                         </div>
-                        {groupedChats.lastWeek.map((chat) => (
-                          <ChatItem
-                            chat={chat}
-                            isActive={chat.id === id}
-                            key={chat.id}
-                            onDelete={(chatId) => {
-                              setDeleteId(chatId);
-                              setShowDeleteDialog(true);
-                            }}
-                            setOpenMobile={setOpenMobile}
-                          />
-                        ))}
+                        {groupedChats.lastWeek.map(renderChatItem)}
                       </div>
                     )}
 
                     {groupedChats.lastMonth.length > 0 && (
                       <div>
                         <div className="px-2 py-1 text-sidebar-foreground/50 text-xs">
-                          Last 30 days
+                          آخر ٣٠ يوم
                         </div>
-                        {groupedChats.lastMonth.map((chat) => (
-                          <ChatItem
-                            chat={chat}
-                            isActive={chat.id === id}
-                            key={chat.id}
-                            onDelete={(chatId) => {
-                              setDeleteId(chatId);
-                              setShowDeleteDialog(true);
-                            }}
-                            setOpenMobile={setOpenMobile}
-                          />
-                        ))}
+                        {groupedChats.lastMonth.map(renderChatItem)}
                       </div>
                     )}
 
                     {groupedChats.older.length > 0 && (
                       <div>
                         <div className="px-2 py-1 text-sidebar-foreground/50 text-xs">
-                          Older than last month
+                          أقدم من شهر
                         </div>
-                        {groupedChats.older.map((chat) => (
-                          <ChatItem
-                            chat={chat}
-                            isActive={chat.id === id}
-                            key={chat.id}
-                            onDelete={(chatId) => {
-                              setDeleteId(chatId);
-                              setShowDeleteDialog(true);
-                            }}
-                            setOpenMobile={setOpenMobile}
-                          />
-                        ))}
+                        {groupedChats.older.map(renderChatItem)}
                       </div>
                     )}
                   </div>
@@ -341,14 +334,14 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 
           {hasReachedEnd ? (
             <div className="mt-8 flex w-full flex-row items-center justify-center gap-2 px-2 text-sm text-zinc-500">
-              You have reached the end of your chat history.
+              وصلت لنهاية سجل محادثاتك.
             </div>
           ) : (
             <div className="mt-8 flex flex-row items-center gap-2 p-2 text-zinc-500 dark:text-zinc-400">
               <div className="animate-spin">
                 <LoaderIcon />
               </div>
-              <div>Loading Chats...</div>
+              <div>جاري تحميل المحادثات...</div>
             </div>
           )}
         </SidebarGroupContent>
@@ -357,16 +350,15 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
       <AlertDialog onOpenChange={setShowDeleteDialog} open={showDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogTitle>هل أنت متأكد؟</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete your
-              chat and remove it from our servers.
+              لا يمكن التراجع عن هذا الإجراء. سيتم حذف المحادثة نهائياً من خوادمنا.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>إلغاء</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete}>
-              Continue
+              حذف
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -75,7 +75,34 @@ export class ChatSDKError extends Error {
   }
 }
 
-export function getMessageByErrorCode(errorCode: ErrorCode): string {
+// Arabic error messages
+const arabicMessages: Record<string, string> = {
+  "bad_request:api": "تعذر معالجة الطلب. يرجى التحقق من المدخلات والمحاولة مرة أخرى.",
+  "bad_request:activate_gateway": "حكمو غير متاح مؤقتاً. يرجى المحاولة لاحقاً.",
+  "unauthorized:auth": "يجب تسجيل الدخول للمتابعة.",
+  "forbidden:auth": "حسابك لا يملك صلاحية الوصول لهذه الميزة.",
+  "rate_limit:chat": "لقد تجاوزت الحد الأقصى للرسائل اليومية. يرجى المحاولة لاحقاً.",
+  "not_found:chat": "المحادثة غير موجودة.",
+  "forbidden:chat": "هذه المحادثة تخص مستخدماً آخر.",
+  "unauthorized:chat": "يجب تسجيل الدخول لعرض هذه المحادثة.",
+  "offline:chat": "تعذر إرسال رسالتك. يرجى التحقق من اتصالك بالإنترنت.",
+  "not_found:document": "المستند غير موجود.",
+  "forbidden:document": "هذا المستند يخص مستخدماً آخر.",
+  "unauthorized:document": "يجب تسجيل الدخول لعرض هذا المستند.",
+  "bad_request:document": "طلب إنشاء أو تحديث المستند غير صالح.",
+  database: "حدث خطأ في قاعدة البيانات.",
+  default: "حدث خطأ. يرجى المحاولة مرة أخرى.",
+};
+
+export function getMessageByErrorCode(errorCode: ErrorCode, locale: "ar" | "en" = "ar"): string {
+  if (locale === "ar") {
+    if (errorCode.includes("database")) {
+      return arabicMessages.database;
+    }
+    return arabicMessages[errorCode] || arabicMessages.default;
+  }
+
+  // English fallback
   if (errorCode.includes("database")) {
     return "An error occurred while executing a database query.";
   }

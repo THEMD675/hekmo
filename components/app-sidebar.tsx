@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { useSWRConfig } from "swr";
 import { unstable_serialize } from "swr/infinite";
 import { PlusIcon, TrashIcon } from "@/components/icons";
+import { KeyboardShortcuts } from "@/components/keyboard-shortcuts";
 import {
   getChatHistoryPaginationKey,
   SidebarHistory,
@@ -119,7 +120,12 @@ export function AppSidebar({ user }: { user: User | undefined }) {
         <SidebarContent>
           <SidebarHistory user={user} />
         </SidebarContent>
-        <SidebarFooter>{user && <SidebarUserNav user={user} />}</SidebarFooter>
+        <SidebarFooter>
+          <div className="flex items-center justify-between px-2">
+            <KeyboardShortcuts />
+            {user && <SidebarUserNav user={user} />}
+          </div>
+        </SidebarFooter>
       </Sidebar>
 
       <AlertDialog

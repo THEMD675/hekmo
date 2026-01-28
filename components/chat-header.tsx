@@ -1,66 +1,116 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { memo } from "react";
-import { useWindowSize } from "usehooks-ts";
-import { SidebarToggle } from "@/components/sidebar-toggle";
+import { ArrowRight, Edit2, Check, X, MoreHorizontal, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { PlusIcon } from "./icons";
-import { useSidebar } from "./ui/sidebar";
-import { VisibilitySelector, type VisibilityType } from "./visibility-selector";
+import { Input } from "@/components/ui/input";
+import { ModelSelector } from "@/components/model-selector";
+import { SystemPromptEditor } from "@/components/system-prompt-editor";
+import { ShareChatDialog } from "@/components/share-chat-dialog";
+import { ChatActions } from "@/components/chat-actions";
+import { cn } from "@/lib/utils";
 
-function PureChatHeader({
-  chatId,
-  selectedVisibilityType,
-  isReadonly,
-}: {
+interface ChatHeaderProps {
   chatId: string;
-  selectedVisibilityType: VisibilityType;
-  isReadonly: boolean;
-}) {
-  const router = useRouter();
-  const { open } = useSidebar();
+  title?: string;
+  selectedModel: string;
+  onModelChange: (model: string) => void;
+  onTitleChange?: (title: string) => void;
+  className?: string;
+}
 
-  const { width: windowWidth } = useWindowSize();
+export function ChatHeader({
+  chatId,
+  title = "محادثة جديدة",
+  selectedModel,
+  onModelChange,
+  onTitleChange,
+  className,
+}: ChatHeaderProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTitle, setEditedTitle] = useState(title);
+
+  const handleSaveTitle = () => {
+    if (editedTitle.trim()) {
+      onTitleChange?.(editedTitle.trim());
+    }
+    setIsEditing(false);
+  };
+
+  const handleCancelEdit = () => {
+    setEditedTitle(title);
+    setIsEditing(false);
+  };
 
   return (
-    <header className="sticky top-0 flex items-center gap-2 bg-background px-2 py-1.5 md:px-2">
-      <SidebarToggle />
-
-      {(!open || windowWidth < 768) && (
-        <Button
-          className="order-2 me-auto h-8 px-2 md:order-1 md:me-0 md:h-fit md:px-2"
-          onClick={() => {
-            router.push("/");
-            router.refresh();
-          }}
-          variant="outline"
-        >
-          <PlusIcon />
-          <span className="md:sr-only">محادثة جديدة</span>
+    <header
+      className={cn(
+        "flex items-center justify-between gap-4 px-4 py-3 border-b bg-background/95 backdrop-blur",
+        className
+      )}
+    >
+      {/* Left side - Back button on mobile */}
+      <div className="flex items-center gap-2">
+        <Button asChild className="md:hidden" size="icon" variant="ghost">
+          <Link href="/">
+            <ArrowRight className="h-5 w-5" />
+          </Link>
         </Button>
-      )}
 
-      {!isReadonly && (
-        <VisibilitySelector
-          chatId={chatId}
-          className="order-1 md:order-2"
-          selectedVisibilityType={selectedVisibilityType}
+        {/* Title */}
+        {isEditing ? (
+          <div className="flex items-center gap-2">
+            <Input
+              autoFocus
+              className="h-8 w-48"
+              onChange={(e) => setEditedTitle(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSaveTitle();
+                if (e.key === "Escape") handleCancelEdit();
+              }}
+              value={editedTitle}
+            />
+            <Button onClick={handleSaveTitle} size="icon" variant="ghost">
+              <Check className="h-4 w-4" />
+            </Button>
+            <Button onClick={handleCancelEdit} size="icon" variant="ghost">
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        ) : (
+          <button
+            className="flex items-center gap-2 text-sm font-medium hover:text-muted-foreground transition-colors"
+            onClick={() => setIsEditing(true)}
+            type="button"
+          >
+            <span className="truncate max-w-[200px]">{title}</span>
+            <Edit2 className="h-3 w-3 opacity-50" />
+          </button>
+        )}
+      </div>
+
+      {/* Right side - Actions */}
+      <div className="flex items-center gap-2">
+        <ModelSelector
+          className="hidden sm:flex"
+          onSelect={onModelChange}
+          selectedModel={selectedModel}
         />
-      )}
 
-      <span className="order-3 hidden text-sm font-semibold text-primary/70 md:ml-auto md:flex md:h-fit">
-        hekmo.ai
-      </span>
+        <SystemPromptEditor chatId={chatId} />
+
+        <ShareChatDialog
+          chatId={chatId}
+          trigger={
+            <Button size="icon" variant="ghost">
+              <Share2 className="h-5 w-5" />
+            </Button>
+          }
+        />
+
+        <ChatActions chatId={chatId} chatTitle={title} />
+      </div>
     </header>
   );
 }
-
-export const ChatHeader = memo(PureChatHeader, (prevProps, nextProps) => {
-  return (
-    prevProps.chatId === nextProps.chatId &&
-    prevProps.selectedVisibilityType === nextProps.selectedVisibilityType &&
-    prevProps.isReadonly === nextProps.isReadonly
-  );
-});

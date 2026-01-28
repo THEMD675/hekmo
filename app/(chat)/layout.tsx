@@ -2,7 +2,9 @@ import { cookies } from "next/headers";
 import Script from "next/script";
 import { Suspense } from "react";
 import { AppSidebar } from "@/components/app-sidebar";
+import { CommandPalette } from "@/components/command-palette";
 import { DataStreamProvider } from "@/components/data-stream-provider";
+import { Onboarding } from "@/components/onboarding";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { auth } from "../(auth)/auth";
 
@@ -17,6 +19,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Suspense fallback={<div className="flex h-dvh" />}>
           <SidebarWrapper>{children}</SidebarWrapper>
         </Suspense>
+        <CommandPalette />
+        <Onboarding />
       </DataStreamProvider>
     </>
   );

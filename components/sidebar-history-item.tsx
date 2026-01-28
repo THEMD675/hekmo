@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { memo } from "react";
+import { Pin, Archive, FolderPlus } from "lucide-react";
 import { useChatVisibility } from "@/hooks/use-chat-visibility";
 import type { Chat } from "@/lib/db/schema";
+import { cn } from "@/lib/utils";
 import {
   CheckCircleFillIcon,
   GlobeIcon,
@@ -15,6 +17,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuPortal,
+  DropdownMenuSeparator,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -31,11 +34,19 @@ const PureChatItem = ({
   isActive,
   onDelete,
   setOpenMobile,
+  isPinned,
+  onTogglePin,
+  isArchived,
+  onToggleArchive,
 }: {
   chat: Chat;
   isActive: boolean;
   onDelete: (chatId: string) => void;
   setOpenMobile: (open: boolean) => void;
+  isPinned?: boolean;
+  onTogglePin?: (chatId: string) => void;
+  isArchived?: boolean;
+  onToggleArchive?: (chatId: string) => void;
 }) => {
   const { visibilityType, setVisibilityType } = useChatVisibility({
     chatId: chat.id,
@@ -45,8 +56,17 @@ const PureChatItem = ({
   return (
     <SidebarMenuItem>
       <SidebarMenuButton asChild isActive={isActive}>
-        <Link href={`/chat/${chat.id}`} onClick={() => setOpenMobile(false)}>
-          <span>{chat.title}</span>
+        <Link
+          className="flex items-center gap-2"
+          href={`/chat/${chat.id}`}
+          onClick={() => setOpenMobile(false)}
+        >
+          {isPinned && (
+            <Pin className="h-3 w-3 shrink-0 text-primary" />
+          )}
+          <span className={cn("truncate", isPinned && "font-medium")}>
+            {chat.title}
+          </span>
         </Link>
       </SidebarMenuButton>
 
@@ -57,15 +77,40 @@ const PureChatItem = ({
             showOnHover={!isActive}
           >
             <MoreHorizontalIcon />
-            <span className="sr-only">More</span>
+            <span className="sr-only">المزيد</span>
           </SidebarMenuAction>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent align="end" side="bottom">
+          {/* Pin action */}
+          {onTogglePin && (
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => onTogglePin(chat.id)}
+            >
+              <Pin className={cn("h-4 w-4", isPinned && "text-primary")} />
+              <span>{isPinned ? "إلغاء التثبيت" : "تثبيت"}</span>
+            </DropdownMenuItem>
+          )}
+
+          {/* Archive action */}
+          {onToggleArchive && (
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => onToggleArchive(chat.id)}
+            >
+              <Archive className="h-4 w-4" />
+              <span>{isArchived ? "إلغاء الأرشفة" : "أرشفة"}</span>
+            </DropdownMenuItem>
+          )}
+
+          <DropdownMenuSeparator />
+
+          {/* Share submenu */}
           <DropdownMenuSub>
             <DropdownMenuSubTrigger className="cursor-pointer">
               <ShareIcon />
-              <span>Share</span>
+              <span>مشاركة</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
@@ -77,7 +122,7 @@ const PureChatItem = ({
                 >
                   <div className="flex flex-row items-center gap-2">
                     <LockIcon size={12} />
-                    <span>Private</span>
+                    <span>خاص</span>
                   </div>
                   {visibilityType === "private" ? (
                     <CheckCircleFillIcon />
@@ -91,7 +136,7 @@ const PureChatItem = ({
                 >
                   <div className="flex flex-row items-center gap-2">
                     <GlobeIcon />
-                    <span>Public</span>
+                    <span>عام</span>
                   </div>
                   {visibilityType === "public" ? <CheckCircleFillIcon /> : null}
                 </DropdownMenuItem>
@@ -99,12 +144,14 @@ const PureChatItem = ({
             </DropdownMenuPortal>
           </DropdownMenuSub>
 
+          <DropdownMenuSeparator />
+
           <DropdownMenuItem
             className="cursor-pointer text-destructive focus:bg-destructive/15 focus:text-destructive dark:text-red-500"
             onSelect={() => onDelete(chat.id)}
           >
             <TrashIcon />
-            <span>Delete</span>
+            <span>حذف</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -114,6 +161,12 @@ const PureChatItem = ({
 
 export const ChatItem = memo(PureChatItem, (prevProps, nextProps) => {
   if (prevProps.isActive !== nextProps.isActive) {
+    return false;
+  }
+  if (prevProps.isPinned !== nextProps.isPinned) {
+    return false;
+  }
+  if (prevProps.isArchived !== nextProps.isArchived) {
     return false;
   }
   return true;

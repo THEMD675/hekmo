@@ -1,35 +1,26 @@
-import type { ComponentProps } from "react";
+"use client";
 
-import { type SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
-import { SidebarLeftIcon } from "./icons";
-import { Button } from "./ui/button";
+import { Menu, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-export function SidebarToggle({
-  className,
-}: ComponentProps<typeof SidebarTrigger>) {
-  const { toggleSidebar } = useSidebar();
+interface SidebarToggleProps {
+  isOpen: boolean;
+  onToggle: () => void;
+}
 
+export function SidebarToggle({ isOpen, onToggle }: SidebarToggleProps) {
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button
-          className={cn("h-8 px-2 md:h-fit md:px-2", className)}
-          data-testid="sidebar-toggle-button"
-          onClick={toggleSidebar}
-          variant="outline"
-        >
-          <SidebarLeftIcon size={16} />
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent align="start" className="hidden md:block">
-        Toggle Sidebar
-      </TooltipContent>
-    </Tooltip>
+    <Button
+      className="fixed top-4 right-4 z-50 md:hidden"
+      onClick={onToggle}
+      size="icon"
+      variant="outline"
+    >
+      {isOpen ? (
+        <X className="h-5 w-5" />
+      ) : (
+        <Menu className="h-5 w-5" />
+      )}
+    </Button>
   );
 }

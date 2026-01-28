@@ -1,13 +1,81 @@
 import type { NextAuthConfig } from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
+import GitHub from "next-auth/providers/github";
+import Apple from "next-auth/providers/apple";
 
-export const authConfig = {
+export const authConfig: NextAuthConfig = {
   pages: {
     signIn: "/login",
     newUser: "/",
   },
   providers: [
-    // added later in auth.ts since it requires bcrypt which is only compatible with Node.js
-    // while this file is also used in non-Node.js environments
+    // OAuth Providers
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
+    }),
+    GitHub({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
+    }),
+    Apple({
+      clientId: process.env.APPLE_CLIENT_ID,
+      clientSecret: process.env.APPLE_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true,
+    }),
+    // Credentials provider for email/password
+    Credentials({
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        // This is handled by the main auth.ts file
+        return null;
+      },
+    }),
   ],
-  callbacks: {},
-} satisfies NextAuthConfig;
+  callbacks: {
+    authorized({ auth, request: { nextUrl } }) {
+      const isLoggedIn = !!auth?.user;
+      const isOnChat = nextUrl.pathname.startsWith("/chat");
+      const isOnRegister = nextUrl.pathname.startsWith("/register");
+      const isOnLogin = nextUrl.pathname.startsWith("/login");
+      const isOnPublic = ["/", "/pricing", "/privacy", "/terms"].includes(nextUrl.pathname);
+
+      if (isOnPublic) {
+        return true;
+      }
+
+      if (isLoggedIn && (isOnLogin || isOnRegister)) {
+        return Response.redirect(new URL("/", nextUrl as unknown as URL));
+      }
+
+      if (isOnChat && !isLoggedIn) {
+        return false;
+      }
+
+      return true;
+    },
+    jwt({ token, user, account }) {
+      if (user) {
+        token.id = user.id;
+        token.type = (user as { type?: string }).type || "regular";
+      }
+      if (account) {
+        token.provider = account.provider;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+        (session.user as { type?: string }).type = token.type as string;
+      }
+      return session;
+    },
+  },
+};

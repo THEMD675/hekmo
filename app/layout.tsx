@@ -5,11 +5,74 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
+import { CookieConsent } from "@/components/cookie-consent";
+import { PWAInstallPrompt } from "@/components/pwa-install-prompt";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://hekmo.ai"),
-  title: "Hekmo — مدربك الصحي الذكي",
-  description: "مدربك الصحي الذكي — النوم، التوتر، الاستشفاء، والبروتوكولات الصحية مدعومة بالذكاء الاصطناعي.",
+  title: {
+    default: "Hekmo — مدربك الصحي الذكي",
+    template: "%s | Hekmo",
+  },
+  description: "مدربك الصحي الذكي — النوم، التوتر، الاستشفاء، والبروتوكولات الصحية مدعومة بالذكاء الاصطناعي. حلول صحية مخصصة للسعودية.",
+  keywords: [
+    "مدرب صحي",
+    "ذكاء اصطناعي",
+    "صحة",
+    "نوم",
+    "توتر",
+    "استشفاء",
+    "السعودية",
+    "health coach",
+    "AI",
+    "wellness",
+    "Hekmo",
+    "حكمو",
+  ],
+  authors: [{ name: "Hekmo", url: "https://hekmo.ai" }],
+  creator: "Hekmo",
+  publisher: "Hekmo",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "ar_SA",
+    url: "https://hekmo.ai",
+    siteName: "Hekmo",
+    title: "Hekmo — مدربك الصحي الذكي",
+    description: "مدربك الصحي الذكي — النوم، التوتر، الاستشفاء، والبروتوكولات الصحية مدعومة بالذكاء الاصطناعي.",
+    images: [
+      {
+        url: "/images/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Hekmo — مدربك الصحي الذكي",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Hekmo — مدربك الصحي الذكي",
+    description: "مدربك الصحي الذكي — حلول صحية مخصصة للسعودية مدعومة بالذكاء الاصطناعي.",
+    images: ["/images/og-image.png"],
+    creator: "@hekmo_ai",
+  },
+  alternates: {
+    canonical: "https://hekmo.ai",
+    languages: {
+      "ar-SA": "https://hekmo.ai",
+    },
+  },
+  category: "health",
 };
 
 export const viewport = {
@@ -72,6 +135,34 @@ export default function RootLayout({
             __html: THEME_COLOR_SCRIPT,
           }}
         />
+        <script
+          type="application/ld+json"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: "JSON-LD structured data"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              name: "Hekmo",
+              alternateName: "حكمو",
+              description: "مدربك الصحي الذكي — النوم، التوتر، الاستشفاء، والبروتوكولات الصحية مدعومة بالذكاء الاصطناعي.",
+              url: "https://hekmo.ai",
+              applicationCategory: "HealthApplication",
+              operatingSystem: "Web",
+              offers: {
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "SAR",
+              },
+              author: {
+                "@type": "Organization",
+                name: "Hekmo",
+                url: "https://hekmo.ai",
+              },
+              inLanguage: ["ar", "en"],
+              isAccessibleForFree: true,
+            }),
+          }}
+        />
       </head>
       <body className="antialiased">
         <ThemeProvider
@@ -82,6 +173,8 @@ export default function RootLayout({
         >
           <Toaster position="top-center" />
           <SessionProvider>{children}</SessionProvider>
+          <CookieConsent />
+          <PWAInstallPrompt />
         </ThemeProvider>
       </body>
     </html>

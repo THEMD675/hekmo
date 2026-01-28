@@ -1,189 +1,150 @@
-import equal from "fast-deep-equal";
-import { memo } from "react";
+"use client";
+
+import { useState } from "react";
+import { Copy, Check, Volume2, ThumbsUp, ThumbsDown, MoreHorizontal, RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { useSWRConfig } from "swr";
-import { useCopyToClipboard } from "usehooks-ts";
-import type { Vote } from "@/lib/db/schema";
-import type { ChatMessage } from "@/lib/types";
-import { Action, Actions } from "./elements/actions";
-import { CopyIcon, PencilEditIcon, ThumbDownIcon, ThumbUpIcon } from "./icons";
 
-export function PureMessageActions({
-  chatId,
-  message,
-  vote,
-  isLoading,
-  setMode,
-}: {
-  chatId: string;
-  message: ChatMessage;
-  vote: Vote | undefined;
-  isLoading: boolean;
-  setMode?: (mode: "view" | "edit") => void;
-}) {
-  const { mutate } = useSWRConfig();
-  const [_, copyToClipboard] = useCopyToClipboard();
+interface MessageActionsProps {
+  content: string;
+  messageId: string;
+  role: "user" | "assistant";
+  onRegenerate?: () => void;
+  className?: string;
+}
 
-  if (isLoading) {
-    return null;
-  }
-
-  const textFromParts = message.parts
-    ?.filter((part) => part.type === "text")
-    .map((part) => part.text)
-    .join("\n")
-    .trim();
+export function MessageActions({
+  content,
+  messageId,
+  role,
+  onRegenerate,
+  className,
+}: MessageActionsProps) {
+  const [copied, setCopied] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
+  const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
 
   const handleCopy = async () => {
-    if (!textFromParts) {
-      toast.error("There's no text to copy!");
+    try {
+      await navigator.clipboard.writeText(content);
+      setCopied(true);
+      toast.success("تم النسخ");
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error("فشل النسخ");
+    }
+  };
+
+  const handleSpeak = () => {
+    if (speaking) {
+      window.speechSynthesis.cancel();
+      setSpeaking(false);
       return;
     }
 
-    await copyToClipboard(textFromParts);
-    toast.success("Copied to clipboard!");
+    const utterance = new SpeechSynthesisUtterance(content);
+    utterance.lang = "ar-SA";
+    utterance.onend = () => setSpeaking(false);
+    utterance.onerror = () => setSpeaking(false);
+
+    window.speechSynthesis.speak(utterance);
+    setSpeaking(true);
   };
 
-  // User messages get edit (on hover) and copy actions
-  if (message.role === "user") {
-    return (
-      <Actions className="-mr-0.5 justify-end">
-        <div className="relative">
-          {setMode && (
-            <Action
-              className="absolute top-0 -left-10 opacity-0 transition-opacity focus-visible:opacity-100 group-hover/message:opacity-100"
-              data-testid="message-edit-button"
-              onClick={() => setMode("edit")}
-              tooltip="Edit"
-            >
-              <PencilEditIcon />
-            </Action>
-          )}
-          <Action onClick={handleCopy} tooltip="Copy">
-            <CopyIcon />
-          </Action>
-        </div>
-      </Actions>
-    );
-  }
+  const handleFeedback = async (type: "up" | "down") => {
+    setFeedback(type);
+    try {
+      await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messageId,
+          feedbackType: type === "up" ? "helpful" : "not-helpful",
+        }),
+      });
+    } catch {
+      // Silent fail
+    }
+  };
 
   return (
-    <Actions className="-ml-0.5">
-      <Action onClick={handleCopy} tooltip="Copy">
-        <CopyIcon />
-      </Action>
-
-      <Action
-        data-testid="message-upvote"
-        disabled={vote?.isUpvoted}
-        onClick={() => {
-          const upvote = fetch("/api/vote", {
-            method: "PATCH",
-            body: JSON.stringify({
-              chatId,
-              messageId: message.id,
-              type: "up",
-            }),
-          });
-
-          toast.promise(upvote, {
-            loading: "Upvoting Response...",
-            success: () => {
-              mutate<Vote[]>(
-                `/api/vote?chatId=${chatId}`,
-                (currentVotes) => {
-                  if (!currentVotes) {
-                    return [];
-                  }
-
-                  const votesWithoutCurrent = currentVotes.filter(
-                    (currentVote) => currentVote.messageId !== message.id
-                  );
-
-                  return [
-                    ...votesWithoutCurrent,
-                    {
-                      chatId,
-                      messageId: message.id,
-                      isUpvoted: true,
-                    },
-                  ];
-                },
-                { revalidate: false }
-              );
-
-              return "Upvoted Response!";
-            },
-            error: "Failed to upvote response.",
-          });
-        }}
-        tooltip="Upvote Response"
+    <div
+      className={cn(
+        "flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity",
+        className
+      )}
+    >
+      {/* Copy */}
+      <Button
+        onClick={handleCopy}
+        size="icon"
+        title="نسخ"
+        variant="ghost"
       >
-        <ThumbUpIcon />
-      </Action>
+        {copied ? (
+          <Check className="h-4 w-4 text-green-500" />
+        ) : (
+          <Copy className="h-4 w-4" />
+        )}
+      </Button>
 
-      <Action
-        data-testid="message-downvote"
-        disabled={vote && !vote.isUpvoted}
-        onClick={() => {
-          const downvote = fetch("/api/vote", {
-            method: "PATCH",
-            body: JSON.stringify({
-              chatId,
-              messageId: message.id,
-              type: "down",
-            }),
-          });
+      {/* Speak (only for assistant messages) */}
+      {role === "assistant" && (
+        <Button
+          className={cn(speaking && "text-primary")}
+          onClick={handleSpeak}
+          size="icon"
+          title={speaking ? "إيقاف" : "استماع"}
+          variant="ghost"
+        >
+          <Volume2 className="h-4 w-4" />
+        </Button>
+      )}
 
-          toast.promise(downvote, {
-            loading: "Downvoting Response...",
-            success: () => {
-              mutate<Vote[]>(
-                `/api/vote?chatId=${chatId}`,
-                (currentVotes) => {
-                  if (!currentVotes) {
-                    return [];
-                  }
+      {/* Feedback (only for assistant messages) */}
+      {role === "assistant" && (
+        <>
+          <Button
+            className={cn(feedback === "up" && "text-green-500")}
+            disabled={feedback !== null}
+            onClick={() => handleFeedback("up")}
+            size="icon"
+            title="مفيد"
+            variant="ghost"
+          >
+            <ThumbsUp className="h-4 w-4" />
+          </Button>
+          <Button
+            className={cn(feedback === "down" && "text-red-500")}
+            disabled={feedback !== null}
+            onClick={() => handleFeedback("down")}
+            size="icon"
+            title="غير مفيد"
+            variant="ghost"
+          >
+            <ThumbsDown className="h-4 w-4" />
+          </Button>
+        </>
+      )}
 
-                  const votesWithoutCurrent = currentVotes.filter(
-                    (currentVote) => currentVote.messageId !== message.id
-                  );
-
-                  return [
-                    ...votesWithoutCurrent,
-                    {
-                      chatId,
-                      messageId: message.id,
-                      isUpvoted: false,
-                    },
-                  ];
-                },
-                { revalidate: false }
-              );
-
-              return "Downvoted Response!";
-            },
-            error: "Failed to downvote response.",
-          });
-        }}
-        tooltip="Downvote Response"
-      >
-        <ThumbDownIcon />
-      </Action>
-    </Actions>
+      {/* Regenerate (only for last assistant message) */}
+      {role === "assistant" && onRegenerate && (
+        <Button
+          onClick={onRegenerate}
+          size="icon"
+          title="إعادة التوليد"
+          variant="ghost"
+        >
+          <RefreshCw className="h-4 w-4" />
+        </Button>
+      )}
+    </div>
   );
 }
-
-export const MessageActions = memo(
-  PureMessageActions,
-  (prevProps, nextProps) => {
-    if (!equal(prevProps.vote, nextProps.vote)) {
-      return false;
-    }
-    if (prevProps.isLoading !== nextProps.isLoading) {
-      return false;
-    }
-
-    return true;
-  }
-);

@@ -24,7 +24,7 @@ import {
   PromptInputToolbar,
   PromptInputTools,
 } from "./elements/prompt-input";
-import { ArrowUpIcon, PaperclipIcon, StopIcon } from "./icons";
+import { ArrowUpIcon, MicrophoneIcon, PaperclipIcon, StopIcon } from "./icons";
 import { PreviewAttachment } from "./preview-attachment";
 import { SuggestedActions } from "./suggested-actions";
 import { Button } from "./ui/button";
@@ -272,8 +272,42 @@ function PureMultimodalInput({
     return () => textarea.removeEventListener("paste", handlePaste);
   }, [handlePaste]);
 
+  // Mode selector state - inspired by Perplexity's Search/Deep/Create pattern
+  const [responseMode, setResponseMode] = useLocalStorage<"quick" | "deep" | "action">(
+    "hekmo-response-mode",
+    "quick"
+  );
+
+  const RESPONSE_MODES = [
+    { id: "quick" as const, label: "سريع", description: "إجابة مختصرة" },
+    { id: "deep" as const, label: "تحليل", description: "تحليل شامل" },
+    { id: "action" as const, label: "خطة", description: "خطوات عملية" },
+  ];
+
   return (
     <div className={cn("relative flex w-full flex-col gap-4", className)}>
+      {/* Mode selector - Perplexity pattern */}
+      {messages.length === 0 && (
+        <div className="flex items-center justify-center gap-1 rounded-full bg-muted/50 p-1 w-fit mx-auto">
+          {RESPONSE_MODES.map((mode) => (
+            <button
+              className={cn(
+                "rounded-full px-3 py-1 text-xs font-medium transition-all",
+                responseMode === mode.id
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
+              )}
+              key={mode.id}
+              onClick={() => setResponseMode(mode.id)}
+              title={mode.description}
+              type="button"
+            >
+              {mode.label}
+            </button>
+          ))}
+        </div>
+      )}
+
       {messages.length === 0 &&
         attachments.length === 0 &&
         uploadQueue.length === 0 && (
@@ -359,6 +393,12 @@ function PureMultimodalInput({
             <AttachmentsButton
               fileInputRef={fileInputRef}
               selectedModelId={selectedModelId}
+              status={status}
+            />
+            <VoiceButton
+              onTranscript={(text) => {
+                setInput((prev) => prev + (prev ? " " : "") + text);
+              }}
               status={status}
             />
           </PromptInputTools>
@@ -457,3 +497,161 @@ function PureStopButton({
 }
 
 const StopButton = memo(PureStopButton);
+
+// Speech Recognition Types
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  start(): void;
+  stop(): void;
+  onstart: ((this: SpeechRecognition, ev: Event) => void) | null;
+  onend: ((this: SpeechRecognition, ev: Event) => void) | null;
+  onresult:
+    | ((this: SpeechRecognition, ev: SpeechRecognitionEvent) => void)
+    | null;
+  onerror:
+    | ((this: SpeechRecognition, ev: SpeechRecognitionErrorEvent) => void)
+    | null;
+}
+
+interface SpeechRecognitionEvent extends Event {
+  results: SpeechRecognitionResultList;
+  resultIndex: number;
+}
+
+interface SpeechRecognitionResultList {
+  readonly length: number;
+  item(index: number): SpeechRecognitionResult;
+  [index: number]: SpeechRecognitionResult;
+}
+
+interface SpeechRecognitionResult {
+  readonly length: number;
+  readonly isFinal: boolean;
+  item(index: number): SpeechRecognitionAlternative;
+  [index: number]: SpeechRecognitionAlternative;
+}
+
+interface SpeechRecognitionAlternative {
+  readonly transcript: string;
+  readonly confidence: number;
+}
+
+interface SpeechRecognitionErrorEvent extends Event {
+  error: string;
+}
+
+declare global {
+  interface Window {
+    SpeechRecognition: new () => SpeechRecognition;
+    webkitSpeechRecognition: new () => SpeechRecognition;
+  }
+}
+
+function PureVoiceButton({
+  status,
+  onTranscript,
+}: {
+  status: UseChatHelpers<ChatMessage>["status"];
+  onTranscript: (text: string) => void;
+}) {
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
+
+  useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      ("SpeechRecognition" in window || "webkitSpeechRecognition" in window)
+    ) {
+      const SpeechRecognitionCtor =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognitionCtor();
+
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = "ar-SA"; // Arabic - Saudi Arabia
+
+      recognition.onstart = () => {
+        setIsListening(true);
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognition.onresult = (event) => {
+        let finalTranscript = "";
+
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const result = event.results[i];
+          if (result?.isFinal) {
+            finalTranscript += result[0]?.transcript ?? "";
+          }
+        }
+
+        if (finalTranscript) {
+          onTranscript(finalTranscript);
+        }
+      };
+
+      recognition.onerror = (event) => {
+        console.error("Speech recognition error:", event.error);
+        setIsListening(false);
+      };
+
+      recognitionRef.current = recognition;
+    }
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, [onTranscript]);
+
+  const toggleListening = useCallback(() => {
+    if (!recognitionRef.current) {
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current.stop();
+    } else {
+      recognitionRef.current.start();
+    }
+  }, [isListening]);
+
+  const isSupported =
+    typeof window !== "undefined" &&
+    ("SpeechRecognition" in window || "webkitSpeechRecognition" in window);
+
+  if (!isSupported) {
+    return null;
+  }
+
+  // Prominent voice button - inspired by Perplexity's design
+  return (
+    <Button
+      className={cn(
+        "flex h-9 items-center gap-1.5 rounded-xl px-3 text-sm font-medium transition-all",
+        isListening
+          ? "bg-red-500 text-white shadow-lg shadow-red-500/25 hover:bg-red-600"
+          : "bg-primary/10 text-primary hover:bg-primary/20"
+      )}
+      data-testid="voice-button"
+      disabled={status !== "ready"}
+      onClick={(event) => {
+        event.preventDefault();
+        toggleListening();
+      }}
+      type="button"
+      variant="ghost"
+    >
+      <MicrophoneIcon size={16} style={{ width: 16, height: 16 }} />
+      <span className="hidden sm:inline">{isListening ? "جاري..." : "تكلم"}</span>
+    </Button>
+  );
+}
+
+const VoiceButton = memo(PureVoiceButton);

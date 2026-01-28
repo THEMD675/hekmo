@@ -18,6 +18,17 @@ import { createDocument } from "@/lib/ai/tools/create-document";
 import { getWeather } from "@/lib/ai/tools/get-weather";
 import { requestSuggestions } from "@/lib/ai/tools/request-suggestions";
 import { updateDocument } from "@/lib/ai/tools/update-document";
+import { webSearchTool } from "@/lib/ai/tools/web-search";
+import { prayerTimesTool } from "@/lib/ai/tools/prayer-times";
+import { calculatorTool } from "@/lib/ai/tools/calculator";
+import { translateTool } from "@/lib/ai/tools/translate";
+import { urlSummarizerTool } from "@/lib/ai/tools/url-summarizer";
+import { quranHadithTool } from "@/lib/ai/tools/quran-hadith";
+import { youtubeSummarizerTool } from "@/lib/ai/tools/youtube-summarizer";
+import { imageGenerationTool } from "@/lib/ai/tools/image-generation";
+import { pdfReaderTool } from "@/lib/ai/tools/pdf-reader";
+import { grammarCheckerTool } from "@/lib/ai/tools/grammar-checker";
+import { codeSandboxTool } from "@/lib/ai/tools/code-sandbox";
 import { isProductionEnvironment } from "@/lib/constants";
 import {
   createStreamId,
@@ -154,6 +165,17 @@ export async function POST(request: Request) {
                 "createDocument",
                 "updateDocument",
                 "requestSuggestions",
+                "webSearch",
+                "prayerTimes",
+                "calculator",
+                "translate",
+                "urlSummarizer",
+                "quranHadith",
+                "youtubeSummarizer",
+                "imageGeneration",
+                "pdfReader",
+                "grammarChecker",
+                "codeSandbox",
               ],
           providerOptions: isReasoningModel
             ? {
@@ -167,6 +189,17 @@ export async function POST(request: Request) {
             createDocument: createDocument({ session, dataStream }),
             updateDocument: updateDocument({ session, dataStream }),
             requestSuggestions: requestSuggestions({ session, dataStream }),
+            webSearch: webSearchTool,
+            prayerTimes: prayerTimesTool,
+            calculator: calculatorTool,
+            translate: translateTool,
+            urlSummarizer: urlSummarizerTool,
+            quranHadith: quranHadithTool,
+            youtubeSummarizer: youtubeSummarizerTool,
+            imageGeneration: imageGenerationTool,
+            pdfReader: pdfReaderTool,
+            grammarChecker: grammarCheckerTool,
+            codeSandbox: codeSandboxTool,
           },
           experimental_telemetry: {
             isEnabled: isProductionEnvironment,
@@ -220,7 +253,7 @@ export async function POST(request: Request) {
           });
         }
       },
-      onError: () => "Oops, an error occurred!",
+      onError: () => "حدث خطأ. يرجى المحاولة مرة أخرى.",
     });
 
     return createUIMessageStreamResponse({

@@ -1,82 +1,50 @@
-import { cookies } from "next/headers";
-import { notFound, redirect } from "next/navigation";
-import { Suspense } from "react";
-
+import { notFound } from "next/navigation";
 import { auth } from "@/app/(auth)/auth";
-import { Chat } from "@/components/chat";
-import { DataStreamHandler } from "@/components/data-stream-handler";
-import { DEFAULT_CHAT_MODEL } from "@/lib/ai/models";
 import { getChatById, getMessagesByChatId } from "@/lib/db/queries";
-import { convertToUIMessages } from "@/lib/utils";
+import { Chat } from "@/components/chat";
 
-export default function Page(props: { params: Promise<{ id: string }> }) {
-  return (
-    <Suspense fallback={<div className="flex h-dvh" />}>
-      <ChatPage params={props.params} />
-    </Suspense>
-  );
+interface ChatPageProps {
+  params: Promise<{ id: string }>;
 }
 
-async function ChatPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function ChatPage({ params }: ChatPageProps) {
   const { id } = await params;
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    return notFound();
+  }
+
   const chat = await getChatById({ id });
 
   if (!chat) {
-    redirect("/");
+    return notFound();
   }
 
-  const session = await auth();
-
-  if (!session) {
-    redirect("/api/auth/guest");
+  // Verify ownership
+  if (chat.userId !== session.user.id) {
+    return notFound();
   }
 
-  if (chat.visibility === "private") {
-    if (!session.user) {
-      return notFound();
-    }
-
-    if (session.user.id !== chat.userId) {
-      return notFound();
-    }
-  }
-
-  const messagesFromDb = await getMessagesByChatId({
-    id,
-  });
-
-  const uiMessages = convertToUIMessages(messagesFromDb);
-
-  const cookieStore = await cookies();
-  const chatModelFromCookie = cookieStore.get("chat-model");
-
-  if (!chatModelFromCookie) {
-    return (
-      <>
-        <Chat
-          autoResume={true}
-          id={chat.id}
-          initialChatModel={DEFAULT_CHAT_MODEL}
-          initialMessages={uiMessages}
-          initialVisibilityType={chat.visibility}
-          isReadonly={session?.user?.id !== chat.userId}
-        />
-        <DataStreamHandler />
-      </>
-    );
-  }
+  const messages = await getMessagesByChatId({ id });
 
   return (
-    <>
-      <Chat
-        autoResume={true}
-        id={chat.id}
-        initialChatModel={chatModelFromCookie.value}
-        initialMessages={uiMessages}
-        initialVisibilityType={chat.visibility}
-        isReadonly={session?.user?.id !== chat.userId}
-      />
-      <DataStreamHandler />
-    </>
+    <Chat
+      id={id}
+      initialMessages={messages}
+      selectedChatModel={chat.model || "gpt-4o-mini"}
+      selectedVisibilityType={chat.visibility || "private"}
+      isReadonly={false}
+    />
   );
+}
+
+export async function generateMetadata({ params }: ChatPageProps) {
+  const { id } = await params;
+  const chat = await getChatById({ id });
+
+  return {
+    title: chat?.title || "محادثة - حكمو",
+    description: "محادثة ذكية مع حكمو",
+  };
 }
