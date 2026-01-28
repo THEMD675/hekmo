@@ -381,7 +381,7 @@ function PureMultimodalInput({
             maxHeight={200}
             minHeight={44}
             onChange={handleInput}
-            placeholder="اسأل Hekmo عن صحتك..."
+            placeholder="اسأل Hekmo أي شيء..."
             ref={textareaRef}
             rows={1}
             value={input}

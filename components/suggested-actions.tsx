@@ -2,7 +2,7 @@
 
 import type { UseChatHelpers } from "@ai-sdk/react";
 import { motion } from "framer-motion";
-import { Activity, Moon, Pill, Sunrise } from "lucide-react";
+import { Code, FileText, Lightbulb, PenTool } from "lucide-react";
 import { memo } from "react";
 import type { ChatMessage } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -14,31 +14,31 @@ type SuggestedActionsProps = {
   selectedVisibilityType: VisibilityType;
 };
 
-// Health-focused suggested actions - inspired by WHOOP/Oura patterns
+// General-purpose suggested actions - inspired by ChatGPT/Claude
 const SUGGESTED_ACTIONS = [
   {
-    icon: Sunrise,
-    title: "روتين الصباح",
-    prompt: "ابني لي روتين صباحي لطاقة عالية",
-    gradient: "from-amber-500 to-orange-500",
-  },
-  {
-    icon: Activity,
-    title: "تحليل الاستشفاء",
-    prompt: "نسبة استشفائي ٤٢٪ — وش أغير؟",
+    icon: Code,
+    title: "اكتب كود",
+    prompt: "اكتب لي كود بايثون لتحليل البيانات",
     gradient: "from-emerald-500 to-teal-500",
   },
   {
-    icon: Moon,
-    title: "تحسين النوم",
-    prompt: "عطني خطة لتحسين النوم العميق",
-    gradient: "from-indigo-500 to-purple-500",
+    icon: PenTool,
+    title: "ساعدني أكتب",
+    prompt: "ساعدني أكتب إيميل احترافي",
+    gradient: "from-violet-500 to-purple-500",
   },
   {
-    icon: Pill,
-    title: "المكملات",
-    prompt: "وش أفضل مكملات للطاقة والتركيز؟",
-    gradient: "from-rose-500 to-pink-500",
+    icon: Lightbulb,
+    title: "اشرح لي",
+    prompt: "اشرح لي الذكاء الاصطناعي بطريقة بسيطة",
+    gradient: "from-amber-500 to-orange-500",
+  },
+  {
+    icon: FileText,
+    title: "لخص محتوى",
+    prompt: "لخص لي هذا المقال في نقاط رئيسية",
+    gradient: "from-cyan-500 to-blue-500",
   },
 ];
 
