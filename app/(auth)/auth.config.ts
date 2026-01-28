@@ -63,7 +63,7 @@ export const authConfig: NextAuthConfig = {
     jwt({ token, user, account }) {
       if (user?.id) {
         token.id = user.id;
-        token.type = (user as { type?: string }).type || "regular";
+        token.type = ((user as { type?: "guest" | "regular" }).type || "regular") as "guest" | "regular";
       }
       if (account) {
         token.provider = account.provider;
