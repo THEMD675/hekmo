@@ -183,7 +183,7 @@ function PureMultimodalInput({
       const { error } = await response.json();
       toast.error(error);
     } catch (_error) {
-      toast.error("Failed to upload file, please try again!");
+      toast.error("فشل رفع الملف، حاول مرة ثانية!");
     }
   }, []);
 
@@ -253,7 +253,7 @@ function PureMultimodalInput({
         ]);
       } catch (error) {
         console.error("Error uploading pasted images:", error);
-        toast.error("Failed to upload pasted image(s)");
+        toast.error("فشل رفع الصورة، حاول مرة ثانية!");
       } finally {
         setUploadQueue([]);
       }
@@ -301,7 +301,7 @@ function PureMultimodalInput({
             return;
           }
           if (status !== "ready") {
-            toast.error("Please wait for the model to finish its response!");
+            toast.error("انتظر حتى ينتهي الرد!");
           } else {
             submitForm();
           }
@@ -348,7 +348,7 @@ function PureMultimodalInput({
             maxHeight={200}
             minHeight={44}
             onChange={handleInput}
-            placeholder="Ask Hekmo anything about your health..."
+            placeholder="اسأل Hekmo عن صحتك..."
             ref={textareaRef}
             rows={1}
             value={input}

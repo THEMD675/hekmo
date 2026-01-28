@@ -27,16 +27,16 @@ export default function Page() {
   // biome-ignore lint/correctness/useExhaustiveDependencies: router and updateSession are stable refs
   useEffect(() => {
     if (state.status === "user_exists") {
-      toast({ type: "error", description: "Account already exists!" });
+      toast({ type: "error", description: "الحساب موجود مسبقاً!" });
     } else if (state.status === "failed") {
-      toast({ type: "error", description: "Failed to create account!" });
+      toast({ type: "error", description: "فشل إنشاء الحساب!" });
     } else if (state.status === "invalid_data") {
       toast({
         type: "error",
-        description: "Failed validating your submission!",
+        description: "فشل التحقق من البيانات!",
       });
     } else if (state.status === "success") {
-      toast({ type: "success", description: "Account created successfully!" });
+      toast({ type: "success", description: "تم إنشاء الحساب بنجاح!" });
 
       setIsSuccessful(true);
       updateSession();
@@ -55,20 +55,19 @@ export default function Page() {
         <div className="flex flex-col items-center justify-center gap-2 px-4 text-center sm:px-16">
           <h3 className="font-bold text-2xl tracking-tight dark:text-zinc-50">Hekmo</h3>
           <p className="text-gray-500 text-sm dark:text-zinc-400">
-            Create your wellness account
+            أنشئ حسابك
           </p>
         </div>
         <AuthForm action={handleSubmit} defaultEmail={email}>
-          <SubmitButton isSuccessful={isSuccessful}>Sign Up</SubmitButton>
+          <SubmitButton isSuccessful={isSuccessful}>تسجيل</SubmitButton>
           <p className="mt-4 text-center text-gray-600 text-sm dark:text-zinc-400">
-            {"Already have an account? "}
+            {"عندك حساب؟ "}
             <Link
               className="font-semibold text-gray-800 hover:underline dark:text-zinc-200"
               href="/login"
             >
-              Sign in
+              سجّل دخولك
             </Link>
-            {" instead."}
           </p>
         </AuthForm>
       </div>

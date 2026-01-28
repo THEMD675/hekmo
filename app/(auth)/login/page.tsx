@@ -30,12 +30,12 @@ export default function Page() {
     if (state.status === "failed") {
       toast({
         type: "error",
-        description: "Invalid credentials!",
+        description: "بيانات الدخول غير صحيحة!",
       });
     } else if (state.status === "invalid_data") {
       toast({
         type: "error",
-        description: "Failed validating your submission!",
+        description: "فشل التحقق من البيانات!",
       });
     } else if (state.status === "success") {
       setIsSuccessful(true);
@@ -55,20 +55,19 @@ export default function Page() {
         <div className="flex flex-col items-center justify-center gap-2 px-4 text-center sm:px-16">
           <h3 className="font-bold text-2xl tracking-tight dark:text-zinc-50">Hekmo</h3>
           <p className="text-gray-500 text-sm dark:text-zinc-400">
-            Sign in to your wellness account
+            سجّل دخولك
           </p>
         </div>
         <AuthForm action={handleSubmit} defaultEmail={email}>
-          <SubmitButton isSuccessful={isSuccessful}>Sign in</SubmitButton>
+          <SubmitButton isSuccessful={isSuccessful}>دخول</SubmitButton>
           <p className="mt-4 text-center text-gray-600 text-sm dark:text-zinc-400">
-            {"Don't have an account? "}
+            {"ما عندك حساب؟ "}
             <Link
               className="font-semibold text-gray-800 hover:underline dark:text-zinc-200"
               href="/register"
             >
-              Sign up
+              سجّل مجاناً
             </Link>
-            {" for free."}
           </p>
         </AuthForm>
       </div>

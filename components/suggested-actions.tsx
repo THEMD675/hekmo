@@ -15,9 +15,9 @@ type SuggestedActionsProps = {
 
 function PureSuggestedActions({ chatId, sendMessage }: SuggestedActionsProps) {
   const suggestedActions = [
-    "Build me a full morning routine for peak energy",
-    "My WHOOP recovery is 42% — what should I change?",
-    "Give me a deep sleep optimization protocol",
+    "ابني لي روتين صباحي لطاقة عالية",
+    "نسبة استشفائي ٤٢٪ — وش أغير؟",
+    "عطني خطة لتحسين النوم العميق",
     "وش أفضل مكملات للطاقة والتركيز؟",
   ];
 
@@ -35,7 +35,7 @@ function PureSuggestedActions({ chatId, sendMessage }: SuggestedActionsProps) {
           transition={{ delay: 0.05 * index }}
         >
           <Suggestion
-            className="h-auto w-full whitespace-normal p-3 text-left"
+            className="h-auto w-full whitespace-normal p-3 text-right"
             onClick={(suggestion) => {
               window.history.pushState({}, "", `/chat/${chatId}`);
               sendMessage({

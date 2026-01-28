@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { IBM_Plex_Sans_Arabic, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 
@@ -8,18 +8,19 @@ import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://hekmo.ai"),
-  title: "Hekmo — Wellness AI",
-  description: "Your AI wellness coach. Sleep, stress, protocols, recovery — powered by science.",
+  title: "Hekmo — مدربك الصحي الذكي",
+  description: "مدربك الصحي الذكي — النوم، التوتر، الاستشفاء، والبروتوكولات الصحية مدعومة بالذكاء الاصطناعي.",
 };
 
 export const viewport = {
   maximumScale: 1, // Disable auto-zoom on mobile Safari
 };
 
-const geist = Geist({
-  subsets: ["latin"],
+const ibmPlexArabic = IBM_Plex_Sans_Arabic({
+  subsets: ["arabic", "latin"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
-  variable: "--font-geist",
+  variable: "--font-ibm-plex-arabic",
 });
 
 const geistMono = Geist_Mono({
@@ -55,12 +56,13 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      className={`${geist.variable} ${geistMono.variable}`}
+      className={`${ibmPlexArabic.variable} ${geistMono.variable}`}
       // `next-themes` injects an extra classname to the body element to avoid
       // visual flicker before hydration. Hence the `suppressHydrationWarning`
       // prop is necessary to avoid the React hydration mismatch warning.
       // https://github.com/pacocoursey/next-themes?tab=readme-ov-file#with-app
-      lang="en"
+      lang="ar"
+      dir="rtl"
       suppressHydrationWarning
     >
       <head>
