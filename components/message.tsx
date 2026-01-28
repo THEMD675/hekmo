@@ -21,6 +21,7 @@ import { MessageActions } from "./message-actions";
 import { MessageEditor } from "./message-editor";
 import { MessageReasoning } from "./message-reasoning";
 import { PreviewAttachment } from "./preview-attachment";
+import { ToolResult } from "./tool-result";
 import { Weather } from "./weather";
 
 const PurePreviewMessage = ({
@@ -350,6 +351,36 @@ const PurePreviewMessage = ({
                   </ToolContent>
                 </Tool>
               );
+            }
+
+            // World-class handler for all other tools (webSearch, prayerTimes, calculator, etc.)
+            if (type.startsWith("tool-")) {
+              const toolName = type.replace("tool-", "");
+              const { toolCallId, state } = part as {
+                toolCallId: string;
+                state: string;
+                output?: unknown;
+              };
+
+              if (state === "output-available" && "output" in part) {
+                return (
+                  <ToolResult
+                    className="w-full max-w-md"
+                    key={toolCallId}
+                    result={part.output}
+                    toolName={toolName}
+                  />
+                );
+              }
+
+              // Show loading state for tools in progress
+              if (state === "input-available" || state === "streaming") {
+                return (
+                  <Tool defaultOpen={true} key={toolCallId}>
+                    <ToolHeader state={state} type={type} />
+                  </Tool>
+                );
+              }
             }
 
             return null;
