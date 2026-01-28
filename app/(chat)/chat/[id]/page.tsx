@@ -31,7 +31,7 @@ export default async function ChatPage({ params }: ChatPageProps) {
   return (
     <Chat
       id={id}
-      initialMessages={messages}
+      initialMessages={messages as Parameters<typeof Chat>[0]["initialMessages"]}
       selectedChatModel={chat.model || "gpt-4o-mini"}
       selectedVisibilityType={chat.visibility || "private"}
       isReadonly={false}
