@@ -28,11 +28,11 @@ export function Footer() {
               className="flex items-center gap-2 font-bold text-lg"
               href="/"
             >
-              <span className="text-2xl">🧠</span>
+              <span className="text-2xl">✨</span>
               حكمو
             </Link>
             <p className="text-sm text-muted-foreground">
-              مساعدك الذكي للصحة باللغة العربية
+              مساعدك الذكي بالعربي
             </p>
           </div>
 

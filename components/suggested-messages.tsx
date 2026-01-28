@@ -10,10 +10,10 @@ interface SuggestedMessagesProps {
 }
 
 const DEFAULT_SUGGESTIONS = [
-  "كيف أحسن نومي؟",
-  "ما هي أعراض نقص فيتامين د؟",
-  "أعطني نصائح للتغذية الصحية",
-  "كيف أتعامل مع التوتر؟",
+  "اكتب لي كود بايثون",
+  "ساعدني أكتب إيميل",
+  "اشرح لي الذكاء الاصطناعي",
+  "ترجم لي هذا النص",
 ];
 
 export function SuggestedMessages({
