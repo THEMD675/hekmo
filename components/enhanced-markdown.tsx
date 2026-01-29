@@ -31,11 +31,8 @@ function processCitations(
     if (Array.isArray(children)) {
       return children.map((child, i) => {
         const processed = processCitations(child, citations);
-        // Add key if it's an element
-        return typeof processed === "object" && processed !== null 
-          ? { ...processed, key: i } 
-          : processed;
-      });
+        return processed;
+      }) as ReactNode;
     }
     return children;
   }

@@ -3,7 +3,7 @@ export { useArtifact } from "@/hooks/use-artifact";
 export { useAutoResume } from "@/hooks/use-auto-resume";
 export { useChatVisibility } from "@/hooks/use-chat-visibility";
 export { useMessages } from "@/hooks/use-messages";
-export { useMobile } from "@/hooks/use-mobile";
+export { useIsMobile as useMobile } from "@/hooks/use-mobile";
 export { useScrollToBottom } from "@/hooks/use-scroll-to-bottom";
 
 // Custom hooks

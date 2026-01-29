@@ -8,7 +8,7 @@ export const calculatorTool = tool({
     type: z.enum(["basic", "bmi", "calories", "conversion"]).default("basic").describe("Type of calculation"),
     additionalParams: z.record(z.number()).optional().describe("Additional parameters for specific calculations (e.g., weight, height for BMI)"),
   }),
-  execute: async ({ expression, type, additionalParams }) => {
+  execute: async ({ expression, type, additionalParams }: { expression: string; type: "basic" | "bmi" | "calories" | "conversion"; additionalParams?: Record<string, number> }) => {
     try {
       if (type === "bmi" && additionalParams) {
         const weight = additionalParams.weight; // kg

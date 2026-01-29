@@ -7,7 +7,7 @@ export const grammarCheckerTool = tool({
     text: z.string().describe("The text to check for grammar and spelling errors"),
     language: z.enum(["ar", "en", "auto"]).default("auto").describe("Language of the text"),
   }),
-  execute: async ({ text, language }) => {
+  execute: async ({ text, language }: { text: string; language: "ar" | "en" | "auto" }) => {
     try {
       // Detect language if auto
       const detectedLanguage = language === "auto" 

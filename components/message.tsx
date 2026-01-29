@@ -374,10 +374,10 @@ const PurePreviewMessage = ({
               }
 
               // Show loading state for tools in progress
-              if (state === "input-available" || state === "streaming") {
+              if (state === "input-available" || state === "input-streaming") {
                 return (
                   <Tool defaultOpen={true} key={toolCallId}>
-                    <ToolHeader state={state} type={type} />
+                    <ToolHeader state={state as "input-available" | "input-streaming"} type={type as `tool-${string}`} />
                   </Tool>
                 );
               }

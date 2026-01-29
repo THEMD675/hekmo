@@ -8,7 +8,7 @@ export const imageGenerationTool = tool({
     style: z.enum(["realistic", "artistic", "cartoon", "sketch", "3d"]).default("realistic").describe("Image style"),
     size: z.enum(["square", "portrait", "landscape"]).default("square").describe("Image dimensions"),
   }),
-  execute: async ({ prompt, style, size }) => {
+  execute: async ({ prompt, style, size }: { prompt: string; style: "realistic" | "artistic" | "cartoon" | "sketch" | "3d"; size: "square" | "portrait" | "landscape" }) => {
     try {
       const apiKey = process.env.OPENAI_API_KEY;
       

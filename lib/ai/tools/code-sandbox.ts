@@ -11,7 +11,7 @@ export const codeSandboxTool = tool({
     language: z.enum(["python", "javascript"]).describe("Programming language"),
     timeout: z.number().optional().default(5000).describe("Timeout in milliseconds"),
   }),
-  execute: async ({ code, language, timeout }) => {
+  execute: async ({ code, language, timeout }: { code: string; language: "python" | "javascript"; timeout?: number }) => {
     try {
       // Validate code for safety
       const safetyCheck = validateCode(code, language);
