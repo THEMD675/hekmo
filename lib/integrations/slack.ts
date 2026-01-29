@@ -108,7 +108,7 @@ export async function handleSlashCommand(
 
 \`/hekmo [سؤالك]\` - اسأل حكمو أي سؤال
 \`/hekmo-help\` - عرض هذه المساعدة
-\`/hekmo-health\` - نصائح صحية سريعة
+\`/hekmo-business\` - نصائح أعمال سريعة
 
 *أمثلة:*
 • \`/hekmo ما هو أفضل وقت للنوم؟\`

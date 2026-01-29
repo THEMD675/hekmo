@@ -179,8 +179,8 @@ export function generateICalEvent(event: CalendarEvent): string {
   return lines.join("\r\n");
 }
 
-// Create health reminder event
-export function createHealthReminder(
+// Create business reminder event
+export function createBusinessReminder(
   title: string,
   reminderTime: Date,
   durationMinutes = 30

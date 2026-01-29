@@ -197,9 +197,9 @@ export function extractEmailBody(message: EmailMessage): string {
   return message.snippet || "";
 }
 
-// Search for health-related emails
-export async function searchHealthEmails(userId: string): Promise<EmailMessage[]> {
-  const healthKeywords = [
+// Search for business-related emails
+export async function searchBusinessEmails(userId: string): Promise<EmailMessage[]> {
+  const businessKeywords = [
     "تقرير طبي",
     "موعد طبيب",
     "نتائج تحاليل",
@@ -210,13 +210,13 @@ export async function searchHealthEmails(userId: string): Promise<EmailMessage[]
     "lab results",
   ];
 
-  const query = healthKeywords.map((k) => `"${k}"`).join(" OR ");
+  const query = businessKeywords.map((k) => `"${k}"`).join(" OR ");
   
   return listEmails(userId, { query, maxResults: 20 });
 }
 
-// Send health reminder email
-export async function sendHealthReminderEmail(
+// Send business reminder email
+export async function sendBusinessReminderEmail(
   userId: string,
   to: string,
   reminder: { title: string; time: Date; notes?: string }

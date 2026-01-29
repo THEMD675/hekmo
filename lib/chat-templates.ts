@@ -1,4 +1,4 @@
-// Chat templates for common health queries
+// Chat templates for common business queries
 
 export interface ChatTemplate {
   id: string;
@@ -7,187 +7,159 @@ export interface ChatTemplate {
   description: string;
   descriptionAr: string;
   icon: string;
-  category: "sleep" | "stress" | "fitness" | "nutrition" | "general";
+  category: "customer-service" | "sales" | "operations" | "marketing" | "general";
   prompt: string;
   promptAr: string;
 }
 
 export const chatTemplates: ChatTemplate[] = [
-  // Sleep
+  // Customer Service
   {
-    id: "sleep-protocol",
-    title: "Sleep Optimization",
-    titleAr: "تحسين النوم",
-    description: "Get a personalized sleep protocol",
-    descriptionAr: "احصل على بروتوكول نوم مخصص",
-    icon: "🌙",
-    category: "sleep",
-    prompt: "I want to optimize my sleep. I currently sleep from [time] to [time]. My main issues are [issues]. Give me a complete sleep protocol.",
-    promptAr: "أريد تحسين نومي. حالياً أنام من [الوقت] إلى [الوقت]. مشاكلي الرئيسية هي [المشاكل]. أعطني بروتوكول نوم كامل.",
+    id: "customer-inquiry",
+    title: "Customer Inquiry",
+    titleAr: "استفسار عميل",
+    description: "Handle common customer questions",
+    descriptionAr: "التعامل مع أسئلة العملاء الشائعة",
+    icon: "💬",
+    category: "customer-service",
+    prompt: "A customer is asking about [product/service]. They want to know [details]. Respond professionally in Arabic.",
+    promptAr: "عميل يسأل عن [المنتج/الخدمة]. يريد معرفة [التفاصيل]. رد بشكل احترافي.",
   },
   {
-    id: "morning-routine",
-    title: "Morning Routine",
-    titleAr: "روتين الصباح",
-    description: "Design your optimal morning",
-    descriptionAr: "صمم صباحك المثالي",
-    icon: "☀️",
-    category: "sleep",
-    prompt: "Help me create an optimal morning routine. I wake up at [time] and need to be productive by [time].",
-    promptAr: "ساعدني في إنشاء روتين صباحي مثالي. أستيقظ في [الوقت] وأحتاج أن أكون منتجاً بحلول [الوقت].",
+    id: "complaint-handling",
+    title: "Complaint Handling",
+    titleAr: "معالجة الشكاوى",
+    description: "Respond to customer complaints",
+    descriptionAr: "الرد على شكاوى العملاء",
+    icon: "🛠️",
+    category: "customer-service",
+    prompt: "A customer is complaining about [issue]. Help me respond professionally and offer a solution.",
+    promptAr: "عميل يشتكي من [المشكلة]. ساعدني في الرد باحترافية وتقديم حل.",
   },
   
-  // Stress
+  // Sales
   {
-    id: "stress-relief",
-    title: "Stress Relief",
-    titleAr: "تخفيف التوتر",
-    description: "Immediate stress reduction techniques",
-    descriptionAr: "تقنيات فورية لتخفيف التوتر",
-    icon: "🧘",
-    category: "stress",
-    prompt: "I'm feeling very stressed right now. Give me immediate techniques to calm down.",
-    promptAr: "أشعر بتوتر شديد الآن. أعطني تقنيات فورية للهدوء.",
+    id: "product-info",
+    title: "Product Information",
+    titleAr: "معلومات المنتج",
+    description: "Share product details with customers",
+    descriptionAr: "مشاركة تفاصيل المنتج مع العملاء",
+    icon: "📦",
+    category: "sales",
+    prompt: "Customer wants details about [product]. Include price, features, and availability.",
+    promptAr: "العميل يريد تفاصيل عن [المنتج]. أضف السعر والمميزات والتوفر.",
   },
   {
-    id: "breathing-exercise",
-    title: "Breathing Exercises",
-    titleAr: "تمارين التنفس",
-    description: "Learn effective breathing techniques",
-    descriptionAr: "تعلم تقنيات التنفس الفعالة",
-    icon: "💨",
-    category: "stress",
-    prompt: "Teach me the best breathing exercises for stress relief and focus.",
-    promptAr: "علمني أفضل تمارين التنفس لتخفيف التوتر والتركيز.",
+    id: "price-quote",
+    title: "Price Quote",
+    titleAr: "عرض سعر",
+    description: "Generate a price quote",
+    descriptionAr: "إنشاء عرض سعر",
+    icon: "💰",
+    category: "sales",
+    prompt: "Create a price quote for [items/services]. The customer is [customer name].",
+    promptAr: "أنشئ عرض سعر لـ [المنتجات/الخدمات]. العميل هو [اسم العميل].",
+  },
+  
+  // Operations
+  {
+    id: "business-hours",
+    title: "Business Hours",
+    titleAr: "ساعات العمل",
+    description: "Share operating hours",
+    descriptionAr: "مشاركة ساعات العمل",
+    icon: "🕐",
+    category: "operations",
+    prompt: "Tell customer about our business hours, location, and how to reach us.",
+    promptAr: "أخبر العميل عن ساعات العمل والموقع وطرق التواصل معنا.",
   },
   {
-    id: "cold-exposure",
-    title: "Cold Exposure",
-    titleAr: "التعرض للبرد",
-    description: "Cold shower/ice bath protocol",
-    descriptionAr: "بروتوكول الاستحمام البارد",
-    icon: "🧊",
-    category: "stress",
-    prompt: "I want to start cold exposure. How do I begin safely and what are the benefits?",
-    promptAr: "أريد أن أبدأ التعرض للبرد. كيف أبدأ بأمان وما هي الفوائد؟",
+    id: "order-status",
+    title: "Order Status",
+    titleAr: "حالة الطلب",
+    description: "Update customer on their order",
+    descriptionAr: "تحديث العميل عن طلبه",
+    icon: "📋",
+    category: "operations",
+    prompt: "Customer asking about order #[order_number]. Current status is [status]. Expected delivery [date].",
+    promptAr: "العميل يسأل عن الطلب رقم #[رقم_الطلب]. الحالة الحالية [الحالة]. التوصيل المتوقع [التاريخ].",
   },
-
-  // Fitness
+  
+  // Marketing
   {
-    id: "zone2-cardio",
-    title: "Zone 2 Training",
-    titleAr: "تمارين Zone 2",
-    description: "Longevity cardio protocol",
-    descriptionAr: "بروتوكول القلب لطول العمر",
-    icon: "❤️",
-    category: "fitness",
-    prompt: "Explain Zone 2 cardio and give me a weekly plan. I have [equipment] available.",
-    promptAr: "اشرح لي تمارين Zone 2 وأعطني خطة أسبوعية. لدي [المعدات] المتاحة.",
-  },
-  {
-    id: "strength-training",
-    title: "Strength Training",
-    titleAr: "تدريب القوة",
-    description: "Build muscle and strength",
-    descriptionAr: "بناء العضلات والقوة",
-    icon: "💪",
-    category: "fitness",
-    prompt: "Create a strength training program for me. I can train [days] per week. My goal is [goal].",
-    promptAr: "أنشئ لي برنامج تدريب قوة. أستطيع التدريب [أيام] في الأسبوع. هدفي هو [الهدف].",
+    id: "promotion-announce",
+    title: "Promotion Announcement",
+    titleAr: "إعلان عرض",
+    description: "Share promotions and discounts",
+    descriptionAr: "مشاركة العروض والخصومات",
+    icon: "🎉",
+    category: "marketing",
+    prompt: "Create an announcement for our [discount]% off sale on [products]. Valid until [date].",
+    promptAr: "أنشئ إعلان لعرض خصم [النسبة]% على [المنتجات]. ساري حتى [التاريخ].",
   },
   {
-    id: "vo2max",
-    title: "VO2 Max Training",
-    titleAr: "تدريب VO2 Max",
-    description: "Improve cardiovascular capacity",
-    descriptionAr: "تحسين السعة القلبية",
-    icon: "🫁",
-    category: "fitness",
-    prompt: "How do I improve my VO2 max? Give me a training protocol.",
-    promptAr: "كيف أحسن VO2 max؟ أعطني بروتوكول تدريب.",
+    id: "new-product-launch",
+    title: "New Product Launch",
+    titleAr: "إطلاق منتج جديد",
+    description: "Announce new products",
+    descriptionAr: "الإعلان عن منتجات جديدة",
+    icon: "🚀",
+    category: "marketing",
+    prompt: "We're launching [product]. Key features: [features]. Price: [price]. Create an exciting announcement.",
+    promptAr: "نحن نطلق [المنتج]. المميزات: [المميزات]. السعر: [السعر]. أنشئ إعلان مثير.",
   },
-
-  // Nutrition
-  {
-    id: "calculate-macros",
-    title: "Calculate Macros",
-    titleAr: "حساب الماكروز",
-    description: "Get your personalized macros",
-    descriptionAr: "احصل على الماكروز المخصصة لك",
-    icon: "🥗",
-    category: "nutrition",
-    prompt: "Calculate my macros. I'm [height]cm, [weight]kg, [age] years old, [activity level] active. My goal is [goal].",
-    promptAr: "احسب لي الماكروز. طولي [الطول] سم، وزني [الوزن] كجم، عمري [العمر] سنة، نشاطي [مستوى النشاط]. هدفي [الهدف].",
-  },
-  {
-    id: "fasting-protocol",
-    title: "Fasting Protocol",
-    titleAr: "بروتوكول الصيام",
-    description: "Intermittent fasting guide",
-    descriptionAr: "دليل الصيام المتقطع",
-    icon: "⏰",
-    category: "nutrition",
-    prompt: "I want to try intermittent fasting. What protocol do you recommend and how do I start?",
-    promptAr: "أريد تجربة الصيام المتقطع. ما البروتوكول الذي توصي به وكيف أبدأ؟",
-  },
-  {
-    id: "supplements",
-    title: "Supplement Stack",
-    titleAr: "المكملات الغذائية",
-    description: "Evidence-based supplements",
-    descriptionAr: "المكملات المبنية على الأدلة",
-    icon: "💊",
-    category: "nutrition",
-    prompt: "What supplements should I take? I'm focused on [goal]. Give me specific doses.",
-    promptAr: "ما المكملات التي يجب أن أتناولها؟ تركيزي على [الهدف]. أعطني جرعات محددة.",
-  },
-
+  
   // General
   {
-    id: "health-checkup",
-    title: "Health Checkup",
-    titleAr: "فحص صحي",
-    description: "Get a health assessment",
-    descriptionAr: "احصل على تقييم صحي",
-    icon: "🩺",
+    id: "thank-you",
+    title: "Thank You Message",
+    titleAr: "رسالة شكر",
+    description: "Thank customers for their purchase",
+    descriptionAr: "شكر العملاء على الشراء",
+    icon: "🙏",
     category: "general",
-    prompt: "Do a health assessment for me. Ask me questions about my lifestyle, sleep, stress, exercise, and nutrition.",
-    promptAr: "قم بتقييم صحي لي. اسألني عن نمط حياتي، نومي، توتري، تمارينني، وتغذيتي.",
+    prompt: "Create a thank you message for a customer who just purchased [product/service].",
+    promptAr: "أنشئ رسالة شكر لعميل اشترى للتو [المنتج/الخدمة].",
   },
   {
-    id: "prayer-times",
-    title: "Prayer Times",
-    titleAr: "أوقات الصلاة",
-    description: "Get prayer times for your city",
-    descriptionAr: "احصل على أوقات الصلاة لمدينتك",
-    icon: "🕌",
+    id: "appointment-confirm",
+    title: "Appointment Confirmation",
+    titleAr: "تأكيد موعد",
+    description: "Confirm customer appointments",
+    descriptionAr: "تأكيد مواعيد العملاء",
+    icon: "📅",
     category: "general",
-    prompt: "What are the prayer times for [city] today?",
-    promptAr: "ما هي أوقات الصلاة في [المدينة] اليوم؟",
+    prompt: "Confirm appointment for [customer] on [date] at [time] for [service].",
+    promptAr: "أكد الموعد لـ [العميل] في [التاريخ] الساعة [الوقت] لـ [الخدمة].",
   },
   {
-    id: "ramadan-protocol",
-    title: "Ramadan Health",
-    titleAr: "صحة رمضان",
-    description: "Optimize health during Ramadan",
-    descriptionAr: "تحسين الصحة في رمضان",
-    icon: "🌙",
+    id: "follow-up",
+    title: "Customer Follow-up",
+    titleAr: "متابعة العميل",
+    description: "Follow up with past customers",
+    descriptionAr: "متابعة العملاء السابقين",
+    icon: "📞",
     category: "general",
-    prompt: "Give me a complete health protocol for Ramadan fasting including suhoor, iftar, sleep, and exercise timing.",
-    promptAr: "أعطني بروتوكول صحي كامل لصيام رمضان يشمل السحور، الإفطار، النوم، وتوقيت التمارين.",
+    prompt: "Create a follow-up message for [customer] who purchased [product] on [date]. Ask about their experience.",
+    promptAr: "أنشئ رسالة متابعة لـ [العميل] الذي اشترى [المنتج] في [التاريخ]. اسأل عن تجربته.",
   },
 ];
 
-export const templateCategories = [
-  { id: "all", label: "الكل", labelEn: "All" },
-  { id: "sleep", label: "النوم", labelEn: "Sleep" },
-  { id: "stress", label: "التوتر", labelEn: "Stress" },
-  { id: "fitness", label: "اللياقة", labelEn: "Fitness" },
-  { id: "nutrition", label: "التغذية", labelEn: "Nutrition" },
-  { id: "general", label: "عام", labelEn: "General" },
-];
+export const templatesByCategory = chatTemplates.reduce(
+  (acc, template) => {
+    if (!acc[template.category]) {
+      acc[template.category] = [];
+    }
+    acc[template.category].push(template);
+    return acc;
+  },
+  {} as Record<string, ChatTemplate[]>
+);
+
+export function getTemplateById(id: string): ChatTemplate | undefined {
+  return chatTemplates.find((t) => t.id === id);
+}
 
 export function getTemplatesByCategory(category: string): ChatTemplate[] {
-  if (category === "all") return chatTemplates;
   return chatTemplates.filter((t) => t.category === category);
 }
