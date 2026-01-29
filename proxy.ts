@@ -19,7 +19,7 @@ export async function proxy(request: NextRequest) {
 
   // Public routes - no auth required (Hekmo business platform)
   const publicPaths = ["/", "/pricing", "/privacy", "/terms"];
-  const publicPrefixes = ["/dashboard", "/onboarding", "/api/whatsapp", "/api/stripe", "/api/business"];
+  const publicPrefixes = ["/dashboard", "/onboarding", "/api/whatsapp", "/api/stripe", "/api/business", "/api/health"];
   
   const isPublicPath = publicPaths.includes(pathname);
   const isPublicPrefix = publicPrefixes.some(prefix => pathname.startsWith(prefix));
