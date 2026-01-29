@@ -91,20 +91,37 @@ export async function createCheckoutSession({
   priceId: string;
   successUrl: string;
   cancelUrl: string;
-}) {
+}): Promise<{ id: string; url: string }> {
   if (!STRIPE_SECRET_KEY) {
     throw new Error("Stripe not configured");
   }
 
-  // In production, use Stripe SDK:
-  // const stripe = new Stripe(STRIPE_SECRET_KEY);
-  // return stripe.checkout.sessions.create({...});
+  const response = await fetch("https://api.stripe.com/v1/checkout/sessions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${STRIPE_SECRET_KEY}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      mode: "subscription",
+      "line_items[0][price]": priceId,
+      "line_items[0][quantity]": "1",
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+      customer_email: email,
+      "metadata[userId]": userId,
+      locale: "ar",
+      allow_promotion_codes: "true",
+    }),
+  });
 
-  // Placeholder for development
-  return {
-    id: `cs_test_${Date.now()}`,
-    url: `https://checkout.stripe.com/pay/${priceId}?prefilled_email=${email}`,
-  };
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Stripe error: ${error}`);
+  }
+
+  const session = await response.json();
+  return { id: session.id, url: session.url };
 }
 
 // Create Stripe customer portal session
@@ -114,18 +131,33 @@ export async function createPortalSession({
 }: {
   customerId: string;
   returnUrl: string;
-}) {
+}): Promise<{ url: string }> {
   if (!STRIPE_SECRET_KEY) {
     throw new Error("Stripe not configured");
   }
 
-  // In production:
-  // const stripe = new Stripe(STRIPE_SECRET_KEY);
-  // return stripe.billingPortal.sessions.create({...});
+  const response = await fetch(
+    "https://api.stripe.com/v1/billing_portal/sessions",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${STRIPE_SECRET_KEY}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        customer: customerId,
+        return_url: returnUrl,
+      }),
+    }
+  );
 
-  return {
-    url: `https://billing.stripe.com/session/${customerId}`,
-  };
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Stripe portal error: ${error}`);
+  }
+
+  const session = await response.json();
+  return { url: session.url };
 }
 
 // Get subscription tier by user ID
