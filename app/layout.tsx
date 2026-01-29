@@ -8,6 +8,7 @@ import {
 } from "next/font/google";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AnalyticsProvider } from "@/components/analytics-provider";
 
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
@@ -201,7 +202,9 @@ export default function RootLayout({
           enableSystem
         >
           <Toaster position="top-center" />
-          <SessionProvider>{children}</SessionProvider>
+          <SessionProvider>
+            <AnalyticsProvider>{children}</AnalyticsProvider>
+          </SessionProvider>
           <CookieConsent />
           <PWAInstallPrompt />
         </ThemeProvider>
