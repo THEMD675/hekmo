@@ -7,7 +7,7 @@
 
 ## 🎯 What is Hekmo?
 
-**Hekmo (حكمو)** is a world-class AI health assistant built specifically for Saudi Arabian users. It combines cutting-edge AI with deep Arabic language understanding and local cultural context.
+**Hekmo (حكمو)** is an AI-powered customer service platform for Saudi businesses. It provides 24/7 automated WhatsApp support with deep Arabic language understanding and Saudi cultural context.
 
 **Live URL**: https://hekmo.ai
 
