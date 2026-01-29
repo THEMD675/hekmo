@@ -1,4 +1,9 @@
-import { verifySlackRequest, handleSlackMessage, handleSlashCommand, formatSlackResponse } from "@/lib/integrations/slack";
+import {
+  formatSlackResponse,
+  handleSlackMessage,
+  handleSlashCommand,
+  verifySlackRequest,
+} from "@/lib/integrations/slack";
 
 export async function POST(request: Request) {
   const body = await request.text();

@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { desc, eq, sql } from "drizzle-orm";
+import { type NextRequest, NextResponse } from "next/server";
+import { auth } from "@/app/(auth)/auth";
 import { db } from "@/lib/db/queries";
 import { business, businessKnowledge, conversation } from "@/lib/db/schema";
-import { auth } from "@/app/(auth)/auth";
-import { eq, desc, sql } from "drizzle-orm";
 
 // GET - Fetch business details
 export async function GET(
@@ -12,7 +12,10 @@ export async function GET(
   try {
     const session = await auth();
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 }
+      );
     }
 
     const { id } = await params;
@@ -25,7 +28,10 @@ export async function GET(
       .limit(1);
 
     if (!userBusiness) {
-      return NextResponse.json({ error: "Business not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Business not found" },
+        { status: 404 }
+      );
     }
 
     if (userBusiness.userId !== session.user.id) {
@@ -64,10 +70,12 @@ export async function GET(
       },
       recentConversations,
     });
-
   } catch (error) {
     console.error("[Business GET] Error:", error);
-    return NextResponse.json({ error: "Failed to fetch business" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to fetch business" },
+      { status: 500 }
+    );
   }
 }
 
@@ -79,7 +87,10 @@ export async function PATCH(
   try {
     const session = await auth();
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 }
+      );
     }
 
     const { id } = await params;
@@ -93,14 +104,27 @@ export async function PATCH(
       .limit(1);
 
     if (!userBusiness || userBusiness.userId !== session.user.id) {
-      return NextResponse.json({ error: "Business not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Business not found" },
+        { status: 404 }
+      );
     }
 
     // Update allowed fields
     const allowedFields = [
-      "name", "nameAr", "type", "phone", "email", "address",
-      "workingHours", "workingHoursAr", "timezone", "language",
-      "aiPersonality", "autoReplyEnabled", "handoffEnabled"
+      "name",
+      "nameAr",
+      "type",
+      "phone",
+      "email",
+      "address",
+      "workingHours",
+      "workingHoursAr",
+      "timezone",
+      "language",
+      "aiPersonality",
+      "autoReplyEnabled",
+      "handoffEnabled",
     ];
 
     const updates: Record<string, unknown> = { updatedAt: new Date() };
@@ -117,9 +141,11 @@ export async function PATCH(
       .returning();
 
     return NextResponse.json({ success: true, business: updated });
-
   } catch (error) {
     console.error("[Business PATCH] Error:", error);
-    return NextResponse.json({ error: "Failed to update business" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to update business" },
+      { status: 500 }
+    );
   }
 }

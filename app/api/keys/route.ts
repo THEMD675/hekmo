@@ -132,7 +132,9 @@ export async function DELETE(request: Request) {
 }
 
 // Verify API key (for middleware use)
-export function verifyApiKey(key: string): { userId: string; scopes: string[] } | null {
+export function verifyApiKey(
+  key: string
+): { userId: string; scopes: string[] } | null {
   const keyHash = hashKey(key);
 
   for (const [userId, userKeys] of apiKeys.entries()) {

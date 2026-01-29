@@ -2,8 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   typescript: {
-    // TODO: Fix TypeScript errors in newly added components
-    ignoreBuildErrors: true,
+    // All TypeScript errors fixed - strict mode enabled
+    ignoreBuildErrors: false,
   },
   images: {
     // Image optimization settings

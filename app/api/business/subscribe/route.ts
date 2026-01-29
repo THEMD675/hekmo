@@ -1,7 +1,7 @@
+import { eq } from "drizzle-orm";
 import { auth } from "@/app/(auth)/auth";
 import { db } from "@/lib/db/queries";
 import { business } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
 
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://hekmo.ai";
@@ -18,7 +18,7 @@ const PLANS = {
   business: {
     name: "Business",
     price: 1499, // SAR/month
-    messages: 10000,
+    messages: 10_000,
     whatsappNumbers: 3,
     priceId: process.env.STRIPE_PRICE_BUSINESS,
   },
@@ -40,7 +40,10 @@ export async function POST(request: Request) {
 
   if (!STRIPE_SECRET_KEY) {
     return Response.json(
-      { error: "Stripe not configured", configUrl: "https://dashboard.stripe.com/apikeys" },
+      {
+        error: "Stripe not configured",
+        configUrl: "https://dashboard.stripe.com/apikeys",
+      },
       { status: 503 }
     );
   }
@@ -115,25 +118,18 @@ export async function POST(request: Request) {
     if (!stripeResponse.ok) {
       const error = await stripeResponse.text();
       console.error("[Business Subscribe] Stripe error:", error);
-      return Response.json(
-        { error: "فشل إنشاء جلسة الدفع" },
-        { status: 500 }
-      );
+      return Response.json({ error: "فشل إنشاء جلسة الدفع" }, { status: 500 });
     }
 
     const checkoutSession = await stripeResponse.json();
 
-    return Response.json({ 
+    return Response.json({
       url: checkoutSession.url,
       plan: planId,
     });
-
   } catch (error) {
     console.error("[Business Subscribe] Error:", error);
-    return Response.json(
-      { error: "فشل إنشاء جلسة الدفع" },
-      { status: 500 }
-    );
+    return Response.json({ error: "فشل إنشاء جلسة الدفع" }, { status: 500 });
   }
 }
 

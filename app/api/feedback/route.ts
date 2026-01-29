@@ -18,10 +18,7 @@ export async function POST(request: Request) {
     const { messageId, rating, feedbackType, comment } = await request.json();
 
     if (!feedbackType) {
-      return Response.json(
-        { error: "نوع الملاحظة مطلوب" },
-        { status: 400 }
-      );
+      return Response.json({ error: "نوع الملاحظة مطلوب" }, { status: 400 });
     }
 
     const feedback = {
@@ -50,10 +47,7 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("Feedback error:", error);
-    return Response.json(
-      { error: "فشل حفظ الملاحظات" },
-      { status: 500 }
-    );
+    return Response.json({ error: "فشل حفظ الملاحظات" }, { status: 500 });
   }
 }
 
@@ -69,7 +63,9 @@ export async function GET() {
     total: feedbackStore.length,
     byType: {} as Record<string, number>,
     averageRating:
-      feedbackStore.filter((f) => f.rating).reduce((a, f) => a + (f.rating || 0), 0) /
+      feedbackStore
+        .filter((f) => f.rating)
+        .reduce((a, f) => a + (f.rating || 0), 0) /
         feedbackStore.filter((f) => f.rating).length || 0,
     recent: feedbackStore.slice(-10).reverse(),
   };

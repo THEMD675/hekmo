@@ -1,7 +1,7 @@
-import { auth } from "@/app/(auth)/auth";
-import { eq, and } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
+import { auth } from "@/app/(auth)/auth";
 import { chat } from "@/lib/db/schema";
 
 export async function PATCH(request: Request) {
@@ -46,9 +46,6 @@ export async function PATCH(request: Request) {
     });
   } catch (error) {
     console.error("Rename chat error:", error);
-    return Response.json(
-      { error: "فشل تحديث العنوان" },
-      { status: 500 }
-    );
+    return Response.json({ error: "فشل تحديث العنوان" }, { status: 500 });
   }
 }

@@ -27,7 +27,7 @@ export const WEBHOOK_EVENTS = [
   "user.updated",
 ] as const;
 
-type WebhookEvent = typeof WEBHOOK_EVENTS[number];
+type WebhookEvent = (typeof WEBHOOK_EVENTS)[number];
 
 // Generate webhook secret
 function generateSecret(): string {
@@ -85,7 +85,10 @@ export async function POST(request: Request) {
     }
 
     if (!events || !Array.isArray(events) || events.length === 0) {
-      return Response.json({ error: "يجب اختيار حدث واحد على الأقل" }, { status: 400 });
+      return Response.json(
+        { error: "يجب اختيار حدث واحد على الأقل" },
+        { status: 400 }
+      );
     }
 
     // Validate events

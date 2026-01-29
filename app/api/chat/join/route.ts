@@ -1,5 +1,5 @@
 import { auth } from "@/app/(auth)/auth";
-import { joinSession, getSession } from "@/lib/collaborative-chat";
+import { getSession, joinSession } from "@/lib/collaborative-chat";
 
 export async function POST(request: Request) {
   const session = await auth();

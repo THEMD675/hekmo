@@ -12,10 +12,7 @@ export async function POST(request: Request) {
     const { chatId } = await request.json();
 
     if (!chatId) {
-      return Response.json(
-        { error: "معرف المحادثة مطلوب" },
-        { status: 400 }
-      );
+      return Response.json({ error: "معرف المحادثة مطلوب" }, { status: 400 });
     }
 
     // In production, fetch original chat from database
@@ -54,9 +51,6 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("Duplicate chat error:", error);
-    return Response.json(
-      { error: "فشل نسخ المحادثة" },
-      { status: 500 }
-    );
+    return Response.json({ error: "فشل نسخ المحادثة" }, { status: 500 });
   }
 }

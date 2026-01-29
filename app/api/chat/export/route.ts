@@ -45,7 +45,7 @@ export async function GET(request: Request) {
       for (const msg of messages) {
         const role = msg.role === "user" ? "👤 أنت" : "🤖 حكمو";
         markdown += `## ${role}\n\n`;
-        
+
         if (Array.isArray(msg.parts)) {
           for (const part of msg.parts) {
             if (typeof part === "object" && "text" in part) {
@@ -55,7 +55,7 @@ export async function GET(request: Request) {
             }
           }
         }
-        
+
         markdown += "---\n\n";
       }
 

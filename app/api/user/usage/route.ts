@@ -1,7 +1,7 @@
+import { count, eq } from "drizzle-orm";
 import { auth } from "@/app/(auth)/auth";
 import { db } from "@/lib/db/queries";
 import { business, chat, message } from "@/lib/db/schema";
-import { eq, count, sql } from "drizzle-orm";
 
 export async function GET() {
   const session = await auth();
@@ -34,9 +34,9 @@ export async function GET() {
     // Determine tier and limits based on subscription
     const tier = userBusiness?.subscriptionPlan || "free";
     const limits: Record<string, { messages: number; tokens: number }> = {
-      free: { messages: 50, tokens: 25000 },
-      starter: { messages: 1000, tokens: 100000 },
-      business: { messages: 10000, tokens: 500000 },
+      free: { messages: 50, tokens: 25_000 },
+      starter: { messages: 1000, tokens: 100_000 },
+      business: { messages: 10_000, tokens: 500_000 },
       enterprise: { messages: -1, tokens: -1 }, // Unlimited
     };
 
@@ -48,9 +48,11 @@ export async function GET() {
     const periodEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 
     const usage = {
-      messagesUsed: userBusiness 
-        ? (typeof userBusiness.messagesThisMonth === 'number' ? userBusiness.messagesThisMonth : 0)
-        : (messageStats?.count || 0),
+      messagesUsed: userBusiness
+        ? typeof userBusiness.messagesThisMonth === "number"
+          ? userBusiness.messagesThisMonth
+          : 0
+        : messageStats?.count || 0,
       messagesLimit: limit.messages,
       tokensUsed: 0, // Would need to track tokens separately
       tokensLimit: limit.tokens,
@@ -63,16 +65,15 @@ export async function GET() {
     };
 
     return Response.json(usage);
-
   } catch (error) {
     console.error("[Usage API] Error:", error);
-    
+
     // Fallback to basic response
     return Response.json({
       messagesUsed: 0,
       messagesLimit: 50,
       tokensUsed: 0,
-      tokensLimit: 25000,
+      tokensLimit: 25_000,
       chatsCount: 0,
       tier: "free",
       subscriptionStatus: "none",

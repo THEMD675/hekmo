@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+import { auth } from "@/app/(auth)/auth";
 import { db } from "@/lib/db/queries";
 import { business } from "@/lib/db/schema";
-import { auth } from "@/app/(auth)/auth";
 
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
-    
+
     if (!session?.user?.id) {
       return NextResponse.json(
         { error: "Authentication required" },
@@ -15,7 +15,8 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, nameAr, type, phone, workingHours, workingHoursAr, address } = body;
+    const { name, nameAr, type, phone, workingHours, workingHoursAr, address } =
+      body;
 
     if (!name || !type) {
       return NextResponse.json(
@@ -50,7 +51,6 @@ export async function POST(request: NextRequest) {
       success: true,
       business: newBusiness,
     });
-
   } catch (error) {
     console.error("[Business Register] Error:", error);
     return NextResponse.json(

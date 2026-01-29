@@ -1,7 +1,18 @@
+import { eq, inArray } from "drizzle-orm";
 import { auth } from "@/app/(auth)/auth";
 import { db } from "@/lib/db/queries";
-import { user, chat, message, document, vote, suggestion, business, businessKnowledge, conversation, conversationMessage } from "@/lib/db/schema";
-import { eq, inArray } from "drizzle-orm";
+import {
+  business,
+  businessKnowledge,
+  chat,
+  conversation,
+  conversationMessage,
+  document,
+  message,
+  suggestion,
+  user,
+  vote,
+} from "@/lib/db/schema";
 
 export async function DELETE(request: Request) {
   const session = await auth();
@@ -15,10 +26,7 @@ export async function DELETE(request: Request) {
 
     // Require explicit confirmation
     if (confirmation !== "DELETE") {
-      return Response.json(
-        { error: "التأكيد غير صحيح" },
-        { status: 400 }
-      );
+      return Response.json({ error: "التأكيد غير صحيح" }, { status: 400 });
     }
 
     const userId = session.user.id;
@@ -29,19 +37,19 @@ export async function DELETE(request: Request) {
       .select({ id: chat.id })
       .from(chat)
       .where(eq(chat.userId, userId));
-    
-    const chatIds = userChats.map(c => c.id);
+
+    const chatIds = userChats.map((c) => c.id);
 
     // Get user's business IDs
     const userBusinesses = await db
       .select({ id: business.id })
       .from(business)
       .where(eq(business.userId, userId));
-    
-    const businessIds = userBusinesses.map(b => b.id);
+
+    const businessIds = userBusinesses.map((b) => b.id);
 
     // Delete in order (respecting foreign keys)
-    
+
     // 1. Delete votes on user's messages
     if (chatIds.length > 0) {
       await db.delete(vote).where(inArray(vote.chatId, chatIds));
@@ -64,13 +72,19 @@ export async function DELETE(request: Request) {
     // 6. Delete business-related data
     if (businessIds.length > 0) {
       // Delete conversation messages
-      await db.delete(conversationMessage).where(inArray(conversationMessage.businessId, businessIds));
-      
+      await db
+        .delete(conversationMessage)
+        .where(inArray(conversationMessage.businessId, businessIds));
+
       // Delete conversations
-      await db.delete(conversation).where(inArray(conversation.businessId, businessIds));
-      
+      await db
+        .delete(conversation)
+        .where(inArray(conversation.businessId, businessIds));
+
       // Delete business knowledge
-      await db.delete(businessKnowledge).where(inArray(businessKnowledge.businessId, businessIds));
+      await db
+        .delete(businessKnowledge)
+        .where(inArray(businessKnowledge.businessId, businessIds));
     }
 
     // 7. Delete user's businesses
@@ -87,10 +101,7 @@ export async function DELETE(request: Request) {
     });
   } catch (error) {
     console.error("[Account Delete] Error:", error);
-    return Response.json(
-      { error: "فشل حذف الحساب" },
-      { status: 500 }
-    );
+    return Response.json({ error: "فشل حذف الحساب" }, { status: 500 });
   }
 }
 
@@ -112,8 +123,8 @@ export async function GET() {
       .where(eq(chat.userId, userId));
 
     // Get messages from user's chats
-    const chatIds = userChats.map(c => c.id);
-    let userMessages: typeof message.$inferSelect[] = [];
+    const chatIds = userChats.map((c) => c.id);
+    let userMessages: (typeof message.$inferSelect)[] = [];
     if (chatIds.length > 0) {
       userMessages = await db
         .select()
@@ -134,8 +145,8 @@ export async function GET() {
       .where(eq(business.userId, userId));
 
     // Get business knowledge
-    const businessIds = userBusinesses.map(b => b.id);
-    let userKnowledge: typeof businessKnowledge.$inferSelect[] = [];
+    const businessIds = userBusinesses.map((b) => b.id);
+    let userKnowledge: (typeof businessKnowledge.$inferSelect)[] = [];
     if (businessIds.length > 0) {
       userKnowledge = await db
         .select()
@@ -150,33 +161,33 @@ export async function GET() {
         email: session.user.email,
         name: session.user.name,
       },
-      chats: userChats.map(c => ({
+      chats: userChats.map((c) => ({
         id: c.id,
         title: c.title,
         createdAt: c.createdAt,
         visibility: c.visibility,
       })),
-      messages: userMessages.map(m => ({
+      messages: userMessages.map((m) => ({
         id: m.id,
         chatId: m.chatId,
         role: m.role,
         parts: m.parts,
         createdAt: m.createdAt,
       })),
-      documents: userDocuments.map(d => ({
+      documents: userDocuments.map((d) => ({
         id: d.id,
         title: d.title,
         content: d.content,
         kind: d.kind,
         createdAt: d.createdAt,
       })),
-      businesses: userBusinesses.map(b => ({
+      businesses: userBusinesses.map((b) => ({
         id: b.id,
         name: b.name,
         type: b.type,
         createdAt: b.createdAt,
       })),
-      businessKnowledge: userKnowledge.map(k => ({
+      businessKnowledge: userKnowledge.map((k) => ({
         id: k.id,
         type: k.type,
         title: k.title,
@@ -194,9 +205,6 @@ export async function GET() {
     });
   } catch (error) {
     console.error("[Data Export] Error:", error);
-    return Response.json(
-      { error: "فشل تصدير البيانات" },
-      { status: 500 }
-    );
+    return Response.json({ error: "فشل تصدير البيانات" }, { status: 500 });
   }
 }

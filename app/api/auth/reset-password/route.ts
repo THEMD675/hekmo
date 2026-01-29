@@ -1,13 +1,10 @@
 import { hash } from "bcrypt-ts";
+import { eq } from "drizzle-orm";
 import { db } from "@/lib/db/queries";
 import { user } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
 
 // Token storage (in production, use Redis or database table)
-const resetTokens = new Map<
-  string,
-  { email: string; expires: Date }
->();
+const resetTokens = new Map<string, { email: string; expires: Date }>();
 
 // Request password reset
 export async function POST(request: Request) {
@@ -90,10 +87,7 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("[Password Reset] Error:", error);
-    return Response.json(
-      { error: "فشل إرسال رابط التعيين" },
-      { status: 500 }
-    );
+    return Response.json({ error: "فشل إرسال رابط التعيين" }, { status: 500 });
   }
 }
 
@@ -103,10 +97,7 @@ export async function PUT(request: Request) {
     const { token, password } = await request.json();
 
     if (!token || !password) {
-      return Response.json(
-        { error: "البيانات غير مكتملة" },
-        { status: 400 }
-      );
+      return Response.json({ error: "البيانات غير مكتملة" }, { status: 400 });
     }
 
     if (password.length < 8) {
@@ -120,18 +111,12 @@ export async function PUT(request: Request) {
     const tokenData = resetTokens.get(token);
 
     if (!tokenData) {
-      return Response.json(
-        { error: "الرابط غير صالح" },
-        { status: 400 }
-      );
+      return Response.json({ error: "الرابط غير صالح" }, { status: 400 });
     }
 
     if (tokenData.expires < new Date()) {
       resetTokens.delete(token);
-      return Response.json(
-        { error: "انتهت صلاحية الرابط" },
-        { status: 400 }
-      );
+      return Response.json({ error: "انتهت صلاحية الرابط" }, { status: 400 });
     }
 
     // Hash new password
@@ -145,10 +130,7 @@ export async function PUT(request: Request) {
       .returning();
 
     if (!updatedUser) {
-      return Response.json(
-        { error: "المستخدم غير موجود" },
-        { status: 404 }
-      );
+      return Response.json({ error: "المستخدم غير موجود" }, { status: 404 });
     }
 
     console.log("[Password Reset] Password changed for:", tokenData.email);
@@ -162,9 +144,6 @@ export async function PUT(request: Request) {
     });
   } catch (error) {
     console.error("[Password Reset] Error:", error);
-    return Response.json(
-      { error: "فشل تغيير كلمة المرور" },
-      { status: 500 }
-    );
+    return Response.json({ error: "فشل تغيير كلمة المرور" }, { status: 500 });
   }
 }

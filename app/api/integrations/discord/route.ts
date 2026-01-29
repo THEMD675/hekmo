@@ -1,4 +1,7 @@
-import { verifyDiscordRequest, handleDiscordInteraction } from "@/lib/integrations/discord";
+import {
+  handleDiscordInteraction,
+  verifyDiscordRequest,
+} from "@/lib/integrations/discord";
 
 export async function POST(request: Request) {
   const body = await request.text();

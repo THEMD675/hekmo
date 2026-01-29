@@ -1,15 +1,16 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getLanguageModel } from "@/lib/ai/providers";
 import { generateText } from "ai";
+import { eq } from "drizzle-orm";
+import { type NextRequest, NextResponse } from "next/server";
+import { getLanguageModel } from "@/lib/ai/providers";
 import { db } from "@/lib/db/queries";
 import { business, businessKnowledge } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
 
 // Business AI Chat - context-aware responses for businesses
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { businessId, customerMessage, customerName, conversationHistory } = body;
+    const { businessId, customerMessage, customerName, conversationHistory } =
+      body;
 
     if (!businessId || !customerMessage) {
       return NextResponse.json(
@@ -20,15 +21,15 @@ export async function POST(request: NextRequest) {
 
     // Fetch business from database
     let businessRecord;
-    let knowledge: typeof businessKnowledge.$inferSelect[] = [];
-    
+    let knowledge: (typeof businessKnowledge.$inferSelect)[] = [];
+
     try {
       const [foundBusiness] = await db
         .select()
         .from(business)
         .where(eq(business.id, businessId))
         .limit(1);
-      
+
       if (foundBusiness) {
         businessRecord = foundBusiness;
         knowledge = await db
@@ -41,19 +42,24 @@ export async function POST(request: NextRequest) {
     }
 
     // Build context from real data or fallback
-    const businessContext = businessRecord ? {
-      name: businessRecord.name,
-      type: businessRecord.type,
-      workingHours: businessRecord.workingHours || businessRecord.workingHoursAr || "غير محدد",
-      phone: businessRecord.phone || "",
-      address: businessRecord.address || "",
-      personality: businessRecord.aiPersonality || "friendly",
-      knowledgeItems: knowledge.map(k => ({
-        type: k.type,
-        title: k.title,
-        content: k.content,
-      })),
-    } : getFallbackContext();
+    const businessContext = businessRecord
+      ? {
+          name: businessRecord.name,
+          type: businessRecord.type,
+          workingHours:
+            businessRecord.workingHours ||
+            businessRecord.workingHoursAr ||
+            "غير محدد",
+          phone: businessRecord.phone || "",
+          address: businessRecord.address || "",
+          personality: businessRecord.aiPersonality || "friendly",
+          knowledgeItems: knowledge.map((k) => ({
+            type: k.type,
+            title: k.title,
+            content: k.content,
+          })),
+        }
+      : getFallbackContext();
 
     const systemPrompt = buildBusinessPrompt(businessContext, customerName);
 
@@ -61,10 +67,12 @@ export async function POST(request: NextRequest) {
       model: getLanguageModel("chat-model"),
       system: systemPrompt,
       messages: [
-        ...(conversationHistory || []).map((msg: { role: string; content: string }) => ({
-          role: msg.role as "user" | "assistant",
-          content: msg.content,
-        })),
+        ...(conversationHistory || []).map(
+          (msg: { role: string; content: string }) => ({
+            role: msg.role as "user" | "assistant",
+            content: msg.content,
+          })
+        ),
         { role: "user" as const, content: customerMessage },
       ],
     });
@@ -73,7 +81,6 @@ export async function POST(request: NextRequest) {
       response: text,
       businessId,
     });
-
   } catch (error) {
     console.error("[Business Chat] Error:", error);
     return NextResponse.json(
@@ -95,21 +102,23 @@ function getFallbackContext() {
   };
 }
 
-function buildBusinessPrompt(businessContext: {
-  name: string;
-  type: string;
-  workingHours: string;
-  phone: string;
-  address: string;
-  personality: string;
-  knowledgeItems: { type: string; title: string; content: string }[];
-}, customerName: string): string {
-  
+function buildBusinessPrompt(
+  businessContext: {
+    name: string;
+    type: string;
+    workingHours: string;
+    phone: string;
+    address: string;
+    personality: string;
+    knowledgeItems: { type: string; title: string; content: string }[];
+  },
+  customerName: string
+): string {
   // Build knowledge section from actual uploaded data
   let knowledgeSection = "";
   if (businessContext.knowledgeItems.length > 0) {
     knowledgeSection = businessContext.knowledgeItems
-      .map(k => `## ${k.title}\n${k.content}`)
+      .map((k) => `## ${k.title}\n${k.content}`)
       .join("\n\n");
   } else {
     knowledgeSection = "لا توجد معلومات إضافية متاحة.";

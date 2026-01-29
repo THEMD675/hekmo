@@ -1,4 +1,4 @@
-import { ilike, eq, and, desc } from "drizzle-orm";
+import { and, desc, eq, ilike } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { auth } from "@/app/(auth)/auth";
@@ -27,10 +27,7 @@ export async function GET(request: Request) {
       .select()
       .from(chat)
       .where(
-        and(
-          eq(chat.userId, session.user.id),
-          ilike(chat.title, `%${query}%`)
-        )
+        and(eq(chat.userId, session.user.id), ilike(chat.title, `%${query}%`))
       )
       .orderBy(desc(chat.createdAt))
       .limit(10);

@@ -10,8 +10,8 @@ export async function GET(request: Request) {
 
   try {
     const { searchParams } = new URL(request.url);
-    const limit = parseInt(searchParams.get("limit") || "50", 10);
-    const offset = parseInt(searchParams.get("offset") || "0", 10);
+    const limit = Number.parseInt(searchParams.get("limit") || "50", 10);
+    const offset = Number.parseInt(searchParams.get("offset") || "0", 10);
 
     const result = await getChatsByUserId({
       id: session.user.id,
@@ -33,9 +33,6 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error("Chat history error:", error);
-    return Response.json(
-      { error: "فشل تحميل المحادثات" },
-      { status: 500 }
-    );
+    return Response.json({ error: "فشل تحميل المحادثات" }, { status: 500 });
   }
 }

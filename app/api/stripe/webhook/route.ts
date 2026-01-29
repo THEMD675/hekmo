@@ -1,14 +1,14 @@
+import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { db } from "@/lib/db/queries";
-import { user, business } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
+import { business } from "@/lib/db/schema";
 
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 
 // Plan limits
 const PLAN_LIMITS: Record<string, number> = {
   starter: 1000,
-  business: 10000,
+  business: 10_000,
   enterprise: -1, // unlimited
 };
 
@@ -40,7 +40,9 @@ export async function POST(request: Request) {
         const customerId = session.customer;
         const subscriptionId = session.subscription;
 
-        console.log(`[Stripe] Checkout completed - userId: ${userId}, businessId: ${businessId}, plan: ${planId}`);
+        console.log(
+          `[Stripe] Checkout completed - userId: ${userId}, businessId: ${businessId}, plan: ${planId}`
+        );
 
         if (businessId && planId) {
           // Update business subscription
@@ -57,7 +59,9 @@ export async function POST(request: Request) {
             })
             .where(eq(business.id, businessId));
 
-          console.log(`[Stripe] Business ${businessId} subscribed to ${planId}`);
+          console.log(
+            `[Stripe] Business ${businessId} subscribed to ${planId}`
+          );
         }
         break;
       }
@@ -67,7 +71,9 @@ export async function POST(request: Request) {
         const customerId = subscription.customer;
         const status = subscription.status;
 
-        console.log(`[Stripe] Subscription updated for ${customerId}: ${status}`);
+        console.log(
+          `[Stripe] Subscription updated for ${customerId}: ${status}`
+        );
 
         // Find and update the business
         const [userBusiness] = await db
@@ -77,9 +83,14 @@ export async function POST(request: Request) {
           .limit(1);
 
         if (userBusiness) {
-          const newStatus = status === "active" ? "active" : 
-                           status === "past_due" ? "past_due" :
-                           status === "canceled" ? "cancelled" : status;
+          const newStatus =
+            status === "active"
+              ? "active"
+              : status === "past_due"
+                ? "past_due"
+                : status === "canceled"
+                  ? "cancelled"
+                  : status;
 
           await db
             .update(business)
@@ -178,9 +189,6 @@ export async function POST(request: Request) {
     return Response.json({ received: true });
   } catch (error) {
     console.error("[Stripe Webhook] Error:", error);
-    return Response.json(
-      { error: "Webhook handler failed" },
-      { status: 500 }
-    );
+    return Response.json({ error: "Webhook handler failed" }, { status: 500 });
   }
 }

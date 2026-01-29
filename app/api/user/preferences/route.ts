@@ -86,10 +86,7 @@ export async function PUT(request: Request) {
     });
   } catch (error) {
     console.error("Preferences update error:", error);
-    return Response.json(
-      { error: "فشل حفظ التفضيلات" },
-      { status: 500 }
-    );
+    return Response.json({ error: "فشل حفظ التفضيلات" }, { status: 500 });
   }
 }
 

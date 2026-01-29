@@ -1,7 +1,7 @@
-import { auth } from "@/app/(auth)/auth";
 import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
+import { auth } from "@/app/(auth)/auth";
 import { chat, message } from "@/lib/db/schema";
 
 // biome-ignore lint: Forbidden non-null assertion.

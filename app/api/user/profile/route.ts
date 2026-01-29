@@ -1,7 +1,7 @@
-import { auth } from "@/app/(auth)/auth";
 import { eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
+import { auth } from "@/app/(auth)/auth";
 import { user } from "@/lib/db/schema";
 
 export async function GET() {
@@ -37,10 +37,7 @@ export async function GET() {
     await client.end();
 
     if (!userData) {
-      return Response.json(
-        { error: "المستخدم غير موجود" },
-        { status: 404 }
-      );
+      return Response.json({ error: "المستخدم غير موجود" }, { status: 404 });
     }
 
     return Response.json({
@@ -52,10 +49,7 @@ export async function GET() {
     });
   } catch (error) {
     console.error("Profile fetch error:", error);
-    return Response.json(
-      { error: "فشل تحميل الملف الشخصي" },
-      { status: 500 }
-    );
+    return Response.json({ error: "فشل تحميل الملف الشخصي" }, { status: 500 });
   }
 }
 
@@ -80,10 +74,7 @@ export async function PATCH(request: Request) {
     }
 
     if (Object.keys(filteredUpdates).length === 0) {
-      return Response.json(
-        { error: "لا توجد تحديثات صالحة" },
-        { status: 400 }
-      );
+      return Response.json({ error: "لا توجد تحديثات صالحة" }, { status: 400 });
     }
 
     // In production, update the database
@@ -95,9 +86,6 @@ export async function PATCH(request: Request) {
     });
   } catch (error) {
     console.error("Profile update error:", error);
-    return Response.json(
-      { error: "فشل تحديث الملف الشخصي" },
-      { status: 500 }
-    );
+    return Response.json({ error: "فشل تحديث الملف الشخصي" }, { status: 500 });
   }
 }

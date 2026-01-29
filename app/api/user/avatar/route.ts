@@ -1,8 +1,8 @@
 import { put } from "@vercel/blob";
+import { eq } from "drizzle-orm";
 import { auth } from "@/app/(auth)/auth";
 import { db } from "@/lib/db/queries";
 import { user } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
 
 export async function POST(request: Request) {
   const session = await auth();
@@ -21,10 +21,7 @@ export async function POST(request: Request) {
 
     // Validate file type
     if (!file.type.startsWith("image/")) {
-      return Response.json(
-        { error: "يرجى رفع صورة" },
-        { status: 400 }
-      );
+      return Response.json({ error: "يرجى رفع صورة" }, { status: 400 });
     }
 
     // Validate file size (5MB max)
@@ -57,9 +54,6 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("[Avatar Upload] Error:", error);
-    return Response.json(
-      { error: "فشل رفع الصورة" },
-      { status: 500 }
-    );
+    return Response.json({ error: "فشل رفع الصورة" }, { status: 500 });
   }
 }

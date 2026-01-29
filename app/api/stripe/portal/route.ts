@@ -11,20 +11,14 @@ export async function POST(request: Request) {
   }
 
   if (!STRIPE_SECRET_KEY) {
-    return Response.json(
-      { error: "Stripe not configured" },
-      { status: 500 }
-    );
+    return Response.json({ error: "Stripe not configured" }, { status: 500 });
   }
 
   try {
     const { customerId } = await request.json();
 
     if (!customerId) {
-      return Response.json(
-        { error: "Customer ID required" },
-        { status: 400 }
-      );
+      return Response.json({ error: "Customer ID required" }, { status: 400 });
     }
 
     // Create Stripe billing portal session
@@ -57,9 +51,6 @@ export async function POST(request: Request) {
     return Response.json({ url: portalSession.url });
   } catch (error) {
     console.error("Portal error:", error);
-    return Response.json(
-      { error: "فشل فتح بوابة الفواتير" },
-      { status: 500 }
-    );
+    return Response.json({ error: "فشل فتح بوابة الفواتير" }, { status: 500 });
   }
 }

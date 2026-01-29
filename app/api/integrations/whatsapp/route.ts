@@ -1,4 +1,7 @@
-import { verifyWhatsAppWebhook, handleWhatsAppWebhook } from "@/lib/integrations/whatsapp";
+import {
+  handleWhatsAppWebhook,
+  verifyWhatsAppWebhook,
+} from "@/lib/integrations/whatsapp";
 
 // Webhook verification
 export async function GET(request: Request) {
@@ -8,11 +11,11 @@ export async function GET(request: Request) {
   const challenge = url.searchParams.get("hub.challenge") || "";
 
   const result = verifyWhatsAppWebhook(mode, token, challenge);
-  
+
   if (result) {
     return new Response(result, { status: 200 });
   }
-  
+
   return Response.json({ error: "Verification failed" }, { status: 403 });
 }
 

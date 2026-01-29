@@ -1,10 +1,7 @@
 import { auth } from "@/app/(auth)/auth";
 
 // Simple in-memory rate limit store (use Redis in production)
-const rateLimits = new Map<
-  string,
-  { count: number; resetTime: number }
->();
+const rateLimits = new Map<string, { count: number; resetTime: number }>();
 
 const LIMITS = {
   free: { requests: 50, windowMs: 24 * 60 * 60 * 1000 }, // 50 per day

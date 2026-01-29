@@ -13,10 +13,7 @@ export async function POST(request: Request) {
   }
 
   if (!STRIPE_SECRET_KEY) {
-    return Response.json(
-      { error: "Stripe not configured" },
-      { status: 500 }
-    );
+    return Response.json({ error: "Stripe not configured" }, { status: 500 });
   }
 
   try {
@@ -29,10 +26,7 @@ export async function POST(request: Request) {
         : STRIPE_PRICE_PRO_MONTHLY;
 
     if (!stripePriceId) {
-      return Response.json(
-        { error: "Price not configured" },
-        { status: 500 }
-      );
+      return Response.json({ error: "Price not configured" }, { status: 500 });
     }
 
     // Create Stripe checkout session
@@ -61,10 +55,7 @@ export async function POST(request: Request) {
     if (!stripeResponse.ok) {
       const error = await stripeResponse.text();
       console.error("Stripe error:", error);
-      return Response.json(
-        { error: "فشل إنشاء جلسة الدفع" },
-        { status: 500 }
-      );
+      return Response.json({ error: "فشل إنشاء جلسة الدفع" }, { status: 500 });
     }
 
     const checkoutSession = await stripeResponse.json();
@@ -72,9 +63,6 @@ export async function POST(request: Request) {
     return Response.json({ url: checkoutSession.url });
   } catch (error) {
     console.error("Checkout error:", error);
-    return Response.json(
-      { error: "فشل إنشاء جلسة الدفع" },
-      { status: 500 }
-    );
+    return Response.json({ error: "فشل إنشاء جلسة الدفع" }, { status: 500 });
   }
 }
