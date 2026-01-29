@@ -13,8 +13,10 @@ interface Business {
   workingHours?: string;
   whatsappConnected: boolean;
   subscriptionPlan: string;
+  subscriptionStatus: string;
   messagesThisMonth: number;
   messagesLimit: number;
+  trialEndsAt?: string;
 }
 
 interface Conversation {
@@ -235,24 +237,7 @@ function OverviewTab({
       </div>
 
       {/* Subscription Status */}
-      <div className="p-6 bg-gray-900 rounded-xl border border-gray-800 mb-8">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="font-bold mb-1">الاشتراك</h3>
-            <p className="text-gray-400">
-              {business.subscriptionPlan === "starter" ? "المبتدئ" : 
-               business.subscriptionPlan === "business" ? "الأعمال" : 
-               business.subscriptionPlan === "enterprise" ? "المؤسسات" : "تجريبي"}
-            </p>
-          </div>
-          <Link 
-            href="/pricing"
-            className="px-4 py-2 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 rounded-lg transition"
-          >
-            ترقية
-          </Link>
-        </div>
-      </div>
+      <SubscriptionCard business={business} />
 
       {/* Recent Conversations */}
       <div className="p-6 bg-gray-900 rounded-xl border border-gray-800">
@@ -522,6 +507,96 @@ function ConversationListItem({
         <span className="text-xs text-gray-500">{time}</span>
       </div>
       <p className={`text-sm truncate ${unread ? "text-gray-300" : "text-gray-500"}`}>{preview}</p>
+    </div>
+  );
+}
+
+function SubscriptionCard({ business }: { business: Business }) {
+  const [upgrading, setUpgrading] = useState<string | null>(null);
+
+  const handleUpgrade = async (planId: string) => {
+    setUpgrading(planId);
+    try {
+      const response = await fetch("/api/business/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          planId,
+          businessId: business.id,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else if (data.type === "contact") {
+        window.location.href = `mailto:${data.email}`;
+      } else if (data.error) {
+        alert(data.error);
+      }
+    } catch (error) {
+      console.error("Upgrade error:", error);
+    } finally {
+      setUpgrading(null);
+    }
+  };
+
+  const plans = [
+    { id: "starter", name: "المبتدئ", price: 499, messages: "1,000" },
+    { id: "business", name: "الأعمال", price: 1499, messages: "10,000" },
+    { id: "enterprise", name: "المؤسسات", price: null, messages: "غير محدود" },
+  ];
+
+  const currentPlanIndex = plans.findIndex(p => p.id === business.subscriptionPlan);
+
+  return (
+    <div className="p-6 bg-gray-900 rounded-xl border border-gray-800 mb-8">
+      <h3 className="font-bold mb-4">الاشتراك</h3>
+      
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <p className="text-lg font-bold text-emerald-400">
+            {plans.find(p => p.id === business.subscriptionPlan)?.name || "تجريبي"}
+          </p>
+          <p className="text-sm text-gray-400">
+            {business.subscriptionStatus === "trial" ? "فترة تجريبية" :
+             business.subscriptionStatus === "active" ? "نشط" :
+             business.subscriptionStatus === "past_due" ? "متأخر الدفع" : 
+             business.subscriptionStatus}
+          </p>
+        </div>
+        <div className="text-right">
+          <p className="text-sm text-gray-400">الرسائل هذا الشهر</p>
+          <p className="font-bold">
+            {business.messagesThisMonth || 0} / {business.messagesLimit === -1 ? "∞" : business.messagesLimit}
+          </p>
+        </div>
+      </div>
+
+      {/* Upgrade Options */}
+      {business.subscriptionPlan !== "enterprise" && (
+        <div className="grid grid-cols-3 gap-2 pt-4 border-t border-gray-800">
+          {plans.map((plan, idx) => (
+            <button
+              key={plan.id}
+              onClick={() => idx > currentPlanIndex && handleUpgrade(plan.id)}
+              disabled={idx <= currentPlanIndex || upgrading !== null}
+              className={`p-3 rounded-lg text-center transition ${
+                idx <= currentPlanIndex 
+                  ? "bg-gray-800 text-gray-500 cursor-not-allowed" 
+                  : "bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30"
+              }`}
+            >
+              <p className="font-bold text-sm">{plan.name}</p>
+              <p className="text-xs">
+                {plan.price ? `${plan.price} ر.س` : "تواصل معنا"}
+              </p>
+              {upgrading === plan.id && <span className="text-xs">جاري...</span>}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
