@@ -2,6 +2,7 @@ import { hash } from "bcrypt-ts";
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db/queries";
 import { user } from "@/lib/db/schema";
+import { checkRateLimit, getClientIp, rateLimitResponse, RateLimits } from "@/lib/rate-limiter";
 
 // Token storage (in production, use Redis or database table)
 const resetTokens = new Map<string, { email: string; expires: Date }>();
@@ -9,6 +10,13 @@ const resetTokens = new Map<string, { email: string; expires: Date }>();
 // Request password reset
 export async function POST(request: Request) {
   try {
+    // Rate limiting - strict for auth endpoints
+    const clientIp = getClientIp(request);
+    const rateLimit = checkRateLimit(clientIp, RateLimits.auth);
+    if (!rateLimit.success) {
+      return rateLimitResponse(rateLimit);
+    }
+
     const { email } = await request.json();
 
     if (!email) {

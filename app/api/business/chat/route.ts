@@ -5,10 +5,18 @@ import { getLanguageModel } from "@/lib/ai/providers";
 import { isArabic, normalizeArabic } from "@/lib/arabic-nlp";
 import { db } from "@/lib/db/queries";
 import { business, businessKnowledge } from "@/lib/db/schema";
+import { checkRateLimit, getClientIp, rateLimitResponse, RateLimits } from "@/lib/rate-limiter";
 
 // Business AI Chat - context-aware responses for businesses
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const clientIp = getClientIp(request);
+    const rateLimit = checkRateLimit(clientIp, RateLimits.businessChat);
+    if (!rateLimit.success) {
+      return rateLimitResponse(rateLimit);
+    }
+
     const body = await request.json();
     const { businessId, customerMessage, customerName, conversationHistory } =
       body;

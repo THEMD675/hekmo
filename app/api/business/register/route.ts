@@ -2,9 +2,17 @@ import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/app/(auth)/auth";
 import { db } from "@/lib/db/queries";
 import { business } from "@/lib/db/schema";
+import { checkRateLimit, getClientIp, rateLimitResponse, RateLimits } from "@/lib/rate-limiter";
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting
+    const clientIp = getClientIp(request);
+    const rateLimit = checkRateLimit(clientIp, RateLimits.api);
+    if (!rateLimit.success) {
+      return rateLimitResponse(rateLimit);
+    }
+
     const session = await auth();
 
     if (!session?.user?.id) {
