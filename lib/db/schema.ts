@@ -168,3 +168,107 @@ export const stream = pgTable(
 );
 
 export type Stream = InferSelectModel<typeof stream>;
+
+// =============================================================================
+// HEKMO BUSINESS PLATFORM SCHEMA
+// =============================================================================
+
+export const business = pgTable("Business", {
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
+  userId: uuid("userId")
+    .notNull()
+    .references(() => user.id),
+  name: text("name").notNull(),
+  nameAr: text("nameAr"),
+  type: varchar("type", { length: 50 }).notNull().default("other"), // restaurant, cafe, salon, clinic, other
+  phone: varchar("phone", { length: 20 }),
+  email: varchar("email", { length: 100 }),
+  address: text("address"),
+  workingHours: text("workingHours"),
+  workingHoursAr: text("workingHoursAr"),
+  timezone: varchar("timezone", { length: 50 }).default("Asia/Riyadh"),
+  language: varchar("language", { length: 10 }).default("ar"), // ar, en, both
+  
+  // WhatsApp Business API
+  whatsappPhoneNumberId: text("whatsappPhoneNumberId"),
+  whatsappBusinessAccountId: text("whatsappBusinessAccountId"),
+  whatsappAccessToken: text("whatsappAccessToken"), // should be encrypted
+  whatsappWebhookVerifyToken: text("whatsappWebhookVerifyToken"),
+  whatsappConnected: boolean("whatsappConnected").default(false),
+  whatsappConnectedAt: timestamp("whatsappConnectedAt"),
+  
+  // Subscription
+  subscriptionPlan: varchar("subscriptionPlan", { length: 20 }).default("starter"), // starter, business, enterprise
+  subscriptionStatus: varchar("subscriptionStatus", { length: 20 }).default("trial"), // trial, active, cancelled, expired
+  trialEndsAt: timestamp("trialEndsAt"),
+  stripeCustomerId: text("stripeCustomerId"),
+  stripeSubscriptionId: text("stripeSubscriptionId"),
+  
+  // Usage
+  messagesThisMonth: json("messagesThisMonth").default(0),
+  messagesLimit: json("messagesLimit").default(1000),
+  
+  // Settings
+  aiPersonality: varchar("aiPersonality", { length: 20 }).default("friendly"), // friendly, professional, casual
+  autoReplyEnabled: boolean("autoReplyEnabled").default(true),
+  handoffEnabled: boolean("handoffEnabled").default(true), // allow transferring to human
+  
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+});
+
+export type Business = InferSelectModel<typeof business>;
+
+export const businessKnowledge = pgTable("BusinessKnowledge", {
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
+  businessId: uuid("businessId")
+    .notNull()
+    .references(() => business.id),
+  type: varchar("type", { length: 20 }).notNull(), // menu, faq, pricing, info, custom
+  title: text("title").notNull(),
+  content: text("content").notNull(),
+  contentAr: text("contentAr"),
+  isActive: boolean("isActive").default(true),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+});
+
+export type BusinessKnowledge = InferSelectModel<typeof businessKnowledge>;
+
+export const conversation = pgTable("Conversation", {
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
+  businessId: uuid("businessId")
+    .notNull()
+    .references(() => business.id),
+  customerPhone: varchar("customerPhone", { length: 20 }).notNull(),
+  customerName: text("customerName"),
+  customerWaId: text("customerWaId"), // WhatsApp ID
+  status: varchar("status", { length: 20 }).default("active"), // active, resolved, handed_off
+  handedOffTo: uuid("handedOffTo").references(() => user.id),
+  handedOffAt: timestamp("handedOffAt"),
+  lastMessageAt: timestamp("lastMessageAt").defaultNow(),
+  messagesCount: json("messagesCount").default(0),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+});
+
+export type Conversation = InferSelectModel<typeof conversation>;
+
+export const conversationMessage = pgTable("ConversationMessage", {
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
+  conversationId: uuid("conversationId")
+    .notNull()
+    .references(() => conversation.id),
+  businessId: uuid("businessId")
+    .notNull()
+    .references(() => business.id),
+  waMessageId: text("waMessageId"), // WhatsApp message ID for deduplication
+  role: varchar("role", { length: 20 }).notNull(), // customer, ai, human
+  content: text("content").notNull(),
+  contentType: varchar("contentType", { length: 20 }).default("text"), // text, image, audio, document
+  mediaUrl: text("mediaUrl"),
+  metadata: json("metadata").default({}),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+});
+
+export type ConversationMessage = InferSelectModel<typeof conversationMessage>;
