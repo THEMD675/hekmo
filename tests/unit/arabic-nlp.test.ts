@@ -5,7 +5,7 @@ import {
   isSaudiDialect,
   extractArabicKeywords,
   toArabicNumerals,
-  extractHealthTerms,
+  extractBusinessTerms,
 } from "@/lib/arabic-nlp";
 
 describe("Arabic NLP", () => {
@@ -77,15 +77,15 @@ describe("Arabic NLP", () => {
     });
   });
 
-  describe("extractHealthTerms", () => {
-    it("should extract health-related terms", () => {
-      const terms = extractHealthTerms("أريد تحسين نومي وصحتي");
-      expect(terms).toContain("نوم");
-      expect(terms).toContain("صحة");
+  describe("extractBusinessTerms", () => {
+    it("should extract business-related terms", () => {
+      const terms = extractBusinessTerms("أريد معرفة سعر المنتج والطلب");
+      expect(terms).toContain("سعر");
+      expect(terms).toContain("منتج");
     });
 
-    it("should return empty for non-health text", () => {
-      const terms = extractHealthTerms("الطقس جميل اليوم");
+    it("should return empty for non-business text", () => {
+      const terms = extractBusinessTerms("الطقس جميل اليوم");
       expect(terms.length).toBe(0);
     });
   });
