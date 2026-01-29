@@ -6,6 +6,16 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+// Speech Recognition types
+type SpeechRecognitionEvent = Event & {
+  resultIndex: number;
+  results: SpeechRecognitionResultList;
+};
+
+type SpeechRecognitionErrorEvent = Event & {
+  error: string;
+};
+
 interface VoiceInputProps {
   onTranscript: (text: string) => void;
   onListeningChange?: (listening: boolean) => void;
@@ -36,7 +46,7 @@ export function VoiceInput({
       recognitionRef.current.interimResults = true;
       recognitionRef.current.lang = language;
 
-      recognitionRef.current.onresult = (event) => {
+      recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
         let finalTranscript = "";
         let interimTranscript = "";
 
@@ -57,7 +67,7 @@ export function VoiceInput({
         }
       };
 
-      recognitionRef.current.onerror = (event) => {
+      recognitionRef.current.onerror = (event: SpeechRecognitionErrorEvent) => {
         console.error("Speech recognition error:", event.error);
         if (event.error === "not-allowed") {
           toast.error("يرجى السماح بالوصول للميكروفون");
@@ -226,7 +236,7 @@ export function useVoiceInput(
       recognitionRef.current.interimResults = false;
       recognitionRef.current.lang = language;
 
-      recognitionRef.current.onresult = (event) => {
+      recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
         const transcript = event.results[0][0].transcript;
         onTranscript(transcript);
       };

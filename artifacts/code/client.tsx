@@ -16,6 +16,19 @@ import {
 } from "@/components/icons";
 import { generateUUID } from "@/lib/utils";
 
+// Pyodide type declaration
+declare global {
+  // eslint-disable-next-line no-var
+  var loadPyodide: (config: { indexURL: string }) => Promise<PyodideInterface>;
+}
+
+interface PyodideInterface {
+  setStdout: (config: { batched: (output: string) => void }) => void;
+  setStderr: (config: { batched: (output: string) => void }) => void;
+  runPythonAsync: (code: string) => Promise<unknown>;
+  loadPackagesFromImports: (code: string, options?: { messageCallback?: (msg: string) => void }) => Promise<void>;
+}
+
 const OUTPUT_HANDLERS = {
   matplotlib: `
     import io
