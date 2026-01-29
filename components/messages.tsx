@@ -1,7 +1,8 @@
 import type { UseChatHelpers } from "@ai-sdk/react";
-import { ArrowDownIcon } from "lucide-react";
+import { ArrowDownIcon, Zap } from "lucide-react";
 import { useMemo } from "react";
 import { useMessages } from "@/hooks/use-messages";
+import { useResponseTime } from "@/hooks/use-response-time";
 import type { Vote } from "@/lib/db/schema";
 import type { ChatMessage } from "@/lib/types";
 import { useDataStream } from "./data-stream-provider";
@@ -76,6 +77,9 @@ function PureMessages({
 
   useDataStream();
 
+  // Track response time for speed indicator
+  const responseTime = useResponseTime(status);
+
   // Claude-style message grouping for cleaner UI
   const messageGroups = useMemo(
     () => groupConsecutiveMessages(messages),
@@ -135,6 +139,16 @@ function PureMessages({
                 (part) => "state" in part && part.state === "approval-responded"
               )
             ) && <ThinkingMessage />}
+
+          {/* Speed Indicator - shows after response completes */}
+          {responseTime !== null && messages.length > 0 && status === "ready" && (
+            <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground animate-in fade-in duration-300">
+              <Zap className="h-3 w-3 text-primary" />
+              <span>
+                أجاب في {responseTime.toFixed(1)} ثانية
+              </span>
+            </div>
+          )}
 
           <div
             className="min-h-[24px] min-w-[24px] shrink-0"

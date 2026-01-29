@@ -52,8 +52,11 @@ function PureSuggestedActions({ chatId, sendMessage }: SuggestedActionsProps) {
         <motion.button
           animate={{ opacity: 1, y: 0 }}
           className={cn(
-            "group relative flex items-center gap-3 rounded-xl border border-border/50 bg-card/50 p-4 text-right transition-all",
-            "hover:border-primary/30 hover:bg-card hover:shadow-sm"
+            // Material 3 Elevated Card pattern
+            "group relative flex items-center gap-3 rounded-2xl bg-card p-4 text-right",
+            "shadow-[var(--elevation-1)] transition-all duration-200",
+            "hover:shadow-[var(--elevation-2)] hover:scale-[1.01]",
+            "active:scale-[0.99]"
           )}
           exit={{ opacity: 0, y: 20 }}
           initial={{ opacity: 0, y: 20 }}
@@ -65,13 +68,13 @@ function PureSuggestedActions({ chatId, sendMessage }: SuggestedActionsProps) {
               parts: [{ type: "text", text: action.prompt }],
             });
           }}
-          transition={{ delay: 0.05 * index }}
+          transition={{ delay: 0.05 * index, duration: 0.2 }}
           type="button"
         >
           {/* Icon with gradient background */}
           <div
             className={cn(
-              "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br",
+              "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br shadow-sm",
               action.gradient
             )}
           >

@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { CitationsSourcesPanel, extractCitationsFromSearchResults } from "./citations";
 
 interface ToolResultProps {
   toolName: string;
@@ -73,7 +74,7 @@ export function ToolResult({ toolName, result, className }: ToolResultProps) {
   const renderResult = () => {
     if (!result) return null;
 
-    // Web search results
+    // Web search results - Perplexity citation pattern
     if (
       toolName === "webSearch" &&
       typeof result === "object" &&
@@ -84,27 +85,46 @@ export function ToolResult({ toolName, result, className }: ToolResultProps) {
           results: Array<{ title: string; url: string; snippet: string }>;
         }
       ).results;
+      
+      // Convert to citations format
+      const citations = extractCitationsFromSearchResults(searchResults);
+      
       return (
-        <div className="space-y-2">
-          {searchResults.slice(0, 3).map((r, idx) => (
-            <a
-              className="block p-2 rounded hover:bg-muted transition-colors"
-              href={r.url}
-              key={idx}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <div className="flex items-start gap-2">
-                <ExternalLink className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                <div>
-                  <p className="text-sm font-medium">{r.title}</p>
-                  <p className="text-xs text-muted-foreground line-clamp-2">
-                    {r.snippet}
-                  </p>
-                </div>
-              </div>
-            </a>
-          ))}
+        <div className="space-y-3">
+          {/* Compact source chips - Perplexity style */}
+          <div className="flex flex-wrap gap-1.5">
+            {citations.slice(0, 5).map((citation) => (
+              <a
+                className={cn(
+                  "inline-flex items-center gap-1.5 px-2 py-1",
+                  "bg-muted/70 hover:bg-muted rounded-md",
+                  "text-xs transition-colors group"
+                )}
+                href={citation.url}
+                key={citation.id}
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <span className="flex h-4 w-4 items-center justify-center rounded bg-primary/10 text-primary text-[10px] font-bold">
+                  {citation.id}
+                </span>
+                <span className="text-muted-foreground group-hover:text-foreground transition-colors truncate max-w-24">
+                  {(() => {
+                    try {
+                      return new URL(citation.url).hostname.replace("www.", "");
+                    } catch {
+                      return citation.url;
+                    }
+                  })()}
+                </span>
+              </a>
+            ))}
+          </div>
+          
+          {/* Hint for using citations */}
+          <p className="text-[10px] text-muted-foreground/70">
+            استخدم [1] [2] [3] للإشارة للمصادر في إجابتك
+          </p>
         </div>
       );
     }

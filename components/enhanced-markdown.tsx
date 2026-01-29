@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useMemo } from "react";
+import { memo, useMemo, type ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
@@ -13,11 +13,84 @@ import "katex/dist/katex.min.css";
 interface EnhancedMarkdownProps {
   content: string;
   className?: string;
+  citations?: Array<{ id: number; title: string; url: string; snippet?: string }>;
+}
+
+/**
+ * Parse text for citation patterns [1], [2], etc. and render them as badges
+ */
+function processCitations(
+  children: ReactNode,
+  citations?: Array<{ id: number; title: string; url: string; snippet?: string }>
+): ReactNode {
+  if (!citations || citations.length === 0) return children;
+  
+  // Only process string children
+  if (typeof children !== "string") {
+    // Handle arrays of children
+    if (Array.isArray(children)) {
+      return children.map((child, i) => {
+        const processed = processCitations(child, citations);
+        // Add key if it's an element
+        return typeof processed === "object" && processed !== null 
+          ? { ...processed, key: i } 
+          : processed;
+      });
+    }
+    return children;
+  }
+  
+  const text = children;
+  const parts: ReactNode[] = [];
+  const regex = /\[(\d+)\]/g;
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  let keyCounter = 0;
+
+  while ((match = regex.exec(text)) !== null) {
+    // Add text before the citation
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index));
+    }
+
+    // Find the citation
+    const citationId = parseInt(match[1], 10);
+    const citation = citations.find((c) => c.id === citationId);
+
+    if (citation) {
+      // Render citation badge
+      parts.push(
+        <a
+          className="inline-flex items-center justify-center h-4 min-w-4 px-1 mx-0.5 text-[10px] font-medium bg-primary/15 text-primary rounded hover:bg-primary/25 transition-colors align-super -translate-y-0.5 no-underline"
+          href={citation.url}
+          key={`cite-${keyCounter++}`}
+          rel="noopener noreferrer"
+          target="_blank"
+          title={citation.title}
+        >
+          {citationId}
+        </a>
+      );
+    } else {
+      // Keep original text if citation not found
+      parts.push(match[0]);
+    }
+
+    lastIndex = regex.lastIndex;
+  }
+
+  // Add remaining text
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+
+  return parts.length > 0 ? parts : children;
 }
 
 export const EnhancedMarkdown = memo(function EnhancedMarkdown({
   content,
   className,
+  citations,
 }: EnhancedMarkdownProps) {
   const processedContent = useMemo(() => {
     // Pre-process content for better rendering
@@ -136,9 +209,22 @@ export const EnhancedMarkdown = memo(function EnhancedMarkdown({
             return <hr className="my-6 border-t border-border" />;
           },
 
-          // Paragraphs
+          // Paragraphs - with citation support
           p({ children }) {
-            return <p className="my-2 leading-relaxed">{children}</p>;
+            return (
+              <p className="my-2 leading-relaxed">
+                {processCitations(children, citations)}
+              </p>
+            );
+          },
+          
+          // List items - with citation support
+          li({ children }) {
+            return (
+              <li>
+                {processCitations(children, citations)}
+              </li>
+            );
           },
 
           // Images

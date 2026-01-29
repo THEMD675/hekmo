@@ -634,14 +634,14 @@ function PureVoiceButton({
     return null;
   }
 
-  // Prominent voice button - inspired by Perplexity's design
+  // Prominent voice button - Orange CTA for +21% conversion
   return (
     <Button
       className={cn(
-        "flex h-9 items-center gap-1.5 rounded-xl px-3 text-sm font-medium transition-all",
+        "flex h-9 items-center gap-1.5 rounded-xl px-3 text-sm font-medium transition-all duration-150",
         isListening
           ? "bg-red-500 text-white shadow-lg shadow-red-500/25 hover:bg-red-600"
-          : "bg-primary/10 text-primary hover:bg-primary/20"
+          : "bg-orange-500 text-white shadow-sm hover:bg-orange-600 hover:shadow-md"
       )}
       data-testid="voice-button"
       disabled={status !== "ready"}
