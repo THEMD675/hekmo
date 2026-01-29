@@ -17,6 +17,17 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Public routes - no auth required (Hekmo business platform)
+  const publicPaths = ["/", "/pricing", "/privacy", "/terms"];
+  const publicPrefixes = ["/dashboard", "/onboarding", "/api/whatsapp", "/api/stripe", "/api/business"];
+  
+  const isPublicPath = publicPaths.includes(pathname);
+  const isPublicPrefix = publicPrefixes.some(prefix => pathname.startsWith(prefix));
+  
+  if (isPublicPath || isPublicPrefix) {
+    return NextResponse.next();
+  }
+
   const token = await getToken({
     req: request,
     secret: process.env.AUTH_SECRET,
