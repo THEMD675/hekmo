@@ -45,7 +45,7 @@ export const authConfig: NextAuthConfig = {
       
       // Public routes - no auth required
       const publicPaths = ["/", "/pricing", "/privacy", "/terms"];
-      const publicPrefixes = ["/dashboard", "/onboarding", "/api/whatsapp", "/api/stripe", "/api/business"];
+      const publicPrefixes = ["/dashboard", "/onboarding", "/api/whatsapp", "/api/stripe", "/api/business", "/api/health"];
       
       const isPublicPath = publicPaths.includes(pathname);
       const isPublicPrefix = publicPrefixes.some(prefix => pathname.startsWith(prefix));
