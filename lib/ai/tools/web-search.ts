@@ -1,6 +1,5 @@
 import { tool } from "ai";
 import { z } from "zod";
-import { tavily } from "tavily";
 
 export const webSearchTool = tool({
   description: "Search the web for real-time information. Use this when the user asks about current events, news, recent information, or anything that requires up-to-date data.",
@@ -10,65 +9,72 @@ export const webSearchTool = tool({
   }),
   execute: async ({ query, language }) => {
     try {
-      const apiKey = process.env.TAVILY_API_KEY;
-      
-      if (!apiKey) {
-        // Fallback to Serper if Tavily not configured
-        const serperKey = process.env.SERPER_API_KEY;
-        if (serperKey) {
-          const response = await fetch("https://google.serper.dev/search", {
-            method: "POST",
-            headers: {
-              "X-API-KEY": serperKey,
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              q: query,
-              gl: language === "ar" ? "sa" : "us",
-              hl: language,
-              num: 5,
-            }),
-          });
+      // Try Tavily API first (via fetch, no SDK needed)
+      const tavilyKey = process.env.TAVILY_API_KEY;
+      if (tavilyKey) {
+        const response = await fetch("https://api.tavily.com/search", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            api_key: tavilyKey,
+            query,
+            search_depth: "basic",
+            max_results: 5,
+            include_answer: true,
+          }),
+        });
 
-          if (response.ok) {
-            const data = await response.json();
-            return {
-              success: true,
-              query,
-              results: (data.organic || []).slice(0, 5).map((r: { title: string; link: string; snippet: string }) => ({
-                title: r.title,
-                url: r.link,
-                snippet: r.snippet,
-              })),
-            };
-          }
+        if (response.ok) {
+          const data = await response.json();
+          return {
+            success: true,
+            query,
+            answer: data.answer,
+            results: (data.results || []).map((r: any) => ({
+              title: r.title,
+              url: r.url,
+              snippet: r.content,
+              score: r.score,
+            })),
+          };
         }
-        
-        return {
-          success: false,
-          error: "Web search is not configured. Add TAVILY_API_KEY or SERPER_API_KEY.",
-          results: [],
-        };
       }
 
-      // Use Tavily for search
-      const client = tavily({ apiKey });
-      const response = await client.search(query, {
-        searchDepth: "basic",
-        maxResults: 5,
-        includeAnswer: true,
-      });
+      // Fallback to Serper
+      const serperKey = process.env.SERPER_API_KEY;
+      if (serperKey) {
+        const response = await fetch("https://google.serper.dev/search", {
+          method: "POST",
+          headers: {
+            "X-API-KEY": serperKey,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            q: query,
+            gl: language === "ar" ? "sa" : "us",
+            hl: language,
+            num: 5,
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          return {
+            success: true,
+            query,
+            results: (data.organic || []).slice(0, 5).map((r: any) => ({
+              title: r.title,
+              url: r.link,
+              snippet: r.snippet,
+            })),
+          };
+        }
+      }
 
       return {
-        success: true,
-        query,
-        answer: response.answer,
-        results: response.results.map((r) => ({
-          title: r.title,
-          url: r.url,
-          snippet: r.content,
-          score: r.score,
-        })),
+        success: false,
+        error: "Web search not configured. Add TAVILY_API_KEY or SERPER_API_KEY.",
+        results: [],
       };
     } catch (error) {
       console.error("Web search error:", error);
