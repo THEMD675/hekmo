@@ -5,14 +5,26 @@
 | Component | Status | URL |
 |-----------|--------|-----|
 | Landing Page | ✅ Live | https://hekmo.ai |
-| Dashboard | ✅ Live | https://hekmo.ai/dashboard |
-| Onboarding | ✅ Live | https://hekmo.ai/onboarding |
-| WhatsApp Webhook | ✅ Ready | https://hekmo.ai/api/whatsapp/webhook |
+| Dashboard | ✅ WIRED TO DB | https://hekmo.ai/dashboard |
+| Onboarding | ✅ WIRED TO DB | https://hekmo.ai/onboarding |
+| WhatsApp Webhook | ✅ WIRED TO DB | https://hekmo.ai/api/whatsapp/webhook |
 | Business AI Chat | ✅ Working | https://hekmo.ai/api/business/chat |
-| Business Registration | ✅ Ready | https://hekmo.ai/api/business/register |
-| Knowledge Management | ✅ Ready | https://hekmo.ai/api/business/knowledge |
+| Business Registration | ✅ WIRED | https://hekmo.ai/api/business/register |
+| Knowledge Management | ✅ WIRED | https://hekmo.ai/api/business/knowledge |
+| Business Details API | ✅ WIRED | https://hekmo.ai/api/business/[id] |
 | Stripe Checkout | ✅ Ready | https://hekmo.ai/api/stripe/checkout |
 | Stripe Webhooks | ✅ Ready | https://hekmo.ai/api/stripe/webhook |
+| Supabase Edge Function | ✅ DEPLOYED | https://jepstjrvylflmdyxwwdi.supabase.co/functions/v1/hekmo-ai |
+
+## User Flow (End-to-End)
+
+1. **Landing**: User visits hekmo.ai → Sees Arabic marketing page
+2. **Auth**: User clicks "ابدأ مجاناً" → Guest auth creates session
+3. **Onboarding**: User enters business info → Saved to DB → Gets businessId
+4. **WhatsApp**: User connects WhatsApp (requires Meta config)
+5. **Knowledge**: User uploads menu/FAQs → Saved to DB
+6. **Dashboard**: User sees real stats, conversations from DB
+7. **Customers**: Customer messages WhatsApp → Webhook → AI responds using business knowledge
 
 ## Required Configuration
 
