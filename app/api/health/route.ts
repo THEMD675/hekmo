@@ -1,6 +1,9 @@
 // Health check endpoint for uptime monitoring
 // Used by external monitoring services (UptimeRobot, Pingdom, etc.)
 
+import { sql } from "drizzle-orm";
+import { db } from "@/lib/db/queries";
+
 export const dynamic = "force-dynamic";
 
 export async function GET() {
@@ -14,15 +17,22 @@ export async function GET() {
     checks: {} as Record<string, { status: string; latency: number }>,
   };
 
-  // Database check
+  // Database check - actual connectivity test
   try {
     const dbStart = Date.now();
-    // Simple connectivity check - replace with actual DB query if needed
-    const dbOk = process.env.POSTGRES_URL ? true : false;
-    checks.checks.database = {
-      status: dbOk ? "ok" : "missing_config",
-      latency: Date.now() - dbStart,
-    };
+    if (process.env.POSTGRES_URL) {
+      await db.execute(sql`SELECT 1`);
+      checks.checks.database = {
+        status: "ok",
+        latency: Date.now() - dbStart,
+      };
+    } else {
+      checks.checks.database = {
+        status: "missing_config",
+        latency: Date.now() - dbStart,
+      };
+      checks.status = "degraded";
+    }
   } catch {
     checks.checks.database = { status: "error", latency: 0 };
     checks.status = "degraded";
@@ -31,11 +41,12 @@ export async function GET() {
   // AI service check
   try {
     const aiStart = Date.now();
-    const aiOk = process.env.OPENAI_API_KEY ? true : false;
+    const aiOk = !!process.env.OPENAI_API_KEY;
     checks.checks.ai = {
       status: aiOk ? "ok" : "missing_config",
       latency: Date.now() - aiStart,
     };
+    if (!aiOk) checks.status = "degraded";
   } catch {
     checks.checks.ai = { status: "error", latency: 0 };
     checks.status = "degraded";
