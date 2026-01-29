@@ -5,7 +5,12 @@ import { getLanguageModel } from "@/lib/ai/providers";
 import { isArabic, normalizeArabic } from "@/lib/arabic-nlp";
 import { db } from "@/lib/db/queries";
 import { business, businessKnowledge } from "@/lib/db/schema";
-import { checkRateLimit, getClientIp, rateLimitResponse, RateLimits } from "@/lib/rate-limiter";
+import {
+  checkRateLimit,
+  getClientIp,
+  RateLimits,
+  rateLimitResponse,
+} from "@/lib/rate-limiter";
 
 // Business AI Chat - context-aware responses for businesses
 export async function POST(request: NextRequest) {
@@ -34,7 +39,7 @@ export async function POST(request: NextRequest) {
       : customerMessage;
 
     // Fetch business from database
-    let businessRecord;
+    let businessRecord: typeof business.$inferSelect | undefined;
     let knowledge: (typeof businessKnowledge.$inferSelect)[] = [];
 
     try {
@@ -97,9 +102,12 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     const { captureException } = await import("@/lib/sentry");
-    captureException(error instanceof Error ? error : new Error(String(error)), {
-      tags: { component: "business-chat" },
-    });
+    captureException(
+      error instanceof Error ? error : new Error(String(error)),
+      {
+        tags: { component: "business-chat" },
+      }
+    );
     return NextResponse.json(
       { error: "Failed to generate response" },
       { status: 500 }

@@ -80,11 +80,13 @@ export const webSearchTool = tool({
           return {
             success: true,
             query,
-            results: (data.organic || []).slice(0, 5).map((r: SerperResult) => ({
-              title: r.title,
-              url: r.link,
-              snippet: r.snippet,
-            })),
+            results: (data.organic || [])
+              .slice(0, 5)
+              .map((r: SerperResult) => ({
+                title: r.title,
+                url: r.link,
+                snippet: r.snippet,
+              })),
           };
         }
       }

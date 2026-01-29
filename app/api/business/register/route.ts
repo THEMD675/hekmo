@@ -2,7 +2,12 @@ import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/app/(auth)/auth";
 import { db } from "@/lib/db/queries";
 import { business } from "@/lib/db/schema";
-import { checkRateLimit, getClientIp, rateLimitResponse, RateLimits } from "@/lib/rate-limiter";
+import {
+  checkRateLimit,
+  getClientIp,
+  RateLimits,
+  rateLimitResponse,
+} from "@/lib/rate-limiter";
 
 export async function POST(request: NextRequest) {
   try {

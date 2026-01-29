@@ -16,12 +16,12 @@ setInterval(() => {
       cache.delete(key);
     }
   }
-}, 60000); // Every minute
+}, 60_000); // Every minute
 
 export interface RateLimitConfig {
-  limit: number;        // Max requests
-  windowMs: number;     // Time window in ms
-  keyPrefix?: string;   // Prefix for the key
+  limit: number; // Max requests
+  windowMs: number; // Time window in ms
+  keyPrefix?: string; // Prefix for the key
 }
 
 export interface RateLimitResult {
@@ -37,8 +37,11 @@ export interface RateLimitResult {
  * @param config - Rate limit configuration
  * @returns RateLimitResult
  */
-export function checkRateLimit(key: string, config: RateLimitConfig): RateLimitResult {
-  const { limit, windowMs, keyPrefix = 'rl' } = config;
+export function checkRateLimit(
+  key: string,
+  config: RateLimitConfig
+): RateLimitResult {
+  const { limit, windowMs, keyPrefix = "rl" } = config;
   const cacheKey = `${keyPrefix}:${key}`;
   const now = Date.now();
 
@@ -81,18 +84,18 @@ export function checkRateLimit(key: string, config: RateLimitConfig): RateLimitR
  */
 export function getClientIp(request: Request): string {
   // Check common headers
-  const forwardedFor = request.headers.get('x-forwarded-for');
+  const forwardedFor = request.headers.get("x-forwarded-for");
   if (forwardedFor) {
-    return forwardedFor.split(',')[0].trim();
+    return forwardedFor.split(",")[0].trim();
   }
 
-  const realIp = request.headers.get('x-real-ip');
+  const realIp = request.headers.get("x-real-ip");
   if (realIp) {
     return realIp;
   }
 
   // Fallback
-  return 'unknown';
+  return "unknown";
 }
 
 /**
@@ -101,18 +104,18 @@ export function getClientIp(request: Request): string {
 export function rateLimitResponse(result: RateLimitResult): Response {
   return new Response(
     JSON.stringify({
-      error: 'تم تجاوز الحد المسموح من الطلبات',
-      errorEn: 'Rate limit exceeded',
+      error: "تم تجاوز الحد المسموح من الطلبات",
+      errorEn: "Rate limit exceeded",
       retryAfter: Math.ceil((result.reset - Date.now()) / 1000),
     }),
     {
       status: 429,
       headers: {
-        'Content-Type': 'application/json',
-        'X-RateLimit-Limit': String(result.limit),
-        'X-RateLimit-Remaining': String(result.remaining),
-        'X-RateLimit-Reset': String(result.reset),
-        'Retry-After': String(Math.ceil((result.reset - Date.now()) / 1000)),
+        "Content-Type": "application/json",
+        "X-RateLimit-Limit": String(result.limit),
+        "X-RateLimit-Remaining": String(result.remaining),
+        "X-RateLimit-Reset": String(result.reset),
+        "Retry-After": String(Math.ceil((result.reset - Date.now()) / 1000)),
       },
     }
   );
@@ -121,14 +124,14 @@ export function rateLimitResponse(result: RateLimitResult): Response {
 // Pre-configured rate limiters
 export const RateLimits = {
   // Business chat - 60 requests per minute per IP
-  businessChat: { limit: 60, windowMs: 60_000, keyPrefix: 'bc' },
-  
+  businessChat: { limit: 60, windowMs: 60_000, keyPrefix: "bc" },
+
   // Auth endpoints - 5 requests per minute per IP
-  auth: { limit: 5, windowMs: 60_000, keyPrefix: 'auth' },
-  
+  auth: { limit: 5, windowMs: 60_000, keyPrefix: "auth" },
+
   // General API - 100 requests per minute per IP
-  api: { limit: 100, windowMs: 60_000, keyPrefix: 'api' },
-  
+  api: { limit: 100, windowMs: 60_000, keyPrefix: "api" },
+
   // Webhook - 1000 requests per minute per IP
-  webhook: { limit: 1000, windowMs: 60_000, keyPrefix: 'wh' },
+  webhook: { limit: 1000, windowMs: 60_000, keyPrefix: "wh" },
 } as const;

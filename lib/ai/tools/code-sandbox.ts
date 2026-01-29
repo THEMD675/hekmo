@@ -16,7 +16,7 @@ export const codeSandboxTool = tool({
       .default(5000)
       .describe("Timeout in milliseconds"),
   }),
-  execute: async ({ code, language, timeout = 5000 }) => {
+  execute: ({ code, language, timeout = 5000 }) => {
     try {
       // Validate code for safety
       const safetyCheck = validateCode(code, language);
@@ -55,7 +55,7 @@ export const codeSandboxTool = tool({
 // Validate code for dangerous operations
 function validateCode(
   code: string,
-  language: string
+  _language: string
 ): { safe: boolean; reason?: string } {
   // Dangerous patterns to block
   const dangerousPatterns = [
@@ -96,7 +96,7 @@ function validateCode(
 // Execute JavaScript in a sandbox
 function executeJavaScript(
   code: string,
-  timeout: number
+  _timeout: number
 ): { success: boolean; output: string | null; error?: string } {
   try {
     // Create a sandbox with limited globals
@@ -104,7 +104,7 @@ function executeJavaScript(
       console: {
         log: (...args: unknown[]) => outputs.push(args.map(String).join(" ")),
         error: (...args: unknown[]) =>
-          outputs.push("Error: " + args.map(String).join(" ")),
+          outputs.push(`Error: ${args.map(String).join(" ")}`),
       },
       Math,
       Date,
@@ -156,21 +156,29 @@ function safeMathEval(expression: string): number | null {
   if (!/^[\d\s+\-*/.()]+$/.test(expression)) {
     return null;
   }
-  
+
   // Additional safety: check for balanced parentheses
   let depth = 0;
   for (const char of expression) {
-    if (char === '(') depth++;
-    if (char === ')') depth--;
-    if (depth < 0) return null;
+    if (char === "(") {
+      depth++;
+    }
+    if (char === ")") {
+      depth--;
+    }
+    if (depth < 0) {
+      return null;
+    }
   }
-  if (depth !== 0) return null;
-  
+  if (depth !== 0) {
+    return null;
+  }
+
   try {
     // Use Function constructor with strict mode (safer than eval)
     const fn = new Function(`"use strict"; return (${expression});`);
     const result = fn();
-    if (typeof result === 'number' && isFinite(result)) {
+    if (typeof result === "number" && Number.isFinite(result)) {
       return result;
     }
     return null;

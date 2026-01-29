@@ -189,11 +189,15 @@ export function extractMemorableInfo(message: string): string[] {
 
 // Format memories as context for the AI
 export function formatMemoriesAsContext(memories: Memory[]): string {
-  if (memories.length === 0) return "";
+  if (memories.length === 0) {
+    return "";
+  }
 
   const grouped = memories.reduce(
     (acc, m) => {
-      if (!acc[m.category]) acc[m.category] = [];
+      if (!acc[m.category]) {
+        acc[m.category] = [];
+      }
       acc[m.category].push(m.content);
       return acc;
     },

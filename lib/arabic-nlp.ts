@@ -193,12 +193,21 @@ export function getRelativeTimeArabic(date: Date): string {
   const diffHours = Math.floor(diffMs / 3_600_000);
   const diffDays = Math.floor(diffMs / 86_400_000);
 
-  if (diffMins < 1) return "الآن";
-  if (diffMins < 60) return `منذ ${toArabicNumerals(diffMins)} دقيقة`;
-  if (diffHours < 24) return `منذ ${toArabicNumerals(diffHours)} ساعة`;
-  if (diffDays < 7) return `منذ ${toArabicNumerals(diffDays)} يوم`;
-  if (diffDays < 30)
+  if (diffMins < 1) {
+    return "الآن";
+  }
+  if (diffMins < 60) {
+    return `منذ ${toArabicNumerals(diffMins)} دقيقة`;
+  }
+  if (diffHours < 24) {
+    return `منذ ${toArabicNumerals(diffHours)} ساعة`;
+  }
+  if (diffDays < 7) {
+    return `منذ ${toArabicNumerals(diffDays)} يوم`;
+  }
+  if (diffDays < 30) {
     return `منذ ${toArabicNumerals(Math.floor(diffDays / 7))} أسبوع`;
+  }
 
   return formatArabicDate(date);
 }

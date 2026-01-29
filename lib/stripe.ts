@@ -210,8 +210,6 @@ export function hasFeatureAccess(
   tier: SubscriptionTier,
   feature: string
 ): boolean {
-  const tierData = SUBSCRIPTION_TIERS[tier];
-
   // Map features to tiers
   const featureAccess: Record<string, SubscriptionTier[]> = {
     unlimited_messages: ["pro", "enterprise"],

@@ -2,7 +2,12 @@ import { hash } from "bcrypt-ts";
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db/queries";
 import { user } from "@/lib/db/schema";
-import { checkRateLimit, getClientIp, rateLimitResponse, RateLimits } from "@/lib/rate-limiter";
+import {
+  checkRateLimit,
+  getClientIp,
+  RateLimits,
+  rateLimitResponse,
+} from "@/lib/rate-limiter";
 
 // Token storage (in production, use Redis or database table)
 const resetTokens = new Map<string, { email: string; expires: Date }>();

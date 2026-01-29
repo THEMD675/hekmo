@@ -1,9 +1,14 @@
 "use client";
 
-import { useEffect } from "react";
-import { useSession } from "next-auth/react";
-import { initAnalytics, trackPageView, identifyUser, resetUser } from "@/lib/analytics";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import {
+  identifyUser,
+  initAnalytics,
+  resetUser,
+  trackPageView,
+} from "@/lib/analytics";
 
 export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
