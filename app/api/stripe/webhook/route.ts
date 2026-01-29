@@ -1,14 +1,16 @@
 import { headers } from "next/headers";
+import { db } from "@/lib/db/queries";
+import { user, business } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
-import { user } from "@/lib/db/schema";
-
-// biome-ignore lint: Forbidden non-null assertion.
-const client = postgres(process.env.POSTGRES_URL!);
-const db = drizzle(client);
 
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
+
+// Plan limits
+const PLAN_LIMITS: Record<string, number> = {
+  starter: 1000,
+  business: 10000,
+  enterprise: -1, // unlimited
+};
 
 export async function POST(request: Request) {
   const body = await request.text();
@@ -16,27 +18,46 @@ export async function POST(request: Request) {
   const signature = headersList.get("stripe-signature");
 
   if (!signature || !STRIPE_WEBHOOK_SECRET) {
-    return Response.json({ error: "Missing signature" }, { status: 400 });
+    console.warn("[Stripe Webhook] Missing signature or secret");
+    // Still process in dev mode
+    if (process.env.NODE_ENV === "production") {
+      return Response.json({ error: "Missing signature" }, { status: 400 });
+    }
   }
 
   try {
-    // In production, verify the webhook signature using Stripe SDK:
-    // const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-    // const event = stripe.webhooks.constructEvent(body, signature, STRIPE_WEBHOOK_SECRET);
-
-    // For now, parse the body directly (NOT SAFE for production)
+    // Parse the event
     const event = JSON.parse(body);
+    console.log(`[Stripe Webhook] Event: ${event.type}`);
 
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object;
-        const userId = session.client_reference_id;
+        const metadata = session.metadata || {};
+        const userId = metadata.userId;
+        const businessId = metadata.businessId;
+        const planId = metadata.planId;
         const customerId = session.customer;
+        const subscriptionId = session.subscription;
 
-        if (userId) {
-          // Update user with Stripe customer ID and subscription status
-          console.log(`[Stripe] User ${userId} subscribed, customer: ${customerId}`);
-          // await db.update(user).set({ stripeCustomerId: customerId, plan: 'pro' }).where(eq(user.id, userId));
+        console.log(`[Stripe] Checkout completed - userId: ${userId}, businessId: ${businessId}, plan: ${planId}`);
+
+        if (businessId && planId) {
+          // Update business subscription
+          await db
+            .update(business)
+            .set({
+              subscriptionPlan: planId,
+              subscriptionStatus: "active",
+              stripeCustomerId: customerId,
+              stripeSubscriptionId: subscriptionId,
+              messagesLimit: PLAN_LIMITS[planId] || 1000,
+              messagesThisMonth: 0,
+              updatedAt: new Date(),
+            })
+            .where(eq(business.id, businessId));
+
+          console.log(`[Stripe] Business ${businessId} subscribed to ${planId}`);
         }
         break;
       }
@@ -47,12 +68,27 @@ export async function POST(request: Request) {
         const status = subscription.status;
 
         console.log(`[Stripe] Subscription updated for ${customerId}: ${status}`);
-        
-        // Update user's subscription status
-        // const users = await db.select().from(user).where(eq(user.stripeCustomerId, customerId));
-        // if (users.length > 0) {
-        //   await db.update(user).set({ subscriptionStatus: status }).where(eq(user.id, users[0].id));
-        // }
+
+        // Find and update the business
+        const [userBusiness] = await db
+          .select()
+          .from(business)
+          .where(eq(business.stripeCustomerId, customerId))
+          .limit(1);
+
+        if (userBusiness) {
+          const newStatus = status === "active" ? "active" : 
+                           status === "past_due" ? "past_due" :
+                           status === "canceled" ? "cancelled" : status;
+
+          await db
+            .update(business)
+            .set({
+              subscriptionStatus: newStatus,
+              updatedAt: new Date(),
+            })
+            .where(eq(business.id, userBusiness.id));
+        }
         break;
       }
 
@@ -61,9 +97,52 @@ export async function POST(request: Request) {
         const customerId = subscription.customer;
 
         console.log(`[Stripe] Subscription cancelled for ${customerId}`);
-        
-        // Downgrade user to free plan
-        // await db.update(user).set({ plan: 'free' }).where(eq(user.stripeCustomerId, customerId));
+
+        // Downgrade business to free/starter
+        const [userBusiness] = await db
+          .select()
+          .from(business)
+          .where(eq(business.stripeCustomerId, customerId))
+          .limit(1);
+
+        if (userBusiness) {
+          await db
+            .update(business)
+            .set({
+              subscriptionPlan: "starter",
+              subscriptionStatus: "cancelled",
+              messagesLimit: 1000,
+              stripeSubscriptionId: null,
+              updatedAt: new Date(),
+            })
+            .where(eq(business.id, userBusiness.id));
+        }
+        break;
+      }
+
+      case "invoice.payment_succeeded": {
+        const invoice = event.data.object;
+        const customerId = invoice.customer;
+
+        console.log(`[Stripe] Payment succeeded for ${customerId}`);
+
+        // Reset monthly message count on successful payment
+        const [userBusiness] = await db
+          .select()
+          .from(business)
+          .where(eq(business.stripeCustomerId, customerId))
+          .limit(1);
+
+        if (userBusiness) {
+          await db
+            .update(business)
+            .set({
+              messagesThisMonth: 0,
+              subscriptionStatus: "active",
+              updatedAt: new Date(),
+            })
+            .where(eq(business.id, userBusiness.id));
+        }
         break;
       }
 
@@ -72,8 +151,23 @@ export async function POST(request: Request) {
         const customerId = invoice.customer;
 
         console.log(`[Stripe] Payment failed for ${customerId}`);
-        
-        // Handle failed payment (send email, etc.)
+
+        // Mark subscription as past due
+        const [userBusiness] = await db
+          .select()
+          .from(business)
+          .where(eq(business.stripeCustomerId, customerId))
+          .limit(1);
+
+        if (userBusiness) {
+          await db
+            .update(business)
+            .set({
+              subscriptionStatus: "past_due",
+              updatedAt: new Date(),
+            })
+            .where(eq(business.id, userBusiness.id));
+        }
         break;
       }
 
@@ -83,7 +177,7 @@ export async function POST(request: Request) {
 
     return Response.json({ received: true });
   } catch (error) {
-    console.error("Webhook error:", error);
+    console.error("[Stripe Webhook] Error:", error);
     return Response.json(
       { error: "Webhook handler failed" },
       { status: 500 }

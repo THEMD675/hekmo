@@ -40,7 +40,8 @@ export default function Page() {
 
       setIsSuccessful(true);
       updateSession();
-      router.refresh();
+      // Redirect new users to onboarding to set up their business
+      router.push("/onboarding");
     }
   }, [state.status]);
 
