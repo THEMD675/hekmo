@@ -1,5 +1,8 @@
 import { put } from "@vercel/blob";
 import { auth } from "@/app/(auth)/auth";
+import { db } from "@/lib/db/queries";
+import { user } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 
 export async function POST(request: Request) {
   const session = await auth();
@@ -43,15 +46,17 @@ export async function POST(request: Request) {
     });
 
     // Update user avatar in database
-    // TODO: Update database
-    // await db.update(user).set({ image: blob.url }).where(eq(user.id, session.user.id));
+    await db
+      .update(user)
+      .set({ image: blob.url })
+      .where(eq(user.id, session.user.id));
 
     return Response.json({
       url: blob.url,
       message: "تم تحديث الصورة",
     });
   } catch (error) {
-    console.error("Avatar upload error:", error);
+    console.error("[Avatar Upload] Error:", error);
     return Response.json(
       { error: "فشل رفع الصورة" },
       { status: 500 }

@@ -1,4 +1,7 @@
 import { auth } from "@/app/(auth)/auth";
+import { db } from "@/lib/db/queries";
+import { business, chat, message } from "@/lib/db/schema";
+import { eq, count, sql } from "drizzle-orm";
 
 export async function GET() {
   const session = await auth();
@@ -7,34 +10,75 @@ export async function GET() {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // In production, fetch from database
-  // For now, return mock data based on user tier
-  const tier = "free"; // Get from user profile
+  try {
+    // Get user's business if they have one
+    const [userBusiness] = await db
+      .select()
+      .from(business)
+      .where(eq(business.userId, session.user.id))
+      .limit(1);
 
-  const limits = {
-    free: { messages: 50, tokens: 25000 },
-    pro: { messages: 500, tokens: 100000 },
-    enterprise: { messages: -1, tokens: -1 }, // Unlimited
-  };
+    // Get chat count for user
+    const [chatStats] = await db
+      .select({ count: count() })
+      .from(chat)
+      .where(eq(chat.userId, session.user.id));
 
-  const limit = limits[tier as keyof typeof limits] || limits.free;
+    // Get message count for user's chats
+    const [messageStats] = await db
+      .select({ count: count() })
+      .from(message)
+      .innerJoin(chat, eq(message.chatId, chat.id))
+      .where(eq(chat.userId, session.user.id));
 
-  // Mock usage data
-  const usage = {
-    messagesUsed: Math.floor(Math.random() * (limit.messages * 0.7)),
-    messagesLimit: limit.messages,
-    tokensUsed: Math.floor(Math.random() * (limit.tokens * 0.6)),
-    tokensLimit: limit.tokens,
-    toolCalls: Math.floor(Math.random() * 30),
-    avgResponseTime: Math.round((Math.random() * 2 + 0.5) * 10) / 10,
-    streak: Math.floor(Math.random() * 10) + 1,
-    periodStart: new Date(
-      new Date().setDate(new Date().getDate() - new Date().getDate() + 1)
-    ).toISOString(),
-    periodEnd: new Date(
-      new Date().setMonth(new Date().getMonth() + 1, 0)
-    ).toISOString(),
-  };
+    // Determine tier and limits based on subscription
+    const tier = userBusiness?.subscriptionPlan || "free";
+    const limits: Record<string, { messages: number; tokens: number }> = {
+      free: { messages: 50, tokens: 25000 },
+      starter: { messages: 1000, tokens: 100000 },
+      business: { messages: 10000, tokens: 500000 },
+      enterprise: { messages: -1, tokens: -1 }, // Unlimited
+    };
 
-  return Response.json(usage);
+    const limit = limits[tier] || limits.free;
+
+    // Calculate period dates (current month)
+    const now = new Date();
+    const periodStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const periodEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+    const usage = {
+      messagesUsed: userBusiness 
+        ? (typeof userBusiness.messagesThisMonth === 'number' ? userBusiness.messagesThisMonth : 0)
+        : (messageStats?.count || 0),
+      messagesLimit: limit.messages,
+      tokensUsed: 0, // Would need to track tokens separately
+      tokensLimit: limit.tokens,
+      chatsCount: chatStats?.count || 0,
+      tier,
+      subscriptionStatus: userBusiness?.subscriptionStatus || "none",
+      trialEndsAt: userBusiness?.trialEndsAt?.toISOString() || null,
+      periodStart: periodStart.toISOString(),
+      periodEnd: periodEnd.toISOString(),
+    };
+
+    return Response.json(usage);
+
+  } catch (error) {
+    console.error("[Usage API] Error:", error);
+    
+    // Fallback to basic response
+    return Response.json({
+      messagesUsed: 0,
+      messagesLimit: 50,
+      tokensUsed: 0,
+      tokensLimit: 25000,
+      chatsCount: 0,
+      tier: "free",
+      subscriptionStatus: "none",
+      trialEndsAt: null,
+      periodStart: new Date().toISOString(),
+      periodEnd: new Date().toISOString(),
+    });
+  }
 }

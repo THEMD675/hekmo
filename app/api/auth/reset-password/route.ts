@@ -1,6 +1,9 @@
 import { hash } from "bcrypt-ts";
+import { db } from "@/lib/db/queries";
+import { user } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 
-// Token storage (use Redis or database in production)
+// Token storage (in production, use Redis or database table)
 const resetTokens = new Map<
   string,
   { email: string; expires: Date }
@@ -18,6 +21,22 @@ export async function POST(request: Request) {
       );
     }
 
+    // Check if user exists
+    const [existingUser] = await db
+      .select()
+      .from(user)
+      .where(eq(user.email, email))
+      .limit(1);
+
+    // Don't reveal if user exists or not (security)
+    if (!existingUser) {
+      // Still return success to prevent email enumeration
+      return Response.json({
+        success: true,
+        message: "تم إرسال رابط إعادة التعيين",
+      });
+    }
+
     // Generate token
     const token = crypto.randomUUID();
     const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
@@ -25,25 +44,52 @@ export async function POST(request: Request) {
     // Store token
     resetTokens.set(token, { email, expires });
 
-    // In production, send email with reset link
-    const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL}/reset-password?token=${token}`;
+    // Build reset URL
+    const resetUrl = `${process.env.NEXT_PUBLIC_APP_URL || "https://hekmo.ai"}/reset-password?token=${token}`;
 
     console.log("[Password Reset] Email:", email);
     console.log("[Password Reset] URL:", resetUrl);
 
-    // TODO: Send email with nodemailer or email service
-    // await sendEmail({
-    //   to: email,
-    //   subject: "إعادة تعيين كلمة المرور - حكمو",
-    //   html: `<p>اضغط على الرابط لإعادة تعيين كلمة المرور: <a href="${resetUrl}">${resetUrl}</a></p>`,
-    // });
+    // Send email using Resend (if configured)
+    const resendKey = process.env.RESEND_API_KEY;
+    if (resendKey) {
+      try {
+        await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${resendKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: "Hekmo <noreply@hekmo.ai>",
+            to: email,
+            subject: "إعادة تعيين كلمة المرور - حكمو",
+            html: `
+              <div dir="rtl" style="font-family: system-ui, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                <h1 style="color: #10b981;">حكمو - Hekmo</h1>
+                <p>مرحباً،</p>
+                <p>تلقينا طلب لإعادة تعيين كلمة المرور الخاصة بك.</p>
+                <p>اضغط على الزر أدناه لإعادة تعيين كلمة المرور:</p>
+                <a href="${resetUrl}" style="display: inline-block; background: #10b981; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; margin: 20px 0;">إعادة تعيين كلمة المرور</a>
+                <p style="color: #666;">هذا الرابط صالح لمدة ساعة واحدة.</p>
+                <p style="color: #666;">إذا لم تطلب إعادة تعيين كلمة المرور، يمكنك تجاهل هذا البريد.</p>
+              </div>
+            `,
+          }),
+        });
+        console.log("[Password Reset] Email sent successfully");
+      } catch (emailError) {
+        console.error("[Password Reset] Email send failed:", emailError);
+        // Don't fail the request - token is still valid
+      }
+    }
 
     return Response.json({
       success: true,
       message: "تم إرسال رابط إعادة التعيين",
     });
   } catch (error) {
-    console.error("Password reset request error:", error);
+    console.error("[Password Reset] Error:", error);
     return Response.json(
       { error: "فشل إرسال رابط التعيين" },
       { status: 500 }
@@ -59,6 +105,13 @@ export async function PUT(request: Request) {
     if (!token || !password) {
       return Response.json(
         { error: "البيانات غير مكتملة" },
+        { status: 400 }
+      );
+    }
+
+    if (password.length < 8) {
+      return Response.json(
+        { error: "كلمة المرور يجب أن تكون 8 أحرف على الأقل" },
         { status: 400 }
       );
     }
@@ -85,10 +138,18 @@ export async function PUT(request: Request) {
     const hashedPassword = await hash(password, 10);
 
     // Update password in database
-    // TODO: Implement database update
-    // await db.update(users)
-    //   .set({ password: hashedPassword })
-    //   .where(eq(users.email, tokenData.email));
+    const [updatedUser] = await db
+      .update(user)
+      .set({ password: hashedPassword })
+      .where(eq(user.email, tokenData.email))
+      .returning();
+
+    if (!updatedUser) {
+      return Response.json(
+        { error: "المستخدم غير موجود" },
+        { status: 404 }
+      );
+    }
 
     console.log("[Password Reset] Password changed for:", tokenData.email);
 
@@ -100,7 +161,7 @@ export async function PUT(request: Request) {
       message: "تم تغيير كلمة المرور",
     });
   } catch (error) {
-    console.error("Password reset error:", error);
+    console.error("[Password Reset] Error:", error);
     return Response.json(
       { error: "فشل تغيير كلمة المرور" },
       { status: 500 }
