@@ -258,7 +258,7 @@ function PureMultimodalInput({
         ]);
       } catch (error) {
         console.error("Error uploading pasted images:", error);
-        toast.error("فشل رفع الصورة، حاول مرة ثانية!");
+        toast.error("فشل رفع الصورة المنسوخة");
       } finally {
         setUploadQueue([]);
       }
