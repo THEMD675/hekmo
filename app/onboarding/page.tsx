@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 type Step = "business" | "whatsapp" | "knowledge" | "done";
 
@@ -20,21 +20,23 @@ export default function OnboardingPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [business, setBusiness] = useState<BusinessData | null>(null);
-  
+
   // Form state
   const [businessName, setBusinessName] = useState("");
   const [businessType, setBusinessType] = useState("restaurant");
   const [workingHours, setWorkingHours] = useState("");
   const [phone, setPhone] = useState("");
-  
+
   // Knowledge state
-  const [knowledgeItems, setKnowledgeItems] = useState<{ type: string; title: string; content: string }[]>([]);
+  const [knowledgeItems, setKnowledgeItems] = useState<
+    { type: string; title: string; content: string }[]
+  >([]);
 
   const handleBusinessSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    
+
     try {
       const response = await fetch("/api/business/register", {
         method: "POST",
@@ -64,7 +66,6 @@ export default function OnboardingPage() {
       // Store business ID in localStorage for dashboard
       localStorage.setItem("hekmo_business_id", data.business.id);
       setStep("whatsapp");
-      
     } catch (err) {
       setError(err instanceof Error ? err.message : "حدث خطأ");
     } finally {
@@ -83,8 +84,10 @@ export default function OnboardingPage() {
 
     try {
       // Check if WhatsApp is configured
-      const response = await fetch(`/api/whatsapp/connect?businessId=${business.id}`);
-      
+      const response = await fetch(
+        `/api/whatsapp/connect?businessId=${business.id}`
+      );
+
       if (response.status === 503) {
         // WhatsApp not configured - skip for now
         setStep("knowledge");
@@ -157,9 +160,18 @@ export default function OnboardingPage() {
       <div className="w-full max-w-xl">
         {/* Progress */}
         <div className="flex justify-center gap-2 mb-12">
-          <ProgressDot active={step === "business"} completed={["whatsapp", "knowledge", "done"].includes(step)} />
-          <ProgressDot active={step === "whatsapp"} completed={["knowledge", "done"].includes(step)} />
-          <ProgressDot active={step === "knowledge"} completed={step === "done"} />
+          <ProgressDot
+            active={step === "business"}
+            completed={["whatsapp", "knowledge", "done"].includes(step)}
+          />
+          <ProgressDot
+            active={step === "whatsapp"}
+            completed={["knowledge", "done"].includes(step)}
+          />
+          <ProgressDot
+            active={step === "knowledge"}
+            completed={step === "done"}
+          />
           <ProgressDot active={step === "done"} completed={false} />
         </div>
 
@@ -172,30 +184,34 @@ export default function OnboardingPage() {
 
         {/* Step 1: Business Info */}
         {step === "business" && (
-          <form onSubmit={handleBusinessSubmit} className="space-y-6">
+          <form className="space-y-6" onSubmit={handleBusinessSubmit}>
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold mb-2">أهلاً في Hekmo!</h1>
               <p className="text-gray-400">خلينا نتعرف على نشاطك</p>
             </div>
 
             <div>
-              <label className="block text-sm text-gray-400 mb-1">اسم النشاط *</label>
+              <label className="block text-sm text-gray-400 mb-1">
+                اسم النشاط *
+              </label>
               <input
-                type="text"
-                value={businessName}
+                className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-emerald-500 focus:outline-none"
                 onChange={(e) => setBusinessName(e.target.value)}
                 placeholder="مثال: مطعم الريف"
                 required
-                className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-emerald-500 focus:outline-none"
+                type="text"
+                value={businessName}
               />
             </div>
 
             <div>
-              <label className="block text-sm text-gray-400 mb-1">نوع النشاط *</label>
+              <label className="block text-sm text-gray-400 mb-1">
+                نوع النشاط *
+              </label>
               <select
-                value={businessType}
-                onChange={(e) => setBusinessType(e.target.value)}
                 className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-emerald-500 focus:outline-none"
+                onChange={(e) => setBusinessType(e.target.value)}
+                value={businessType}
               >
                 <option value="restaurant">مطعم</option>
                 <option value="cafe">كافيه</option>
@@ -208,31 +224,35 @@ export default function OnboardingPage() {
             </div>
 
             <div>
-              <label className="block text-sm text-gray-400 mb-1">ساعات العمل</label>
+              <label className="block text-sm text-gray-400 mb-1">
+                ساعات العمل
+              </label>
               <input
-                type="text"
-                value={workingHours}
+                className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-emerald-500 focus:outline-none"
                 onChange={(e) => setWorkingHours(e.target.value)}
                 placeholder="مثال: 9 صباحاً - 12 منتصف الليل"
-                className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-emerald-500 focus:outline-none"
+                type="text"
+                value={workingHours}
               />
             </div>
 
             <div>
-              <label className="block text-sm text-gray-400 mb-1">رقم التواصل</label>
+              <label className="block text-sm text-gray-400 mb-1">
+                رقم التواصل
+              </label>
               <input
-                type="tel"
-                value={phone}
+                className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-emerald-500 focus:outline-none"
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+966 5X XXX XXXX"
-                className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg focus:border-emerald-500 focus:outline-none"
+                type="tel"
+                value={phone}
               />
             </div>
 
             <button
-              type="submit"
-              disabled={!businessName || loading}
               className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 rounded-lg font-bold text-lg transition"
+              disabled={!businessName || loading}
+              type="submit"
             >
               {loading ? "جاري الحفظ..." : "التالي ←"}
             </button>
@@ -244,7 +264,9 @@ export default function OnboardingPage() {
           <div className="text-center space-y-6">
             <div className="mb-8">
               <h1 className="text-3xl font-bold mb-2">ربط WhatsApp</h1>
-              <p className="text-gray-400">اربط رقم الواتساب لاستقبال رسائل العملاء</p>
+              <p className="text-gray-400">
+                اربط رقم الواتساب لاستقبال رسائل العملاء
+              </p>
             </div>
 
             <div className="p-8 bg-gray-900 rounded-xl border border-gray-700">
@@ -256,17 +278,17 @@ export default function OnboardingPage() {
                 الربط الرسمي مع واتساب للأعمال. آمن وموثوق.
               </p>
               <button
-                onClick={handleWhatsAppConnect}
-                disabled={loading}
                 className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 rounded-lg font-bold text-lg transition"
+                disabled={loading}
+                onClick={handleWhatsAppConnect}
               >
                 {loading ? "جاري الربط..." : "ربط WhatsApp"}
               </button>
             </div>
 
             <button
-              onClick={() => setStep("knowledge")}
               className="text-gray-400 hover:text-white transition"
+              onClick={() => setStep("knowledge")}
             >
               تخطي هذه الخطوة
             </button>
@@ -277,51 +299,72 @@ export default function OnboardingPage() {
         {step === "knowledge" && (
           <div className="space-y-6">
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold mb-2">تدريب الذكاء الاصطناعي</h1>
-              <p className="text-gray-400">أضف معلومات نشاطك عشان Hekmo يرد على العملاء صح</p>
+              <h1 className="text-3xl font-bold mb-2">
+                تدريب الذكاء الاصطناعي
+              </h1>
+              <p className="text-gray-400">
+                أضف معلومات نشاطك عشان Hekmo يرد على العملاء صح
+              </p>
             </div>
 
             <div className="space-y-4">
               <KnowledgeCard
-                title="قائمة الطعام / الخدمات"
                 description="اكتب القائمة هنا"
                 icon="📋"
+                onAdd={(content) =>
+                  setKnowledgeItems([
+                    ...knowledgeItems,
+                    { type: "menu", title: "قائمة الطعام", content },
+                  ])
+                }
+                title="قائمة الطعام / الخدمات"
                 type="menu"
-                onAdd={(content) => setKnowledgeItems([...knowledgeItems, { type: "menu", title: "قائمة الطعام", content }])}
               />
               <KnowledgeCard
-                title="الأسئلة الشائعة"
                 description="الأسئلة اللي يسألها العملاء كثير"
                 icon="❓"
+                onAdd={(content) =>
+                  setKnowledgeItems([
+                    ...knowledgeItems,
+                    { type: "faq", title: "الأسئلة الشائعة", content },
+                  ])
+                }
+                title="الأسئلة الشائعة"
                 type="faq"
-                onAdd={(content) => setKnowledgeItems([...knowledgeItems, { type: "faq", title: "الأسئلة الشائعة", content }])}
               />
               <KnowledgeCard
-                title="معلومات إضافية"
                 description="أي شي تبي Hekmo يعرفه"
                 icon="📝"
+                onAdd={(content) =>
+                  setKnowledgeItems([
+                    ...knowledgeItems,
+                    { type: "info", title: "معلومات إضافية", content },
+                  ])
+                }
+                title="معلومات إضافية"
                 type="info"
-                onAdd={(content) => setKnowledgeItems([...knowledgeItems, { type: "info", title: "معلومات إضافية", content }])}
               />
             </div>
 
             {knowledgeItems.length > 0 && (
               <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-lg">
-                <p className="text-emerald-400">✓ تم إضافة {knowledgeItems.length} عنصر</p>
+                <p className="text-emerald-400">
+                  ✓ تم إضافة {knowledgeItems.length} عنصر
+                </p>
               </div>
             )}
 
             <div className="flex gap-4">
               <button
-                onClick={() => setStep("done")}
                 className="flex-1 py-4 border border-gray-600 hover:border-gray-500 rounded-lg font-bold transition"
+                onClick={() => setStep("done")}
               >
                 تخطي
               </button>
               <button
-                onClick={handleKnowledgeSubmit}
-                disabled={loading}
                 className="flex-1 py-4 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 rounded-lg font-bold transition"
+                disabled={loading}
+                onClick={handleKnowledgeSubmit}
               >
                 {loading ? "جاري الحفظ..." : "التالي ←"}
               </button>
@@ -342,8 +385,8 @@ export default function OnboardingPage() {
               جرب ترسل رسالة واتساب وشوف السحر!
             </p>
             <button
-              onClick={handleFinish}
               className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 rounded-lg font-bold text-lg transition"
+              onClick={handleFinish}
             >
               دخول لوحة التحكم
             </button>
@@ -354,29 +397,35 @@ export default function OnboardingPage() {
   );
 }
 
-function ProgressDot({ active, completed }: { active: boolean; completed: boolean }) {
+function ProgressDot({
+  active,
+  completed,
+}: {
+  active: boolean;
+  completed: boolean;
+}) {
   return (
     <div
       className={`w-3 h-3 rounded-full transition ${
         active
           ? "bg-emerald-500 ring-4 ring-emerald-500/30"
           : completed
-          ? "bg-emerald-500"
-          : "bg-gray-700"
+            ? "bg-emerald-500"
+            : "bg-gray-700"
       }`}
     />
   );
 }
 
-function KnowledgeCard({ 
-  title, 
-  description, 
-  icon, 
+function KnowledgeCard({
+  title,
+  description,
+  icon,
   type,
-  onAdd 
-}: { 
-  title: string; 
-  description: string; 
+  onAdd,
+}: {
+  title: string;
+  description: string;
   icon: string;
   type: string;
   onAdd: (content: string) => void;
@@ -401,7 +450,7 @@ function KnowledgeCard({
           : "border-gray-700 bg-gray-900"
       }`}
     >
-      <div 
+      <div
         className="flex items-center gap-4 cursor-pointer"
         onClick={() => !added && setExpanded(!expanded)}
       >
@@ -416,20 +465,20 @@ function KnowledgeCard({
           <span className="text-gray-500">{expanded ? "▼" : "+"}</span>
         )}
       </div>
-      
+
       {expanded && !added && (
         <div className="mt-4 space-y-3">
           <textarea
-            value={content}
+            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:border-emerald-500 focus:outline-none resize-none"
             onChange={(e) => setContent(e.target.value)}
             placeholder={`اكتب ${title} هنا...`}
             rows={4}
-            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:border-emerald-500 focus:outline-none resize-none"
+            value={content}
           />
           <button
-            onClick={handleAdd}
-            disabled={!content.trim()}
             className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 rounded-lg font-bold transition"
+            disabled={!content.trim()}
+            onClick={handleAdd}
           >
             إضافة
           </button>

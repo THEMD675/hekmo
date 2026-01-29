@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { ArrowRight, Check, Loader2, Lock, Mail } from "lucide-react";
 import Link from "next/link";
-import { Mail, ArrowRight, Loader2, Check, Lock } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
@@ -86,7 +86,10 @@ export default function ResetPasswordPage() {
   if (token) {
     if (reset) {
       return (
-        <div className="min-h-screen flex items-center justify-center p-4" dir="rtl">
+        <div
+          className="min-h-screen flex items-center justify-center p-4"
+          dir="rtl"
+        >
           <div className="text-center space-y-4 max-w-md">
             <div className="h-16 w-16 rounded-full bg-green-100 flex items-center justify-center mx-auto">
               <Check className="h-8 w-8 text-green-600" />
@@ -104,7 +107,10 @@ export default function ResetPasswordPage() {
     }
 
     return (
-      <div className="min-h-screen flex items-center justify-center p-4" dir="rtl">
+      <div
+        className="min-h-screen flex items-center justify-center p-4"
+        dir="rtl"
+      >
         <div className="w-full max-w-md space-y-6">
           <div className="text-center">
             <Lock className="h-12 w-12 mx-auto text-primary mb-4" />
@@ -153,7 +159,10 @@ export default function ResetPasswordPage() {
   // Request reset form
   if (sent) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4" dir="rtl">
+      <div
+        className="min-h-screen flex items-center justify-center p-4"
+        dir="rtl"
+      >
         <div className="text-center space-y-4 max-w-md">
           <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
             <Mail className="h-8 w-8 text-primary" />
@@ -178,7 +187,10 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4" dir="rtl">
+    <div
+      className="min-h-screen flex items-center justify-center p-4"
+      dir="rtl"
+    >
       <div className="w-full max-w-md space-y-6">
         <div className="text-center">
           <Lock className="h-12 w-12 mx-auto text-primary mb-4" />

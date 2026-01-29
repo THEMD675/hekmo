@@ -40,7 +40,7 @@ export function isValidNationalId(id: string): boolean {
   // Luhn algorithm validation
   let sum = 0;
   for (let i = 0; i < 10; i++) {
-    let digit = parseInt(id[i], 10);
+    let digit = Number.parseInt(id[i], 10);
     if (i % 2 === 0) {
       digit *= 2;
       if (digit > 9) digit -= 9;
@@ -123,7 +123,7 @@ export function validateMessage(content: string): {
     return { valid: false, error: "الرسالة فارغة" };
   }
 
-  if (content.length > 10000) {
+  if (content.length > 10_000) {
     return { valid: false, error: "الرسالة طويلة جداً" };
   }
 

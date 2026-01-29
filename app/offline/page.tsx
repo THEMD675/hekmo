@@ -2,7 +2,10 @@
 
 export default function OfflinePage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4" dir="rtl">
+    <div
+      className="min-h-screen flex items-center justify-center bg-background p-4"
+      dir="rtl"
+    >
       <div className="text-center space-y-6 max-w-md">
         <div className="text-6xl">📡</div>
         <h1 className="text-3xl font-bold">أنت غير متصل</h1>

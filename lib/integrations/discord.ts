@@ -81,7 +81,7 @@ export async function handleDiscordInteraction(
 
     if (name === "hekmo") {
       const question = options?.find((o) => o.name === "question")?.value;
-      
+
       if (!question) {
         return {
           type: 4,
@@ -98,7 +98,7 @@ export async function handleDiscordInteraction(
           content: aiResponse,
           embeds: [
             {
-              color: 0x10b981, // Green
+              color: 0x10_b9_81, // Green
               footer: { text: "🤖 Powered by Hekmo AI" },
             },
           ],
@@ -114,7 +114,7 @@ export async function handleDiscordInteraction(
             {
               title: "🤖 أوامر حكمو",
               description: "مساعدك الصحي الذكي",
-              color: 0x10b981,
+              color: 0x10_b9_81,
               fields: [
                 {
                   name: "/hekmo [سؤال]",
@@ -138,14 +138,17 @@ export async function handleDiscordInteraction(
 // Get response from Hekmo AI
 async function getHekmoResponse(question: string): Promise<string> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/chat`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        messages: [{ role: "user", content: question }],
-        model: "hekmo",
-      }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_APP_URL}/api/chat`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [{ role: "user", content: question }],
+          model: "hekmo",
+        }),
+      }
+    );
 
     if (!response.ok) {
       return "عذراً، حدث خطأ أثناء معالجة سؤالك.";

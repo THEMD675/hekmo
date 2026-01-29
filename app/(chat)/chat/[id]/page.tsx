@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { auth } from "@/app/(auth)/auth";
-import { getChatById, getMessagesByChatId } from "@/lib/db/queries";
 import { Chat } from "@/components/chat";
+import { getChatById, getMessagesByChatId } from "@/lib/db/queries";
 
 interface ChatPageProps {
   params: Promise<{ id: string }>;
@@ -30,12 +30,16 @@ export default async function ChatPage({ params }: ChatPageProps) {
 
   return (
     <Chat
-      id={id}
-      initialMessages={messages as Parameters<typeof Chat>[0]["initialMessages"]}
-      initialChatModel="gpt-4o-mini"
-      initialVisibilityType={(chat.visibility || "private") as "public" | "private"}
-      isReadonly={false}
       autoResume={true}
+      id={id}
+      initialChatModel="gpt-4o-mini"
+      initialMessages={
+        messages as Parameters<typeof Chat>[0]["initialMessages"]
+      }
+      initialVisibilityType={
+        (chat.visibility || "private") as "public" | "private"
+      }
+      isReadonly={false}
     />
   );
 }

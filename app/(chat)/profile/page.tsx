@@ -1,10 +1,16 @@
 "use client";
 
+import { Calendar, Mail, Shield, User } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { User, Mail, Calendar, Shield } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProfilePage() {
@@ -39,9 +45,7 @@ export default function ProfilePage() {
     <div className="container mx-auto max-w-2xl px-4 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold">الملف الشخصي</h1>
-        <p className="text-muted-foreground mt-2">
-          عرض وإدارة معلومات حسابك
-        </p>
+        <p className="text-muted-foreground mt-2">عرض وإدارة معلومات حسابك</p>
       </div>
 
       <div className="space-y-6">
@@ -110,9 +114,7 @@ export default function ProfilePage() {
         <Card>
           <CardHeader>
             <CardTitle>إحصائيات الاستخدام</CardTitle>
-            <CardDescription>
-              نظرة عامة على استخدامك لحكمو
-            </CardDescription>
+            <CardDescription>نظرة عامة على استخدامك لحكمو</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 gap-4">

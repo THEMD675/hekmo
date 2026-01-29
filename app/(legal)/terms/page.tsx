@@ -8,9 +8,12 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <main className="container mx-auto max-w-4xl px-4 py-16">
-      <article className="prose prose-lg dark:prose-invert mx-auto text-right" dir="rtl">
+      <article
+        className="prose prose-lg dark:prose-invert mx-auto text-right"
+        dir="rtl"
+      >
         <h1 className="text-4xl font-bold mb-8">شروط الاستخدام</h1>
-        
+
         <p className="text-muted-foreground mb-8">
           آخر تحديث: {new Date().toLocaleDateString("ar-SA")}
         </p>
@@ -18,23 +21,28 @@ export default function TermsPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">القبول بالشروط</h2>
           <p>
-            باستخدامك لتطبيق حكمو، فإنك توافق على هذه الشروط والأحكام. إذا لم توافق على أي جزء من هذه الشروط، يرجى عدم استخدام الخدمة.
+            باستخدامك لتطبيق حكمو، فإنك توافق على هذه الشروط والأحكام. إذا لم
+            توافق على أي جزء من هذه الشروط، يرجى عدم استخدام الخدمة.
           </p>
         </section>
 
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">وصف الخدمة</h2>
           <p>
-            حكمو هو مساعد صحي ذكي يقدم معلومات ونصائح صحية عامة. الخدمة لا تعتبر بديلاً عن الاستشارة الطبية المتخصصة.
+            حكمو هو مساعد صحي ذكي يقدم معلومات ونصائح صحية عامة. الخدمة لا تعتبر
+            بديلاً عن الاستشارة الطبية المتخصصة.
           </p>
         </section>
 
         <section className="mb-8">
-          <h2 className="text-2xl font-semibold mb-4">إخلاء المسؤولية الطبية</h2>
+          <h2 className="text-2xl font-semibold mb-4">
+            إخلاء المسؤولية الطبية
+          </h2>
           <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4">
             <p className="font-semibold text-destructive">تنبيه مهم:</p>
             <p>
-              المعلومات المقدمة من حكمو هي للأغراض التعليمية والمعلوماتية فقط، ولا تشكل نصيحة طبية. استشر طبيبك دائماً قبل اتخاذ أي قرارات صحية.
+              المعلومات المقدمة من حكمو هي للأغراض التعليمية والمعلوماتية فقط،
+              ولا تشكل نصيحة طبية. استشر طبيبك دائماً قبل اتخاذ أي قرارات صحية.
             </p>
           </div>
         </section>
@@ -62,21 +70,24 @@ export default function TermsPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">الملكية الفكرية</h2>
           <p>
-            جميع المحتويات والعلامات التجارية والشعارات هي ملك لحكمو. لا يجوز نسخها أو توزيعها دون إذن كتابي.
+            جميع المحتويات والعلامات التجارية والشعارات هي ملك لحكمو. لا يجوز
+            نسخها أو توزيعها دون إذن كتابي.
           </p>
         </section>
 
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">التعديلات</h2>
           <p>
-            نحتفظ بالحق في تعديل هذه الشروط في أي وقت. سنخطرك بأي تغييرات جوهرية عبر البريد الإلكتروني أو إشعار في التطبيق.
+            نحتفظ بالحق في تعديل هذه الشروط في أي وقت. سنخطرك بأي تغييرات جوهرية
+            عبر البريد الإلكتروني أو إشعار في التطبيق.
           </p>
         </section>
 
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">القانون المطبق</h2>
           <p>
-            تخضع هذه الشروط لقوانين المملكة العربية السعودية. أي نزاعات ستحل في محاكم المملكة العربية السعودية.
+            تخضع هذه الشروط لقوانين المملكة العربية السعودية. أي نزاعات ستحل في
+            محاكم المملكة العربية السعودية.
           </p>
         </section>
 
@@ -84,7 +95,10 @@ export default function TermsPage() {
           <h2 className="text-2xl font-semibold mb-4">التواصل معنا</h2>
           <p>
             لأي استفسارات، تواصل معنا على:{" "}
-            <a href="mailto:support@hekmo.ai" className="text-primary hover:underline">
+            <a
+              className="text-primary hover:underline"
+              href="mailto:support@hekmo.ai"
+            >
               support@hekmo.ai
             </a>
           </p>

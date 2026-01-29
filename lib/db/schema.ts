@@ -190,7 +190,7 @@ export const business = pgTable("Business", {
   workingHoursAr: text("workingHoursAr"),
   timezone: varchar("timezone", { length: 50 }).default("Asia/Riyadh"),
   language: varchar("language", { length: 10 }).default("ar"), // ar, en, both
-  
+
   // WhatsApp Business API
   whatsappPhoneNumberId: text("whatsappPhoneNumberId"),
   whatsappBusinessAccountId: text("whatsappBusinessAccountId"),
@@ -198,23 +198,27 @@ export const business = pgTable("Business", {
   whatsappWebhookVerifyToken: text("whatsappWebhookVerifyToken"),
   whatsappConnected: boolean("whatsappConnected").default(false),
   whatsappConnectedAt: timestamp("whatsappConnectedAt"),
-  
+
   // Subscription
-  subscriptionPlan: varchar("subscriptionPlan", { length: 20 }).default("starter"), // starter, business, enterprise
-  subscriptionStatus: varchar("subscriptionStatus", { length: 20 }).default("trial"), // trial, active, cancelled, expired
+  subscriptionPlan: varchar("subscriptionPlan", { length: 20 }).default(
+    "starter"
+  ), // starter, business, enterprise
+  subscriptionStatus: varchar("subscriptionStatus", { length: 20 }).default(
+    "trial"
+  ), // trial, active, cancelled, expired
   trialEndsAt: timestamp("trialEndsAt"),
   stripeCustomerId: text("stripeCustomerId"),
   stripeSubscriptionId: text("stripeSubscriptionId"),
-  
+
   // Usage
   messagesThisMonth: json("messagesThisMonth").default(0),
   messagesLimit: json("messagesLimit").default(1000),
-  
+
   // Settings
   aiPersonality: varchar("aiPersonality", { length: 20 }).default("friendly"), // friendly, professional, casual
   autoReplyEnabled: boolean("autoReplyEnabled").default(true),
   handoffEnabled: boolean("handoffEnabled").default(true), // allow transferring to human
-  
+
   createdAt: timestamp("createdAt").notNull().defaultNow(),
   updatedAt: timestamp("updatedAt").notNull().defaultNow(),
 });

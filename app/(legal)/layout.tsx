@@ -9,9 +9,9 @@ export default function LegalLayout({
     <div className="min-h-screen bg-background">
       <header className="border-b">
         <div className="container mx-auto px-4 py-4">
-          <Link 
-            href="/" 
+          <Link
             className="text-xl font-bold text-primary hover:opacity-80 transition-opacity"
+            href="/"
           >
             حكمو
           </Link>
@@ -21,16 +21,25 @@ export default function LegalLayout({
       <footer className="border-t mt-16">
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
-            <Link href="/" className="hover:text-foreground transition-colors">
+            <Link className="hover:text-foreground transition-colors" href="/">
               الرئيسية
             </Link>
-            <Link href="/privacy" className="hover:text-foreground transition-colors">
+            <Link
+              className="hover:text-foreground transition-colors"
+              href="/privacy"
+            >
               سياسة الخصوصية
             </Link>
-            <Link href="/terms" className="hover:text-foreground transition-colors">
+            <Link
+              className="hover:text-foreground transition-colors"
+              href="/terms"
+            >
               شروط الاستخدام
             </Link>
-            <a href="mailto:support@hekmo.ai" className="hover:text-foreground transition-colors">
+            <a
+              className="hover:text-foreground transition-colors"
+              href="mailto:support@hekmo.ai"
+            >
               تواصل معنا
             </a>
           </div>

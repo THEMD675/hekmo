@@ -2,16 +2,21 @@ import { tool } from "ai";
 import { z } from "zod";
 
 export const prayerTimesTool = tool({
-  description: "Get Islamic prayer times for a specific city in Saudi Arabia or any location. Use this when the user asks about prayer times, salah times, or أوقات الصلاة.",
+  description:
+    "Get Islamic prayer times for a specific city in Saudi Arabia or any location. Use this when the user asks about prayer times, salah times, or أوقات الصلاة.",
   inputSchema: z.object({
     city: z.string().describe("City name (e.g., Riyadh, Jeddah, Mecca)"),
     country: z.string().default("Saudi Arabia").describe("Country name"),
-    date: z.string().optional().describe("Date in DD-MM-YYYY format, defaults to today"),
+    date: z
+      .string()
+      .optional()
+      .describe("Date in DD-MM-YYYY format, defaults to today"),
   }),
   execute: async ({ city, country, date }) => {
     try {
-      const today = date || new Date().toLocaleDateString("en-GB").replace(/\//g, "-");
-      
+      const today =
+        date || new Date().toLocaleDateString("en-GB").replace(/\//g, "-");
+
       const response = await fetch(
         `https://api.aladhan.com/v1/timingsByCity/${today}?city=${encodeURIComponent(city)}&country=${encodeURIComponent(country)}&method=4`
       );
@@ -34,8 +39,12 @@ export const prayerTimesTool = tool({
         country,
         date: {
           gregorian: data.data?.date?.gregorian?.date,
-          hijri: hijriDate ? `${hijriDate.day} ${hijriDate.month.ar} ${hijriDate.year}` : null,
-          hijriEn: hijriDate ? `${hijriDate.day} ${hijriDate.month.en} ${hijriDate.year}` : null,
+          hijri: hijriDate
+            ? `${hijriDate.day} ${hijriDate.month.ar} ${hijriDate.year}`
+            : null,
+          hijriEn: hijriDate
+            ? `${hijriDate.day} ${hijriDate.month.en} ${hijriDate.year}`
+            : null,
         },
         prayerTimes: {
           fajr: timings.Fajr,
@@ -58,7 +67,8 @@ export const prayerTimesTool = tool({
       console.error("Prayer times error:", error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : "Failed to get prayer times",
+        error:
+          error instanceof Error ? error.message : "Failed to get prayer times",
       };
     }
   },

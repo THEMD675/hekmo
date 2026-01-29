@@ -142,11 +142,11 @@ async function handleTelegramCommand(
     case "/help":
       await sendTelegramMessage(
         chatId,
-        `<b>🤖 أوامر حكمو</b>\n\n/start - بدء المحادثة\n/help - عرض المساعدة\n/business - نصيحة صحية\n\nأو اكتب سؤالك مباشرة!`
+        "<b>🤖 أوامر حكمو</b>\n\n/start - بدء المحادثة\n/help - عرض المساعدة\n/business - نصيحة صحية\n\nأو اكتب سؤالك مباشرة!"
       );
       break;
 
-    case "/business":
+    case "/business": {
       const tips = [
         "💧 اشرب 8 أكواب ماء يومياً",
         "🏃 مارس الرياضة 30 دقيقة يومياً",
@@ -157,6 +157,7 @@ async function handleTelegramCommand(
       const tip = tips[Math.floor(Math.random() * tips.length)];
       await sendTelegramMessage(chatId, `<b>نصيحة اليوم:</b>\n\n${tip}`);
       break;
+    }
 
     default:
       if (args) {
@@ -164,7 +165,10 @@ async function handleTelegramCommand(
         const response = await getHekmoResponse(args);
         await sendTelegramMessage(chatId, response);
       } else {
-        await sendTelegramMessage(chatId, "أمر غير معروف. اكتب /help للمساعدة.");
+        await sendTelegramMessage(
+          chatId,
+          "أمر غير معروف. اكتب /help للمساعدة."
+        );
       }
   }
 }
@@ -178,14 +182,14 @@ async function handleCallbackQuery(
     case "examples":
       await sendTelegramMessage(
         chatId,
-        `<b>أمثلة على الأسئلة:</b>\n\n• ما هو أفضل وقت للنوم؟\n• كيف أحسن تركيزي؟\n• ما هي فوائد الصيام المتقطع؟\n• كيف أتخلص من التوتر?`
+        "<b>أمثلة على الأسئلة:</b>\n\n• ما هو أفضل وقت للنوم؟\n• كيف أحسن تركيزي؟\n• ما هي فوائد الصيام المتقطع؟\n• كيف أتخلص من التوتر?"
       );
       break;
 
     case "help":
       await sendTelegramMessage(
         chatId,
-        `<b>كيف تستخدم حكمو؟</b>\n\n1. اكتب سؤالك مباشرة\n2. انتظر الرد\n3. يمكنك المتابعة بأسئلة إضافية\n\n<i>حكمو يتذكر سياق محادثتك!</i>`
+        "<b>كيف تستخدم حكمو؟</b>\n\n1. اكتب سؤالك مباشرة\n2. انتظر الرد\n3. يمكنك المتابعة بأسئلة إضافية\n\n<i>حكمو يتذكر سياق محادثتك!</i>"
       );
       break;
   }
@@ -194,14 +198,17 @@ async function handleCallbackQuery(
 // Get response from Hekmo AI
 async function getHekmoResponse(question: string): Promise<string> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/chat`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        messages: [{ role: "user", content: question }],
-        model: "hekmo",
-      }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_APP_URL}/api/chat`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [{ role: "user", content: question }],
+          model: "hekmo",
+        }),
+      }
+    );
 
     if (!response.ok) {
       return "عذراً، حدث خطأ. يرجى المحاولة لاحقاً.";

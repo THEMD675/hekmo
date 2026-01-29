@@ -1,10 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Check, ExternalLink } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CodeBlock } from "@/components/code-block";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function DocsPage() {
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
@@ -80,9 +78,7 @@ print(response.json()['choices'][0]['message']['content'])`;
       {/* Authentication */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold mb-4">المصادقة</h2>
-        <p className="mb-4">
-          استخدم Bearer token في header الطلب:
-        </p>
+        <p className="mb-4">استخدم Bearer token في header الطلب:</p>
         <div className="bg-muted rounded-lg p-4 font-mono text-sm" dir="ltr">
           Authorization: Bearer hk_live_xxxxx
         </div>
@@ -91,7 +87,7 @@ print(response.json()['choices'][0]['message']['content'])`;
       {/* Endpoints */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold mb-4">نقاط النهاية</h2>
-        
+
         <div className="space-y-6">
           {/* Chat Completions */}
           <div className="border rounded-lg p-6">
@@ -101,10 +97,8 @@ print(response.json()['choices'][0]['message']['content'])`;
               </span>
               <span className="font-mono">/v1/chat/completions</span>
             </div>
-            <p className="text-muted-foreground mb-4">
-              إنشاء محادثة مع حكمو
-            </p>
-            
+            <p className="text-muted-foreground mb-4">إنشاء محادثة مع حكمو</p>
+
             <h4 className="font-semibold mb-2">Parameters</h4>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -119,7 +113,9 @@ print(response.json()['choices'][0]['message']['content'])`;
                   <tr className="border-b">
                     <td className="py-2 pr-4 font-mono">model</td>
                     <td className="py-2 pr-4">string</td>
-                    <td className="py-2">النموذج المستخدم (hekmo, hekmo-pro)</td>
+                    <td className="py-2">
+                      النموذج المستخدم (hekmo, hekmo-pro)
+                    </td>
                   </tr>
                   <tr className="border-b">
                     <td className="py-2 pr-4 font-mono">messages</td>
@@ -146,7 +142,7 @@ print(response.json()['choices'][0]['message']['content'])`;
       {/* Code Examples */}
       <section className="mb-12">
         <h2 className="text-2xl font-bold mb-4">أمثلة الكود</h2>
-        
+
         <Tabs defaultValue="curl">
           <TabsList className="mb-4">
             <TabsTrigger value="curl">cURL</TabsTrigger>
@@ -229,7 +225,10 @@ print(response.json()['choices'][0]['message']['content'])`;
         <h2 className="text-2xl font-bold mb-4">الدعم</h2>
         <p className="text-muted-foreground">
           للمساعدة، تواصل معنا على{" "}
-          <a className="text-primary hover:underline" href="mailto:api@hekmo.ai">
+          <a
+            className="text-primary hover:underline"
+            href="mailto:api@hekmo.ai"
+          >
             api@hekmo.ai
           </a>
         </p>

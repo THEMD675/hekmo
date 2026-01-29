@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Loader2, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { Loader2, Users } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 interface JoinPageProps {
@@ -24,7 +24,7 @@ export default function JoinPage({ params }: JoinPageProps) {
     async function verifyToken() {
       try {
         const { token } = await params;
-        
+
         // Decode token
         const decoded = atob(token.replace(/-/g, "+").replace(/_/g, "/"));
         const [sessionId, role] = decoded.split(":");
@@ -84,7 +84,10 @@ export default function JoinPage({ params }: JoinPageProps) {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4" dir="rtl">
+      <div
+        className="min-h-screen flex items-center justify-center p-4"
+        dir="rtl"
+      >
         <div className="text-center space-y-4 max-w-md">
           <div className="text-5xl">❌</div>
           <h1 className="text-2xl font-bold">خطأ</h1>
@@ -99,7 +102,10 @@ export default function JoinPage({ params }: JoinPageProps) {
 
   if (!session?.user) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4" dir="rtl">
+      <div
+        className="min-h-screen flex items-center justify-center p-4"
+        dir="rtl"
+      >
         <div className="text-center space-y-4 max-w-md">
           <Users className="h-16 w-16 mx-auto text-primary" />
           <h1 className="text-2xl font-bold">انضم للمحادثة</h1>
@@ -113,7 +119,10 @@ export default function JoinPage({ params }: JoinPageProps) {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4" dir="rtl">
+    <div
+      className="min-h-screen flex items-center justify-center p-4"
+      dir="rtl"
+    >
       <div className="text-center space-y-6 max-w-md">
         <Users className="h-16 w-16 mx-auto text-primary" />
         <h1 className="text-2xl font-bold">انضم للمحادثة</h1>

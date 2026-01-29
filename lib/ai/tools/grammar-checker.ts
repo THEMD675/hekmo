@@ -2,17 +2,26 @@ import { tool } from "ai";
 import { z } from "zod";
 
 export const grammarCheckerTool = tool({
-  description: "Check and correct grammar and spelling in Arabic or English text. Use when users ask to proofread, check grammar, or fix spelling.",
+  description:
+    "Check and correct grammar and spelling in Arabic or English text. Use when users ask to proofread, check grammar, or fix spelling.",
   inputSchema: z.object({
-    text: z.string().describe("The text to check for grammar and spelling errors"),
-    language: z.enum(["ar", "en", "auto"]).default("auto").describe("Language of the text"),
+    text: z
+      .string()
+      .describe("The text to check for grammar and spelling errors"),
+    language: z
+      .enum(["ar", "en", "auto"])
+      .default("auto")
+      .describe("Language of the text"),
   }),
   execute: async ({ text, language }) => {
     try {
       // Detect language if auto
-      const detectedLanguage = language === "auto" 
-        ? (text.match(/[\u0600-\u06FF]/) ? "ar" : "en")
-        : language;
+      const detectedLanguage =
+        language === "auto"
+          ? text.match(/[\u0600-\u06FF]/)
+            ? "ar"
+            : "en"
+          : language;
 
       // Common grammar/spelling patterns to check
       const corrections: Array<{
@@ -92,13 +101,14 @@ export const grammarCheckerTool = tool({
         language: detectedLanguage,
         corrections,
         hasErrors: corrections.length > 0,
-        summary: detectedLanguage === "ar"
-          ? corrections.length > 0
-            ? `تم العثور على ${corrections.length} خطأ`
-            : "لم يتم العثور على أخطاء"
-          : corrections.length > 0
-            ? `Found ${corrections.length} issue(s)`
-            : "No issues found",
+        summary:
+          detectedLanguage === "ar"
+            ? corrections.length > 0
+              ? `تم العثور على ${corrections.length} خطأ`
+              : "لم يتم العثور على أخطاء"
+            : corrections.length > 0
+              ? `Found ${corrections.length} issue(s)`
+              : "No issues found",
       };
     } catch (error) {
       console.error("Grammar check error:", error);

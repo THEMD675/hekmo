@@ -121,9 +121,7 @@ export function showLocalNotification(
 // Utility to convert VAPID key
 function urlBase64ToUint8Array(base64String: string): Uint8Array {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding)
-    .replace(/-/g, "+")
-    .replace(/_/g, "/");
+  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
 
   const rawData = window.atob(base64);
   const outputArray = new Uint8Array(rawData.length);
@@ -166,11 +164,15 @@ export function createHekmoNotification(notification: HekmoNotification): void {
       break;
     case "reminder":
       options.requireInteraction = true;
-      (options as NotificationOptions & { vibrate?: number[] }).vibrate = [200, 100, 200];
+      (options as NotificationOptions & { vibrate?: number[] }).vibrate = [
+        200, 100, 200,
+      ];
       break;
     case "alert":
       options.requireInteraction = true;
-      (options as NotificationOptions & { vibrate?: number[] }).vibrate = [200, 100, 200, 100, 200];
+      (options as NotificationOptions & { vibrate?: number[] }).vibrate = [
+        200, 100, 200, 100, 200,
+      ];
       break;
     default:
       break;

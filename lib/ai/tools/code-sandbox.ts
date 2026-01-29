@@ -5,11 +5,16 @@ import { z } from "zod";
 // Uses a sandboxed environment (in production, use E2B, Pyodide, or similar)
 
 export const codeSandboxTool = tool({
-  description: "Execute code safely in a sandboxed environment. Supports Python and JavaScript. Use for calculations, data processing, or demonstrating code.",
+  description:
+    "Execute code safely in a sandboxed environment. Supports Python and JavaScript. Use for calculations, data processing, or demonstrating code.",
   inputSchema: z.object({
     code: z.string().describe("The code to execute"),
     language: z.enum(["python", "javascript"]).describe("Programming language"),
-    timeout: z.number().optional().default(5000).describe("Timeout in milliseconds"),
+    timeout: z
+      .number()
+      .optional()
+      .default(5000)
+      .describe("Timeout in milliseconds"),
   }),
   execute: async ({ code, language, timeout = 5000 }) => {
     try {
@@ -98,7 +103,8 @@ function executeJavaScript(
     const sandbox = {
       console: {
         log: (...args: unknown[]) => outputs.push(args.map(String).join(" ")),
-        error: (...args: unknown[]) => outputs.push("Error: " + args.map(String).join(" ")),
+        error: (...args: unknown[]) =>
+          outputs.push("Error: " + args.map(String).join(" ")),
       },
       Math,
       Date,
@@ -157,10 +163,10 @@ function executePython(
     const mathExpressions = code.match(/print\((.+)\)/g);
     if (mathExpressions) {
       const outputs: string[] = [];
-      
+
       for (const expr of mathExpressions) {
         const inner = expr.replace(/print\(/, "").replace(/\)$/, "");
-        
+
         // Only evaluate simple math
         if (/^[\d\s+\-*/.()]+$/.test(inner)) {
           const result = eval(inner);

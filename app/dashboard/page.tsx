@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 interface Business {
   id: string;
@@ -39,7 +39,9 @@ interface DashboardData {
 
 export default function DashboardPage() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"overview" | "conversations" | "settings">("overview");
+  const [activeTab, setActiveTab] = useState<
+    "overview" | "conversations" | "settings"
+  >("overview");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<DashboardData | null>(null);
@@ -51,7 +53,7 @@ export default function DashboardPage() {
   const fetchDashboardData = async () => {
     try {
       const businessId = localStorage.getItem("hekmo_business_id");
-      
+
       if (!businessId) {
         // No business registered, redirect to onboarding
         router.push("/onboarding");
@@ -59,7 +61,7 @@ export default function DashboardPage() {
       }
 
       const response = await fetch(`/api/business/${businessId}`);
-      
+
       if (response.status === 401) {
         // Auth required, redirect to guest login
         window.location.href = `/api/auth/guest?redirectUrl=${encodeURIComponent(window.location.href)}`;
@@ -95,7 +97,7 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-12 h-12 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-gray-400">جاري التحميل...</p>
         </div>
       </div>
@@ -107,9 +109,9 @@ export default function DashboardPage() {
       <div className="min-h-screen bg-gray-950 text-white flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-400 mb-4">{error}</p>
-          <button 
-            onClick={() => router.push("/onboarding")}
+          <button
             className="px-6 py-3 bg-emerald-500 hover:bg-emerald-600 rounded-lg font-bold transition"
+            onClick={() => router.push("/onboarding")}
           >
             إنشاء نشاط جديد
           </button>
@@ -127,24 +129,35 @@ export default function DashboardPage() {
       {/* Top Nav */}
       <header className="border-b border-gray-800 px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-6">
-          <Link href="/" className="text-xl font-bold text-emerald-400">Hekmo</Link>
+          <Link className="text-xl font-bold text-emerald-400" href="/">
+            Hekmo
+          </Link>
           <nav className="flex gap-4">
-            <TabButton active={activeTab === "overview"} onClick={() => setActiveTab("overview")}>
+            <TabButton
+              active={activeTab === "overview"}
+              onClick={() => setActiveTab("overview")}
+            >
               نظرة عامة
             </TabButton>
-            <TabButton active={activeTab === "conversations"} onClick={() => setActiveTab("conversations")}>
+            <TabButton
+              active={activeTab === "conversations"}
+              onClick={() => setActiveTab("conversations")}
+            >
               المحادثات
             </TabButton>
-            <TabButton active={activeTab === "settings"} onClick={() => setActiveTab("settings")}>
+            <TabButton
+              active={activeTab === "settings"}
+              onClick={() => setActiveTab("settings")}
+            >
               الإعدادات
             </TabButton>
           </nav>
         </div>
         <div className="flex items-center gap-4">
           <span className="text-gray-400">{business?.name || "نشاطي"}</span>
-          <button 
-            onClick={handleLogout}
+          <button
             className="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition"
+            onClick={handleLogout}
           >
             تسجيل خروج
           </button>
@@ -154,18 +167,18 @@ export default function DashboardPage() {
       {/* Main Content */}
       <main className="container mx-auto px-6 py-8">
         {activeTab === "overview" && (
-          <OverviewTab 
-            business={business!} 
-            stats={stats!} 
-            conversations={conversations} 
+          <OverviewTab
+            business={business!}
+            conversations={conversations}
+            stats={stats!}
           />
         )}
         {activeTab === "conversations" && (
           <ConversationsTab conversations={conversations} />
         )}
         {activeTab === "settings" && (
-          <SettingsTab 
-            business={business!} 
+          <SettingsTab
+            business={business!}
             knowledgeCount={stats?.knowledgeItems || 0}
             onUpdate={fetchDashboardData}
           />
@@ -175,42 +188,59 @@ export default function DashboardPage() {
   );
 }
 
-function TabButton({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+function TabButton({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
   return (
     <button
-      onClick={onClick}
       className={`px-4 py-2 rounded-lg transition ${
-        active ? "bg-emerald-500/20 text-emerald-400" : "text-gray-400 hover:text-white"
+        active
+          ? "bg-emerald-500/20 text-emerald-400"
+          : "text-gray-400 hover:text-white"
       }`}
+      onClick={onClick}
     >
       {children}
     </button>
   );
 }
 
-function OverviewTab({ 
-  business, 
-  stats, 
-  conversations 
-}: { 
-  business: Business; 
-  stats: { totalConversations: number; knowledgeItems: number }; 
+function OverviewTab({
+  business,
+  stats,
+  conversations,
+}: {
+  business: Business;
+  stats: { totalConversations: number; knowledgeItems: number };
   conversations: Conversation[];
 }) {
-  const usagePercent = business.messagesLimit > 0 
-    ? Math.round((business.messagesThisMonth / business.messagesLimit) * 100) 
-    : 0;
+  const usagePercent =
+    business.messagesLimit > 0
+      ? Math.round((business.messagesThisMonth / business.messagesLimit) * 100)
+      : 0;
 
   return (
     <div>
       <h1 className="text-2xl font-bold mb-6">نظرة عامة</h1>
-      
+
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <StatCard label="المحادثات" value={String(stats.totalConversations)} />
-        <StatCard label="الرسائل هذا الشهر" value={String(business.messagesThisMonth || 0)} />
+        <StatCard
+          label="الرسائل هذا الشهر"
+          value={String(business.messagesThisMonth || 0)}
+        />
         <StatCard label="الحد الشهري" value={`${usagePercent}%`} />
-        <StatCard label="قاعدة المعرفة" value={`${stats.knowledgeItems} عنصر`} />
+        <StatCard
+          label="قاعدة المعرفة"
+          value={`${stats.knowledgeItems} عنصر`}
+        />
       </div>
 
       {/* WhatsApp Status */}
@@ -223,12 +253,12 @@ function OverviewTab({
           <div className="flex items-center gap-2">
             {business.whatsappConnected ? (
               <>
-                <span className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></span>
+                <span className="w-3 h-3 bg-emerald-500 rounded-full animate-pulse" />
                 <span className="text-emerald-400">متصل</span>
               </>
             ) : (
               <>
-                <span className="w-3 h-3 bg-yellow-500 rounded-full"></span>
+                <span className="w-3 h-3 bg-yellow-500 rounded-full" />
                 <span className="text-yellow-400">غير متصل</span>
               </>
             )}
@@ -249,8 +279,8 @@ function OverviewTab({
             {conversations.slice(0, 5).map((conv) => (
               <ConversationPreview
                 key={conv.id}
-                name={conv.customerName || conv.customerPhone}
                 lastMessage={`${conv.messagesCount} رسالة`}
+                name={conv.customerName || conv.customerPhone}
                 time={formatTime(conv.lastMessageAt)}
                 unread={conv.status === "active"}
               />
@@ -262,8 +292,14 @@ function OverviewTab({
   );
 }
 
-function ConversationsTab({ conversations }: { conversations: Conversation[] }) {
-  const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
+function ConversationsTab({
+  conversations,
+}: {
+  conversations: Conversation[];
+}) {
+  const [selectedConversation, setSelectedConversation] = useState<
+    string | null
+  >(null);
 
   return (
     <div className="grid grid-cols-3 gap-6 h-[calc(100vh-12rem)]">
@@ -271,9 +307,9 @@ function ConversationsTab({ conversations }: { conversations: Conversation[] }) 
       <div className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
         <div className="p-4 border-b border-gray-800">
           <input
-            type="search"
-            placeholder="بحث..."
             className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:border-emerald-500 focus:outline-none"
+            placeholder="بحث..."
+            type="search"
           />
         </div>
         <div className="overflow-auto h-full">
@@ -281,14 +317,14 @@ function ConversationsTab({ conversations }: { conversations: Conversation[] }) 
             <p className="text-gray-400 text-center py-8">لا توجد محادثات</p>
           ) : (
             conversations.map((conv) => (
-              <ConversationListItem 
+              <ConversationListItem
+                active={selectedConversation === conv.id}
                 key={conv.id}
-                name={conv.customerName || conv.customerPhone} 
+                name={conv.customerName || conv.customerPhone}
+                onClick={() => setSelectedConversation(conv.id)}
                 preview={`${conv.messagesCount} رسالة`}
                 time={formatTime(conv.lastMessageAt)}
-                active={selectedConversation === conv.id}
                 unread={conv.status === "active"}
-                onClick={() => setSelectedConversation(conv.id)}
               />
             ))
           )}
@@ -302,10 +338,14 @@ function ConversationsTab({ conversations }: { conversations: Conversation[] }) 
             <div className="p-4 border-b border-gray-800 flex items-center justify-between">
               <div>
                 <h3 className="font-bold">
-                  {conversations.find(c => c.id === selectedConversation)?.customerName || "عميل"}
+                  {conversations.find((c) => c.id === selectedConversation)
+                    ?.customerName || "عميل"}
                 </h3>
                 <p className="text-sm text-gray-400">
-                  {conversations.find(c => c.id === selectedConversation)?.customerPhone}
+                  {
+                    conversations.find((c) => c.id === selectedConversation)
+                      ?.customerPhone
+                  }
                 </p>
               </div>
               <button className="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition">
@@ -313,7 +353,9 @@ function ConversationsTab({ conversations }: { conversations: Conversation[] }) 
               </button>
             </div>
             <div className="flex-1 overflow-auto p-4">
-              <p className="text-gray-400 text-center py-8">اضغط على محادثة لعرضها</p>
+              <p className="text-gray-400 text-center py-8">
+                اضغط على محادثة لعرضها
+              </p>
             </div>
           </>
         ) : (
@@ -326,12 +368,12 @@ function ConversationsTab({ conversations }: { conversations: Conversation[] }) 
   );
 }
 
-function SettingsTab({ 
-  business, 
+function SettingsTab({
+  business,
   knowledgeCount,
-  onUpdate 
-}: { 
-  business: Business; 
+  onUpdate,
+}: {
+  business: Business;
   knowledgeCount: number;
   onUpdate: () => void;
 }) {
@@ -367,20 +409,24 @@ function SettingsTab({
         <h2 className="text-lg font-bold mb-4">معلومات النشاط</h2>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm text-gray-400 mb-1">اسم النشاط</label>
+            <label className="block text-sm text-gray-400 mb-1">
+              اسم النشاط
+            </label>
             <input
+              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:border-emerald-500 focus:outline-none"
+              onChange={(e) => setName(e.target.value)}
               type="text"
               value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:border-emerald-500 focus:outline-none"
             />
           </div>
           <div>
-            <label className="block text-sm text-gray-400 mb-1">نوع النشاط</label>
-            <select 
-              value={type}
-              onChange={(e) => setType(e.target.value)}
+            <label className="block text-sm text-gray-400 mb-1">
+              نوع النشاط
+            </label>
+            <select
               className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:border-emerald-500 focus:outline-none"
+              onChange={(e) => setType(e.target.value)}
+              value={type}
             >
               <option value="restaurant">مطعم</option>
               <option value="cafe">كافيه</option>
@@ -390,27 +436,31 @@ function SettingsTab({
             </select>
           </div>
           <div>
-            <label className="block text-sm text-gray-400 mb-1">ساعات العمل</label>
+            <label className="block text-sm text-gray-400 mb-1">
+              ساعات العمل
+            </label>
             <input
+              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:border-emerald-500 focus:outline-none"
+              onChange={(e) => setWorkingHours(e.target.value)}
               type="text"
               value={workingHours}
-              onChange={(e) => setWorkingHours(e.target.value)}
-              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:border-emerald-500 focus:outline-none"
             />
           </div>
           <div>
-            <label className="block text-sm text-gray-400 mb-1">رقم التواصل</label>
+            <label className="block text-sm text-gray-400 mb-1">
+              رقم التواصل
+            </label>
             <input
+              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:border-emerald-500 focus:outline-none"
+              onChange={(e) => setPhone(e.target.value)}
               type="tel"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:border-emerald-500 focus:outline-none"
             />
           </div>
           <button
-            onClick={handleSave}
-            disabled={saving}
             className="px-6 py-2 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 rounded-lg font-bold transition"
+            disabled={saving}
+            onClick={handleSave}
           >
             {saving ? "جاري الحفظ..." : "حفظ التغييرات"}
           </button>
@@ -420,10 +470,12 @@ function SettingsTab({
       {/* AI Training */}
       <section className="p-6 bg-gray-900 rounded-xl border border-gray-800 mb-6">
         <h2 className="text-lg font-bold mb-4">تدريب الذكاء الاصطناعي</h2>
-        <p className="text-gray-400 mb-4">لديك {knowledgeCount} عنصر في قاعدة المعرفة.</p>
-        <Link 
-          href="/onboarding?step=knowledge"
+        <p className="text-gray-400 mb-4">
+          لديك {knowledgeCount} عنصر في قاعدة المعرفة.
+        </p>
+        <Link
           className="inline-block px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition"
+          href="/onboarding?step=knowledge"
         >
           + إضافة معلومات
         </Link>
@@ -435,7 +487,9 @@ function SettingsTab({
         <div className="flex items-center justify-between p-4 bg-gray-800 rounded-lg">
           <div>
             <p className="font-bold">{business.phone || "لم يتم الربط"}</p>
-            <p className={`text-sm ${business.whatsappConnected ? "text-emerald-400" : "text-yellow-400"}`}>
+            <p
+              className={`text-sm ${business.whatsappConnected ? "text-emerald-400" : "text-yellow-400"}`}
+            >
               {business.whatsappConnected ? "متصل ويعمل" : "غير متصل"}
             </p>
           </div>
@@ -450,19 +504,43 @@ function SettingsTab({
 
 // Helper Components
 
-function StatCard({ label, value, change, positive }: { label: string; value: string; change?: string; positive?: boolean }) {
+function StatCard({
+  label,
+  value,
+  change,
+  positive,
+}: {
+  label: string;
+  value: string;
+  change?: string;
+  positive?: boolean;
+}) {
   return (
     <div className="p-4 bg-gray-900 rounded-xl border border-gray-800">
       <p className="text-gray-400 text-sm mb-1">{label}</p>
       <p className="text-2xl font-bold">{value}</p>
       {change && (
-        <p className={`text-sm ${positive ? "text-emerald-400" : "text-red-400"}`}>{change}</p>
+        <p
+          className={`text-sm ${positive ? "text-emerald-400" : "text-red-400"}`}
+        >
+          {change}
+        </p>
       )}
     </div>
   );
 }
 
-function ConversationPreview({ name, lastMessage, time, unread }: { name: string; lastMessage: string; time: string; unread?: boolean }) {
+function ConversationPreview({
+  name,
+  lastMessage,
+  time,
+  unread,
+}: {
+  name: string;
+  lastMessage: string;
+  time: string;
+  unread?: boolean;
+}) {
   return (
     <div className="flex items-center justify-between p-3 hover:bg-gray-800 rounded-lg cursor-pointer transition">
       <div className="flex items-center gap-3">
@@ -476,37 +554,47 @@ function ConversationPreview({ name, lastMessage, time, unread }: { name: string
       </div>
       <div className="text-right">
         <p className="text-xs text-gray-500">{time}</p>
-        {unread && <span className="inline-block w-2 h-2 bg-emerald-500 rounded-full mt-1"></span>}
+        {unread && (
+          <span className="inline-block w-2 h-2 bg-emerald-500 rounded-full mt-1" />
+        )}
       </div>
     </div>
   );
 }
 
-function ConversationListItem({ 
-  name, 
-  preview, 
-  time, 
-  active, 
+function ConversationListItem({
+  name,
+  preview,
+  time,
+  active,
   unread,
-  onClick 
-}: { 
-  name: string; 
-  preview: string; 
-  time: string; 
-  active?: boolean; 
+  onClick,
+}: {
+  name: string;
+  preview: string;
+  time: string;
+  active?: boolean;
   unread?: boolean;
   onClick?: () => void;
 }) {
   return (
-    <div 
-      onClick={onClick}
+    <div
       className={`p-4 border-b border-gray-800 cursor-pointer transition ${active ? "bg-emerald-500/10" : "hover:bg-gray-800"}`}
+      onClick={onClick}
     >
       <div className="flex justify-between items-start mb-1">
-        <span className={`font-bold ${unread ? "text-white" : "text-gray-300"}`}>{name}</span>
+        <span
+          className={`font-bold ${unread ? "text-white" : "text-gray-300"}`}
+        >
+          {name}
+        </span>
         <span className="text-xs text-gray-500">{time}</span>
       </div>
-      <p className={`text-sm truncate ${unread ? "text-gray-300" : "text-gray-500"}`}>{preview}</p>
+      <p
+        className={`text-sm truncate ${unread ? "text-gray-300" : "text-gray-500"}`}
+      >
+        {preview}
+      </p>
     </div>
   );
 }
@@ -548,28 +636,35 @@ function SubscriptionCard({ business }: { business: Business }) {
     { id: "enterprise", name: "المؤسسات", price: null, messages: "غير محدود" },
   ];
 
-  const currentPlanIndex = plans.findIndex(p => p.id === business.subscriptionPlan);
+  const currentPlanIndex = plans.findIndex(
+    (p) => p.id === business.subscriptionPlan
+  );
 
   return (
     <div className="p-6 bg-gray-900 rounded-xl border border-gray-800 mb-8">
       <h3 className="font-bold mb-4">الاشتراك</h3>
-      
+
       <div className="flex items-center justify-between mb-4">
         <div>
           <p className="text-lg font-bold text-emerald-400">
-            {plans.find(p => p.id === business.subscriptionPlan)?.name || "تجريبي"}
+            {plans.find((p) => p.id === business.subscriptionPlan)?.name ||
+              "تجريبي"}
           </p>
           <p className="text-sm text-gray-400">
-            {business.subscriptionStatus === "trial" ? "فترة تجريبية" :
-             business.subscriptionStatus === "active" ? "نشط" :
-             business.subscriptionStatus === "past_due" ? "متأخر الدفع" : 
-             business.subscriptionStatus}
+            {business.subscriptionStatus === "trial"
+              ? "فترة تجريبية"
+              : business.subscriptionStatus === "active"
+                ? "نشط"
+                : business.subscriptionStatus === "past_due"
+                  ? "متأخر الدفع"
+                  : business.subscriptionStatus}
           </p>
         </div>
         <div className="text-right">
           <p className="text-sm text-gray-400">الرسائل هذا الشهر</p>
           <p className="font-bold">
-            {business.messagesThisMonth || 0} / {business.messagesLimit === -1 ? "∞" : business.messagesLimit}
+            {business.messagesThisMonth || 0} /{" "}
+            {business.messagesLimit === -1 ? "∞" : business.messagesLimit}
           </p>
         </div>
       </div>
@@ -579,20 +674,22 @@ function SubscriptionCard({ business }: { business: Business }) {
         <div className="grid grid-cols-3 gap-2 pt-4 border-t border-gray-800">
           {plans.map((plan, idx) => (
             <button
-              key={plan.id}
-              onClick={() => idx > currentPlanIndex && handleUpgrade(plan.id)}
-              disabled={idx <= currentPlanIndex || upgrading !== null}
               className={`p-3 rounded-lg text-center transition ${
-                idx <= currentPlanIndex 
-                  ? "bg-gray-800 text-gray-500 cursor-not-allowed" 
+                idx <= currentPlanIndex
+                  ? "bg-gray-800 text-gray-500 cursor-not-allowed"
                   : "bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30"
               }`}
+              disabled={idx <= currentPlanIndex || upgrading !== null}
+              key={plan.id}
+              onClick={() => idx > currentPlanIndex && handleUpgrade(plan.id)}
             >
               <p className="font-bold text-sm">{plan.name}</p>
               <p className="text-xs">
                 {plan.price ? `${plan.price} ر.س` : "تواصل معنا"}
               </p>
-              {upgrading === plan.id && <span className="text-xs">جاري...</span>}
+              {upgrading === plan.id && (
+                <span className="text-xs">جاري...</span>
+              )}
             </button>
           ))}
         </div>
@@ -605,9 +702,9 @@ function formatTime(dateString: string): string {
   const date = new Date(dateString);
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
-  const diffMins = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMs / 3600000);
-  const diffDays = Math.floor(diffMs / 86400000);
+  const diffMins = Math.floor(diffMs / 60_000);
+  const diffHours = Math.floor(diffMs / 3_600_000);
+  const diffDays = Math.floor(diffMs / 86_400_000);
 
   if (diffMins < 1) return "الآن";
   if (diffMins < 60) return `منذ ${diffMins} د`;

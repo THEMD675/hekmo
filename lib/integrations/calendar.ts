@@ -185,7 +185,7 @@ export function createBusinessReminder(
   reminderTime: Date,
   durationMinutes = 30
 ): CalendarEvent {
-  const end = new Date(reminderTime.getTime() + durationMinutes * 60000);
+  const end = new Date(reminderTime.getTime() + durationMinutes * 60_000);
 
   return {
     summary: `🏥 ${title}`,

@@ -2,11 +2,20 @@ import { tool } from "ai";
 import { z } from "zod";
 
 export const translateTool = tool({
-  description: "Translate text between languages. Supports Arabic, English, and many other languages. Use when the user asks for translation or to convert text to another language.",
+  description:
+    "Translate text between languages. Supports Arabic, English, and many other languages. Use when the user asks for translation or to convert text to another language.",
   inputSchema: z.object({
     text: z.string().describe("The text to translate"),
-    from: z.string().describe("Source language code (e.g., 'ar' for Arabic, 'en' for English, 'auto' for auto-detect)"),
-    to: z.string().describe("Target language code (e.g., 'ar' for Arabic, 'en' for English)"),
+    from: z
+      .string()
+      .describe(
+        "Source language code (e.g., 'ar' for Arabic, 'en' for English, 'auto' for auto-detect)"
+      ),
+    to: z
+      .string()
+      .describe(
+        "Target language code (e.g., 'ar' for Arabic, 'en' for English)"
+      ),
   }),
   execute: async ({ text, from, to }) => {
     try {
@@ -49,13 +58,13 @@ export const translateTool = tool({
       };
     } catch (error) {
       console.error("Translation error:", error);
-      
+
       // Simple fallback translations for common phrases
       const commonTranslations: Record<string, Record<string, string>> = {
-        "hello": { ar: "مرحبا", en: "Hello" },
-        "مرحبا": { en: "Hello", ar: "مرحبا" },
+        hello: { ar: "مرحبا", en: "Hello" },
+        مرحبا: { en: "Hello", ar: "مرحبا" },
         "thank you": { ar: "شكراً", en: "Thank you" },
-        "شكراً": { en: "Thank you", ar: "شكراً" },
+        شكراً: { en: "Thank you", ar: "شكراً" },
         "good morning": { ar: "صباح الخير", en: "Good morning" },
         "صباح الخير": { en: "Good morning", ar: "صباح الخير" },
       };

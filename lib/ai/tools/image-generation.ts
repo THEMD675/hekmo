@@ -2,16 +2,25 @@ import { tool } from "ai";
 import { z } from "zod";
 
 export const imageGenerationTool = tool({
-  description: "Generate an image from a text description. Use when users ask to create, generate, or draw an image.",
+  description:
+    "Generate an image from a text description. Use when users ask to create, generate, or draw an image.",
   inputSchema: z.object({
-    prompt: z.string().describe("Detailed description of the image to generate"),
-    style: z.enum(["realistic", "artistic", "cartoon", "sketch", "3d"]).default("realistic").describe("Image style"),
-    size: z.enum(["square", "portrait", "landscape"]).default("square").describe("Image dimensions"),
+    prompt: z
+      .string()
+      .describe("Detailed description of the image to generate"),
+    style: z
+      .enum(["realistic", "artistic", "cartoon", "sketch", "3d"])
+      .default("realistic")
+      .describe("Image style"),
+    size: z
+      .enum(["square", "portrait", "landscape"])
+      .default("square")
+      .describe("Image dimensions"),
   }),
   execute: async ({ prompt, style, size }) => {
     try {
       const apiKey = process.env.OPENAI_API_KEY;
-      
+
       if (!apiKey) {
         return {
           success: false,
@@ -38,20 +47,23 @@ export const imageGenerationTool = tool({
 
       const enhancedPrompt = `${prompt}, ${stylePrompts[style]}`;
 
-      const response = await fetch("https://api.openai.com/v1/images/generations", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model: "dall-e-3",
-          prompt: enhancedPrompt,
-          n: 1,
-          size: sizeMap[size],
-          quality: "standard",
-        }),
-      });
+      const response = await fetch(
+        "https://api.openai.com/v1/images/generations",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${apiKey}`,
+          },
+          body: JSON.stringify({
+            model: "dall-e-3",
+            prompt: enhancedPrompt,
+            n: 1,
+            size: sizeMap[size],
+            quality: "standard",
+          }),
+        }
+      );
 
       if (!response.ok) {
         const error = await response.json();
@@ -77,7 +89,8 @@ export const imageGenerationTool = tool({
       console.error("Image generation error:", error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : "Image generation failed",
+        error:
+          error instanceof Error ? error.message : "Image generation failed",
         prompt,
       };
     }

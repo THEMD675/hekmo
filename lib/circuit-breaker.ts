@@ -3,16 +3,16 @@
  * Prevents cascading failures by tracking error rates and temporarily blocking requests
  */
 
-import { createLogger } from './logger';
+import { createLogger } from "./logger";
 
-const log = createLogger('CircuitBreaker');
+const log = createLogger("CircuitBreaker");
 
-export type CircuitState = 'closed' | 'open' | 'half-open';
+export type CircuitState = "closed" | "open" | "half-open";
 
 interface CircuitBreakerConfig {
-  failureThreshold: number;     // Number of failures before opening
-  resetTimeout: number;         // Time in ms before attempting to close
-  halfOpenRequests: number;     // Number of test requests in half-open state
+  failureThreshold: number; // Number of failures before opening
+  resetTimeout: number; // Time in ms before attempting to close
+  halfOpenRequests: number; // Number of test requests in half-open state
 }
 
 interface CircuitBreakerState {
@@ -25,7 +25,7 @@ interface CircuitBreakerState {
 
 const DEFAULT_CONFIG: CircuitBreakerConfig = {
   failureThreshold: 5,
-  resetTimeout: 60000, // 1 minute
+  resetTimeout: 60_000, // 1 minute
   halfOpenRequests: 3,
 };
 
@@ -35,7 +35,7 @@ const circuits = new Map<string, CircuitBreakerState>();
 export function getCircuitState(service: string): CircuitBreakerState {
   if (!circuits.has(service)) {
     circuits.set(service, {
-      state: 'closed',
+      state: "closed",
       failures: 0,
       successes: 0,
       lastFailure: 0,
@@ -50,54 +50,65 @@ export function isCircuitOpen(service: string): boolean {
   const now = Date.now();
 
   // Check if we should transition from open to half-open
-  if (circuit.state === 'open' && now >= circuit.nextAttempt) {
-    circuit.state = 'half-open';
+  if (circuit.state === "open" && now >= circuit.nextAttempt) {
+    circuit.state = "half-open";
     circuit.successes = 0;
     log.info(`${service}: open -> half-open`);
   }
 
-  return circuit.state === 'open';
+  return circuit.state === "open";
 }
 
-export function recordSuccess(service: string, config: CircuitBreakerConfig = DEFAULT_CONFIG): void {
+export function recordSuccess(
+  service: string,
+  config: CircuitBreakerConfig = DEFAULT_CONFIG
+): void {
   const circuit = getCircuitState(service);
 
-  if (circuit.state === 'half-open') {
+  if (circuit.state === "half-open") {
     circuit.successes++;
     if (circuit.successes >= config.halfOpenRequests) {
-      circuit.state = 'closed';
+      circuit.state = "closed";
       circuit.failures = 0;
       circuit.successes = 0;
       log.info(`${service}: half-open -> closed (recovered)`);
     }
-  } else if (circuit.state === 'closed') {
+  } else if (circuit.state === "closed") {
     // Reset failure count on success in closed state
     circuit.failures = Math.max(0, circuit.failures - 1);
   }
 }
 
-export function recordFailure(service: string, config: CircuitBreakerConfig = DEFAULT_CONFIG): void {
+export function recordFailure(
+  service: string,
+  config: CircuitBreakerConfig = DEFAULT_CONFIG
+): void {
   const circuit = getCircuitState(service);
   const now = Date.now();
 
   circuit.failures++;
   circuit.lastFailure = now;
 
-  if (circuit.state === 'half-open') {
+  if (circuit.state === "half-open") {
     // Immediately open on failure in half-open state
-    circuit.state = 'open';
+    circuit.state = "open";
     circuit.nextAttempt = now + config.resetTimeout;
     log.warn(`${service}: half-open -> open (failure during recovery)`);
-  } else if (circuit.state === 'closed' && circuit.failures >= config.failureThreshold) {
-    circuit.state = 'open';
+  } else if (
+    circuit.state === "closed" &&
+    circuit.failures >= config.failureThreshold
+  ) {
+    circuit.state = "open";
     circuit.nextAttempt = now + config.resetTimeout;
-    log.warn(`${service}: closed -> open (threshold reached: ${circuit.failures})`);
+    log.warn(
+      `${service}: closed -> open (threshold reached: ${circuit.failures})`
+    );
   }
 }
 
 export function resetCircuit(service: string): void {
   circuits.set(service, {
-    state: 'closed',
+    state: "closed",
     failures: 0,
     successes: 0,
     lastFailure: 0,
@@ -130,13 +141,13 @@ export async function withCircuitBreaker<T>(
     return result;
   } catch (error) {
     recordFailure(service, config);
-    
+
     // Check if circuit just opened and we have a fallback
     if (isCircuitOpen(service) && fallback) {
       log.warn(`${service}: operation failed, using fallback`);
       return fallback();
     }
-    
+
     throw error;
   }
 }
@@ -156,13 +167,13 @@ export function getAllCircuitStatuses(): Record<string, CircuitBreakerState> {
  * Pre-defined circuit breakers for common services
  */
 export const CircuitBreakers = {
-  OPENAI: 'openai',
-  AI_COACH: 'ai-coach',
-  WHOOP_API: 'whoop-api',
-  STRIPE: 'stripe',
-  VOICE_BRIEF: 'voice-brief',
-  SMART_INTERVENTIONS: 'smart-interventions',
-  PERPLEXITY: 'perplexity',
-  ELEVENLABS: 'elevenlabs',
-  FIRECRAWL: 'firecrawl',
+  OPENAI: "openai",
+  AI_COACH: "ai-coach",
+  WHOOP_API: "whoop-api",
+  STRIPE: "stripe",
+  VOICE_BRIEF: "voice-brief",
+  SMART_INTERVENTIONS: "smart-interventions",
+  PERPLEXITY: "perplexity",
+  ELEVENLABS: "elevenlabs",
+  FIRECRAWL: "firecrawl",
 } as const;

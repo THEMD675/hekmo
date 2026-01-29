@@ -11,24 +11,24 @@ import { after } from "next/server";
 import { createResumableStreamContext } from "resumable-stream";
 import { auth, type UserType } from "@/app/(auth)/auth";
 import { entitlementsByUserType } from "@/lib/ai/entitlements";
+import { DEFAULT_CHAT_MODEL } from "@/lib/ai/models";
 import { type RequestHints, systemPrompt } from "@/lib/ai/prompts";
 import { getLanguageModel } from "@/lib/ai/providers";
-import { DEFAULT_CHAT_MODEL } from "@/lib/ai/models";
+import { calculatorTool } from "@/lib/ai/tools/calculator";
+import { codeSandboxTool } from "@/lib/ai/tools/code-sandbox";
 import { createDocument } from "@/lib/ai/tools/create-document";
 import { getWeather } from "@/lib/ai/tools/get-weather";
-import { requestSuggestions } from "@/lib/ai/tools/request-suggestions";
-import { updateDocument } from "@/lib/ai/tools/update-document";
-import { webSearchTool } from "@/lib/ai/tools/web-search";
-import { prayerTimesTool } from "@/lib/ai/tools/prayer-times";
-import { calculatorTool } from "@/lib/ai/tools/calculator";
-import { translateTool } from "@/lib/ai/tools/translate";
-import { urlSummarizerTool } from "@/lib/ai/tools/url-summarizer";
-import { quranHadithTool } from "@/lib/ai/tools/quran-hadith";
-import { youtubeSummarizerTool } from "@/lib/ai/tools/youtube-summarizer";
+import { grammarCheckerTool } from "@/lib/ai/tools/grammar-checker";
 import { imageGenerationTool } from "@/lib/ai/tools/image-generation";
 import { pdfReaderTool } from "@/lib/ai/tools/pdf-reader";
-import { grammarCheckerTool } from "@/lib/ai/tools/grammar-checker";
-import { codeSandboxTool } from "@/lib/ai/tools/code-sandbox";
+import { prayerTimesTool } from "@/lib/ai/tools/prayer-times";
+import { quranHadithTool } from "@/lib/ai/tools/quran-hadith";
+import { requestSuggestions } from "@/lib/ai/tools/request-suggestions";
+import { translateTool } from "@/lib/ai/tools/translate";
+import { updateDocument } from "@/lib/ai/tools/update-document";
+import { urlSummarizerTool } from "@/lib/ai/tools/url-summarizer";
+import { webSearchTool } from "@/lib/ai/tools/web-search";
+import { youtubeSummarizerTool } from "@/lib/ai/tools/youtube-summarizer";
 import { isProductionEnvironment } from "@/lib/constants";
 import {
   createStreamId,
@@ -71,10 +71,10 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { id, message, messages, selectedVisibilityType } =
-      requestBody;
+    const { id, message, messages, selectedVisibilityType } = requestBody;
 
-    const selectedChatModel = requestBody.selectedChatModel ?? DEFAULT_CHAT_MODEL;
+    const selectedChatModel =
+      requestBody.selectedChatModel ?? DEFAULT_CHAT_MODEL;
 
     const session = await auth();
 

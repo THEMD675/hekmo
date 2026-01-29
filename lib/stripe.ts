@@ -129,7 +129,9 @@ export async function createPortalSession({
 }
 
 // Get subscription tier by user ID
-export async function getUserSubscriptionTier(userId: string): Promise<SubscriptionTier> {
+export async function getUserSubscriptionTier(
+  userId: string
+): Promise<SubscriptionTier> {
   try {
     // Check if user has a business with an active subscription
     const { db } = await import("@/lib/db/queries");
@@ -151,7 +153,10 @@ export async function getUserSubscriptionTier(userId: string): Promise<Subscript
       if (userBusiness.subscriptionPlan === "enterprise") {
         return "enterprise";
       }
-      if (userBusiness.subscriptionPlan === "business" || userBusiness.subscriptionPlan === "starter") {
+      if (
+        userBusiness.subscriptionPlan === "business" ||
+        userBusiness.subscriptionPlan === "starter"
+      ) {
         return "pro";
       }
     }
@@ -169,16 +174,19 @@ export async function getUserSubscriptionTier(userId: string): Promise<Subscript
 }
 
 // Check if user has access to a feature
-export function hasFeatureAccess(tier: SubscriptionTier, feature: string): boolean {
+export function hasFeatureAccess(
+  tier: SubscriptionTier,
+  feature: string
+): boolean {
   const tierData = SUBSCRIPTION_TIERS[tier];
-  
+
   // Map features to tiers
   const featureAccess: Record<string, SubscriptionTier[]> = {
-    "unlimited_messages": ["pro", "enterprise"],
-    "all_models": ["pro", "enterprise"],
-    "all_tools": ["pro", "enterprise"],
-    "export": ["pro", "enterprise"],
-    "api_access": ["enterprise"],
+    unlimited_messages: ["pro", "enterprise"],
+    all_models: ["pro", "enterprise"],
+    all_tools: ["pro", "enterprise"],
+    export: ["pro", "enterprise"],
+    api_access: ["enterprise"],
   };
 
   const allowedTiers = featureAccess[feature];

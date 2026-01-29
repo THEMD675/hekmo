@@ -8,9 +8,12 @@ export const metadata: Metadata = {
 export default function PrivacyPage() {
   return (
     <main className="container mx-auto max-w-4xl px-4 py-16">
-      <article className="prose prose-lg dark:prose-invert mx-auto text-right" dir="rtl">
+      <article
+        className="prose prose-lg dark:prose-invert mx-auto text-right"
+        dir="rtl"
+      >
         <h1 className="text-4xl font-bold mb-8">سياسة الخصوصية</h1>
-        
+
         <p className="text-muted-foreground mb-8">
           آخر تحديث: {new Date().toLocaleDateString("ar-SA")}
         </p>
@@ -18,7 +21,8 @@ export default function PrivacyPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">مقدمة</h2>
           <p>
-            نحن في حكمو نقدر خصوصيتك ونلتزم بحماية بياناتك الشخصية. توضح هذه السياسة كيفية جمع واستخدام وحماية معلوماتك.
+            نحن في حكمو نقدر خصوصيتك ونلتزم بحماية بياناتك الشخصية. توضح هذه
+            السياسة كيفية جمع واستخدام وحماية معلوماتك.
           </p>
         </section>
 
@@ -45,7 +49,8 @@ export default function PrivacyPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">حماية البيانات</h2>
           <p>
-            نستخدم تشفير SSL/TLS لحماية بياناتك أثناء النقل. يتم تخزين بياناتك في خوادم آمنة مع إجراءات حماية متقدمة.
+            نستخدم تشفير SSL/TLS لحماية بياناتك أثناء النقل. يتم تخزين بياناتك
+            في خوادم آمنة مع إجراءات حماية متقدمة.
           </p>
         </section>
 
@@ -63,7 +68,10 @@ export default function PrivacyPage() {
           <h2 className="text-2xl font-semibold mb-4">التواصل معنا</h2>
           <p>
             لأي استفسارات حول الخصوصية، تواصل معنا على:{" "}
-            <a href="mailto:privacy@hekmo.ai" className="text-primary hover:underline">
+            <a
+              className="text-primary hover:underline"
+              href="mailto:privacy@hekmo.ai"
+            >
               privacy@hekmo.ai
             </a>
           </p>

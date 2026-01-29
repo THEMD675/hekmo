@@ -2,10 +2,14 @@ import { tool } from "ai";
 import { z } from "zod";
 
 export const webSearchTool = tool({
-  description: "Search the web for real-time information. Use this when the user asks about current events, news, recent information, or anything that requires up-to-date data.",
+  description:
+    "Search the web for real-time information. Use this when the user asks about current events, news, recent information, or anything that requires up-to-date data.",
   inputSchema: z.object({
     query: z.string().describe("The search query to look up"),
-    language: z.enum(["ar", "en"]).default("ar").describe("Language for search results"),
+    language: z
+      .enum(["ar", "en"])
+      .default("ar")
+      .describe("Language for search results"),
   }),
   execute: async ({ query, language }) => {
     try {
@@ -73,7 +77,8 @@ export const webSearchTool = tool({
 
       return {
         success: false,
-        error: "Web search not configured. Add TAVILY_API_KEY or SERPER_API_KEY.",
+        error:
+          "Web search not configured. Add TAVILY_API_KEY or SERPER_API_KEY.",
         results: [],
       };
     } catch (error) {

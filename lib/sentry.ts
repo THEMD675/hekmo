@@ -28,7 +28,10 @@ export function captureException(error: Error, context?: SentryErrorContext) {
   }
 }
 
-export function captureMessage(message: string, level: "info" | "warning" | "error" = "info") {
+export function captureMessage(
+  message: string,
+  level: "info" | "warning" | "error" = "info"
+) {
   console.log(`[Sentry ${level}]:`, message);
 
   if (SENTRY_DSN) {
@@ -45,7 +48,7 @@ export function setUser(user: { id: string; email?: string } | null) {
 // Performance monitoring
 export function startTransaction(name: string, op: string) {
   const startTime = performance.now();
-  
+
   return {
     finish: () => {
       const duration = performance.now() - startTime;

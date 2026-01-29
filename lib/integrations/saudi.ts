@@ -262,7 +262,7 @@ export function validateNationalId(id: string): boolean {
   // Luhn algorithm for Saudi ID validation
   let sum = 0;
   for (let i = 0; i < 10; i++) {
-    let digit = parseInt(id[i]);
+    let digit = Number.parseInt(id[i]);
     if (i % 2 === 0) {
       digit *= 2;
       if (digit > 9) digit -= 9;

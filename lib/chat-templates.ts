@@ -7,7 +7,12 @@ export interface ChatTemplate {
   description: string;
   descriptionAr: string;
   icon: string;
-  category: "customer-service" | "sales" | "operations" | "marketing" | "general";
+  category:
+    | "customer-service"
+    | "sales"
+    | "operations"
+    | "marketing"
+    | "general";
   prompt: string;
   promptAr: string;
 }
@@ -22,8 +27,10 @@ export const chatTemplates: ChatTemplate[] = [
     descriptionAr: "التعامل مع أسئلة العملاء الشائعة",
     icon: "💬",
     category: "customer-service",
-    prompt: "A customer is asking about [product/service]. They want to know [details]. Respond professionally in Arabic.",
-    promptAr: "عميل يسأل عن [المنتج/الخدمة]. يريد معرفة [التفاصيل]. رد بشكل احترافي.",
+    prompt:
+      "A customer is asking about [product/service]. They want to know [details]. Respond professionally in Arabic.",
+    promptAr:
+      "عميل يسأل عن [المنتج/الخدمة]. يريد معرفة [التفاصيل]. رد بشكل احترافي.",
   },
   {
     id: "complaint-handling",
@@ -33,10 +40,11 @@ export const chatTemplates: ChatTemplate[] = [
     descriptionAr: "الرد على شكاوى العملاء",
     icon: "🛠️",
     category: "customer-service",
-    prompt: "A customer is complaining about [issue]. Help me respond professionally and offer a solution.",
+    prompt:
+      "A customer is complaining about [issue]. Help me respond professionally and offer a solution.",
     promptAr: "عميل يشتكي من [المشكلة]. ساعدني في الرد باحترافية وتقديم حل.",
   },
-  
+
   // Sales
   {
     id: "product-info",
@@ -46,7 +54,8 @@ export const chatTemplates: ChatTemplate[] = [
     descriptionAr: "مشاركة تفاصيل المنتج مع العملاء",
     icon: "📦",
     category: "sales",
-    prompt: "Customer wants details about [product]. Include price, features, and availability.",
+    prompt:
+      "Customer wants details about [product]. Include price, features, and availability.",
     promptAr: "العميل يريد تفاصيل عن [المنتج]. أضف السعر والمميزات والتوفر.",
   },
   {
@@ -57,10 +66,11 @@ export const chatTemplates: ChatTemplate[] = [
     descriptionAr: "إنشاء عرض سعر",
     icon: "💰",
     category: "sales",
-    prompt: "Create a price quote for [items/services]. The customer is [customer name].",
+    prompt:
+      "Create a price quote for [items/services]. The customer is [customer name].",
     promptAr: "أنشئ عرض سعر لـ [المنتجات/الخدمات]. العميل هو [اسم العميل].",
   },
-  
+
   // Operations
   {
     id: "business-hours",
@@ -70,7 +80,8 @@ export const chatTemplates: ChatTemplate[] = [
     descriptionAr: "مشاركة ساعات العمل",
     icon: "🕐",
     category: "operations",
-    prompt: "Tell customer about our business hours, location, and how to reach us.",
+    prompt:
+      "Tell customer about our business hours, location, and how to reach us.",
     promptAr: "أخبر العميل عن ساعات العمل والموقع وطرق التواصل معنا.",
   },
   {
@@ -81,10 +92,12 @@ export const chatTemplates: ChatTemplate[] = [
     descriptionAr: "تحديث العميل عن طلبه",
     icon: "📋",
     category: "operations",
-    prompt: "Customer asking about order #[order_number]. Current status is [status]. Expected delivery [date].",
-    promptAr: "العميل يسأل عن الطلب رقم #[رقم_الطلب]. الحالة الحالية [الحالة]. التوصيل المتوقع [التاريخ].",
+    prompt:
+      "Customer asking about order #[order_number]. Current status is [status]. Expected delivery [date].",
+    promptAr:
+      "العميل يسأل عن الطلب رقم #[رقم_الطلب]. الحالة الحالية [الحالة]. التوصيل المتوقع [التاريخ].",
   },
-  
+
   // Marketing
   {
     id: "promotion-announce",
@@ -94,8 +107,10 @@ export const chatTemplates: ChatTemplate[] = [
     descriptionAr: "مشاركة العروض والخصومات",
     icon: "🎉",
     category: "marketing",
-    prompt: "Create an announcement for our [discount]% off sale on [products]. Valid until [date].",
-    promptAr: "أنشئ إعلان لعرض خصم [النسبة]% على [المنتجات]. ساري حتى [التاريخ].",
+    prompt:
+      "Create an announcement for our [discount]% off sale on [products]. Valid until [date].",
+    promptAr:
+      "أنشئ إعلان لعرض خصم [النسبة]% على [المنتجات]. ساري حتى [التاريخ].",
   },
   {
     id: "new-product-launch",
@@ -105,10 +120,12 @@ export const chatTemplates: ChatTemplate[] = [
     descriptionAr: "الإعلان عن منتجات جديدة",
     icon: "🚀",
     category: "marketing",
-    prompt: "We're launching [product]. Key features: [features]. Price: [price]. Create an exciting announcement.",
-    promptAr: "نحن نطلق [المنتج]. المميزات: [المميزات]. السعر: [السعر]. أنشئ إعلان مثير.",
+    prompt:
+      "We're launching [product]. Key features: [features]. Price: [price]. Create an exciting announcement.",
+    promptAr:
+      "نحن نطلق [المنتج]. المميزات: [المميزات]. السعر: [السعر]. أنشئ إعلان مثير.",
   },
-  
+
   // General
   {
     id: "thank-you",
@@ -118,7 +135,8 @@ export const chatTemplates: ChatTemplate[] = [
     descriptionAr: "شكر العملاء على الشراء",
     icon: "🙏",
     category: "general",
-    prompt: "Create a thank you message for a customer who just purchased [product/service].",
+    prompt:
+      "Create a thank you message for a customer who just purchased [product/service].",
     promptAr: "أنشئ رسالة شكر لعميل اشترى للتو [المنتج/الخدمة].",
   },
   {
@@ -129,7 +147,8 @@ export const chatTemplates: ChatTemplate[] = [
     descriptionAr: "تأكيد مواعيد العملاء",
     icon: "📅",
     category: "general",
-    prompt: "Confirm appointment for [customer] on [date] at [time] for [service].",
+    prompt:
+      "Confirm appointment for [customer] on [date] at [time] for [service].",
     promptAr: "أكد الموعد لـ [العميل] في [التاريخ] الساعة [الوقت] لـ [الخدمة].",
   },
   {
@@ -140,8 +159,10 @@ export const chatTemplates: ChatTemplate[] = [
     descriptionAr: "متابعة العملاء السابقين",
     icon: "📞",
     category: "general",
-    prompt: "Create a follow-up message for [customer] who purchased [product] on [date]. Ask about their experience.",
-    promptAr: "أنشئ رسالة متابعة لـ [العميل] الذي اشترى [المنتج] في [التاريخ]. اسأل عن تجربته.",
+    prompt:
+      "Create a follow-up message for [customer] who purchased [product] on [date]. Ask about their experience.",
+    promptAr:
+      "أنشئ رسالة متابعة لـ [العميل] الذي اشترى [المنتج] في [التاريخ]. اسأل عن تجربته.",
   },
 ];
 

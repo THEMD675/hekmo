@@ -70,7 +70,9 @@ export function getSession(sessionId: string): CollaborativeSession | null {
 }
 
 // Get session by chat ID
-export function getSessionByChatId(chatId: string): CollaborativeSession | null {
+export function getSessionByChatId(
+  chatId: string
+): CollaborativeSession | null {
   const sessionId = chatToSession.get(chatId);
   if (!sessionId) return null;
   return sessions.get(sessionId) || null;
@@ -94,7 +96,7 @@ export function parseInviteLink(
   try {
     const decoded = Buffer.from(token, "base64url").toString();
     const [sessionId, role] = decoded.split(":");
-    
+
     if (sessionId && (role === "editor" || role === "viewer")) {
       return { sessionId, role };
     }

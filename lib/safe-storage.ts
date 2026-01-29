@@ -2,7 +2,7 @@
 // ENTERPRISE GRADE: All storage access must go through these functions to prevent app crashes
 
 interface StorageError {
-  type: 'quota' | 'private' | 'unavailable' | 'parse';
+  type: "quota" | "private" | "unavailable" | "parse";
   message: string;
 }
 
@@ -14,7 +14,7 @@ const sessionMemoryFallback = new Map<string, string>();
  * Use this for migrating old keys to new keys at module load time
  */
 export const safeMigrateKey = (oldKey: string, newKey: string): void => {
-  if (typeof window === 'undefined') return;
+  if (typeof window === "undefined") return;
   try {
     const oldValue = localStorage.getItem(oldKey);
     if (oldValue !== null && localStorage.getItem(newKey) === null) {
@@ -33,7 +33,9 @@ export const safeMigrateKey = (oldKey: string, newKey: string): void => {
  */
 export const safeSessionGetItem = (key: string): string | null => {
   try {
-    return sessionStorage.getItem(key) ?? sessionMemoryFallback.get(key) ?? null;
+    return (
+      sessionStorage.getItem(key) ?? sessionMemoryFallback.get(key) ?? null
+    );
   } catch {
     return sessionMemoryFallback.get(key) ?? null;
   }
@@ -80,7 +82,7 @@ export const safeSessionClear = (): void => {
  */
 export const isStorageAvailable = (): boolean => {
   try {
-    const testKey = '__storage_test__';
+    const testKey = "__storage_test__";
     localStorage.setItem(testKey, testKey);
     localStorage.removeItem(testKey);
     return true;
@@ -93,7 +95,7 @@ export const isStorageAvailable = (): boolean => {
  * Safely get an item from localStorage with fallback
  */
 export const safeGetItem = <T>(
-  key: string, 
+  key: string,
   defaultValue: T,
   validator?: (value: unknown) => value is T
 ): T => {
@@ -103,12 +105,12 @@ export const safeGetItem = <T>(
       return defaultValue;
     }
     const parsed = JSON.parse(item);
-    
+
     // Validate if validator provided
     if (validator && !validator(parsed)) {
       return defaultValue;
     }
-    
+
     return parsed as T;
   } catch (error) {
     if (process.env.DEV) {
@@ -140,9 +142,9 @@ export const safeSetItem = <T>(key: string, value: T): StorageError | null => {
     return null;
   } catch (error) {
     const err = error as Error;
-    
+
     // Handle quota exceeded
-    if (err.name === 'QuotaExceededError' || err.message?.includes('quota')) {
+    if (err.name === "QuotaExceededError" || err.message?.includes("quota")) {
       // Try to clear old items and retry
       try {
         clearOldItems();
@@ -153,26 +155,38 @@ export const safeSetItem = <T>(key: string, value: T): StorageError | null => {
       } catch {
         // Fall back to memory only
         memoryFallback.set(key, JSON.stringify(value));
-        return { type: 'quota', message: 'Storage quota exceeded, using memory fallback' };
+        return {
+          type: "quota",
+          message: "Storage quota exceeded, using memory fallback",
+        };
       }
     }
-    
+
     // Handle private browsing
-    if (err.name === 'SecurityError' || err.message?.includes('access')) {
+    if (err.name === "SecurityError" || err.message?.includes("access")) {
       memoryFallback.set(key, JSON.stringify(value));
-      return { type: 'private', message: 'Private browsing mode, using memory fallback' };
+      return {
+        type: "private",
+        message: "Private browsing mode, using memory fallback",
+      };
     }
-    
+
     // Handle unavailable storage
     memoryFallback.set(key, JSON.stringify(value));
-    return { type: 'unavailable', message: 'Storage unavailable, using memory fallback' };
+    return {
+      type: "unavailable",
+      message: "Storage unavailable, using memory fallback",
+    };
   }
 };
 
 /**
  * Safely set a raw string in localStorage
  */
-export const safeSetRawItem = (key: string, value: string): StorageError | null => {
+export const safeSetRawItem = (
+  key: string,
+  value: string
+): StorageError | null => {
   try {
     localStorage.setItem(key, value);
     memoryFallback.set(key, value);
@@ -181,7 +195,7 @@ export const safeSetRawItem = (key: string, value: string): StorageError | null 
     memoryFallback.set(key, value);
     const err = error as Error;
     return {
-      type: err.name === 'QuotaExceededError' ? 'quota' : 'unavailable',
+      type: err.name === "QuotaExceededError" ? "quota" : "unavailable",
       message: err.message,
     };
   }
@@ -204,13 +218,13 @@ export const safeRemoveItem = (key: string): void => {
  */
 const clearOldItems = (): void => {
   const keysToCheck = [
-    'morning_brief_cache',
-    'recovery_coach_recommendations',
-    'saved_recommendations_local',
-    'whoop_data_cache',
-    'health_insights_cache',
+    "morning_brief_cache",
+    "recovery_coach_recommendations",
+    "saved_recommendations_local",
+    "whoop_data_cache",
+    "health_insights_cache",
   ];
-  
+
   for (const key of keysToCheck) {
     try {
       const item = localStorage.getItem(key);

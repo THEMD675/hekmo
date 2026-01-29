@@ -26,8 +26,23 @@ export function trackWebVitals(metric: {
 
   if (vitals.includes(metric.name)) {
     // Send to analytics
-    if (typeof window !== "undefined" && (window as unknown as { posthog?: { capture: (name: string, data: Record<string, unknown>) => void } }).posthog) {
-      (window as unknown as { posthog: { capture: (name: string, data: Record<string, unknown>) => void } }).posthog.capture("web_vitals", {
+    if (
+      typeof window !== "undefined" &&
+      (
+        window as unknown as {
+          posthog?: {
+            capture: (name: string, data: Record<string, unknown>) => void;
+          };
+        }
+      ).posthog
+    ) {
+      (
+        window as unknown as {
+          posthog: {
+            capture: (name: string, data: Record<string, unknown>) => void;
+          };
+        }
+      ).posthog.capture("web_vitals", {
         metric_name: metric.name,
         metric_value: metric.value,
         metric_id: metric.id,
@@ -100,14 +115,11 @@ export async function getSystemHealth(): Promise<{
   overall: HealthCheck["status"];
   services: HealthCheck[];
 }> {
-  const services = await Promise.all([
-    checkDatabaseHealth(),
-    checkAIHealth(),
-  ]);
+  const services = await Promise.all([checkDatabaseHealth(), checkAIHealth()]);
 
   // Determine overall status
   let overall: HealthCheck["status"] = "healthy";
-  
+
   if (services.some((s) => s.status === "down")) {
     overall = "down";
   } else if (services.some((s) => s.status === "degraded")) {
@@ -126,7 +138,7 @@ export function measureTiming<T>(
 
   return fn().finally(() => {
     const duration = performance.now() - start;
-    
+
     // Log to console
     if (process.env.NODE_ENV === "development") {
       console.log(`[Timing] ${name}: ${duration.toFixed(2)}ms`);
@@ -181,8 +193,29 @@ export function reportError(
   console.error("[Error]", error, context);
 
   // Send to Sentry or other error tracking
-  if (typeof window !== "undefined" && (window as unknown as { Sentry?: { captureException: (error: Error, options: Record<string, unknown>) => void } }).Sentry) {
-    (window as unknown as { Sentry: { captureException: (error: Error, options: Record<string, unknown>) => void } }).Sentry.captureException(error, { extra: context });
+  if (
+    typeof window !== "undefined" &&
+    (
+      window as unknown as {
+        Sentry?: {
+          captureException: (
+            error: Error,
+            options: Record<string, unknown>
+          ) => void;
+        };
+      }
+    ).Sentry
+  ) {
+    (
+      window as unknown as {
+        Sentry: {
+          captureException: (
+            error: Error,
+            options: Record<string, unknown>
+          ) => void;
+        };
+      }
+    ).Sentry.captureException(error, { extra: context });
   }
 }
 
@@ -196,7 +229,7 @@ export function withTiming<T>(
 
     try {
       const result = await handler(req);
-      
+
       recordMetric({
         name: `api.${url.pathname.replace(/\//g, ".")}`,
         value: Date.now() - start,

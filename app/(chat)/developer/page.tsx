@@ -1,11 +1,11 @@
 "use client";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ApiKeysManager } from "@/components/api-keys-manager";
-import { WebhooksManager } from "@/components/webhooks-manager";
+import { BookOpen, Code, Key, Webhook } from "lucide-react";
 import Link from "next/link";
-import { Code, Key, Webhook, BookOpen } from "lucide-react";
+import { ApiKeysManager } from "@/components/api-keys-manager";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { WebhooksManager } from "@/components/webhooks-manager";
 
 export default function DeveloperPage() {
   return (

@@ -1,10 +1,10 @@
-import { Metadata } from "next";
-import Link from "next/link";
-import { Heart, Shield, Zap, Globe } from "lucide-react";
+import { Globe, Heart, Shield, Zap } from "lucide-react";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "عن حكمو | مساعدك الذكي بالعربي",
-  description: "تعرف على حكمو، مساعدك الذكي بالعربي المصمم خصيصاً للمستخدمين في السعودية.",
+  description:
+    "تعرف على حكمو، مساعدك الذكي بالعربي المصمم خصيصاً للمستخدمين في السعودية.",
 };
 
 export default function AboutPage() {
@@ -14,8 +14,8 @@ export default function AboutPage() {
 
       <div className="prose prose-lg dark:prose-invert max-w-none">
         <p className="text-xl text-muted-foreground">
-          حكمو هو مساعدك الذكي بالعربي، مصمم خصيصاً للمستخدمين في
-          المملكة العربية السعودية.
+          حكمو هو مساعدك الذكي بالعربي، مصمم خصيصاً للمستخدمين في المملكة العربية
+          السعودية.
         </p>
 
         <h2>رؤيتنا</h2>
@@ -66,15 +66,13 @@ export default function AboutPage() {
 
         <h2>فريقنا</h2>
         <p>
-          نحن فريق من المهندسين والباحثين المتحمسين لتقديم تجربة ذكية
-          للمستخدم العربي. مقرنا في المملكة العربية السعودية ونعمل على بناء
-          مستقبل الذكاء الاصطناعي العربي.
+          نحن فريق من المهندسين والباحثين المتحمسين لتقديم تجربة ذكية للمستخدم
+          العربي. مقرنا في المملكة العربية السعودية ونعمل على بناء مستقبل الذكاء
+          الاصطناعي العربي.
         </p>
 
         <h2>تواصل معنا</h2>
-        <p>
-          نحب سماع رأيك! تواصل معنا عبر:
-        </p>
+        <p>نحب سماع رأيك! تواصل معنا عبر:</p>
         <ul>
           <li>
             البريد الإلكتروني:{" "}
@@ -82,7 +80,11 @@ export default function AboutPage() {
           </li>
           <li>
             تويتر:{" "}
-            <a href="https://twitter.com/hekmo_ai" target="_blank">
+            <a
+              href="https://twitter.com/hekmo_ai"
+              rel="noopener"
+              target="_blank"
+            >
               @hekmo_ai
             </a>
           </li>

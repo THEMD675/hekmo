@@ -9,20 +9,22 @@
  * - Removes tatweel (kashida)
  */
 export function normalizeArabic(text: string): string {
-  return text
-    // Remove diacritics (tashkeel)
-    .replace(/[\u064B-\u0652]/g, "")
-    // Normalize alef variants to bare alef
-    .replace(/[إأآٱ]/g, "ا")
-    // Normalize teh marbuta to heh
-    .replace(/ة/g, "ه")
-    // Remove tatweel
-    .replace(/ـ/g, "")
-    // Normalize alef maksura to yeh
-    .replace(/ى/g, "ي")
-    // Remove extra spaces
-    .replace(/\s+/g, " ")
-    .trim();
+  return (
+    text
+      // Remove diacritics (tashkeel)
+      .replace(/[\u064B-\u0652]/g, "")
+      // Normalize alef variants to bare alef
+      .replace(/[إأآٱ]/g, "ا")
+      // Normalize teh marbuta to heh
+      .replace(/ة/g, "ه")
+      // Remove tatweel
+      .replace(/ـ/g, "")
+      // Normalize alef maksura to yeh
+      .replace(/ى/g, "ي")
+      // Remove extra spaces
+      .replace(/\s+/g, " ")
+      .trim()
+  );
 }
 
 /**
@@ -40,11 +42,26 @@ export function isArabic(text: string): boolean {
  */
 export function isSaudiDialect(text: string): boolean {
   const saudiMarkers = [
-    "وش", "ايش", "كذا", "زي", "مو", "عشان", "يعني",
-    "حلو", "زين", "طيب", "ابد", "والله", "يالله",
-    "كيف الحال", "شلون", "وين", "ليش", "متى",
+    "وش",
+    "ايش",
+    "كذا",
+    "زي",
+    "مو",
+    "عشان",
+    "يعني",
+    "حلو",
+    "زين",
+    "طيب",
+    "ابد",
+    "والله",
+    "يالله",
+    "كيف الحال",
+    "شلون",
+    "وين",
+    "ليش",
+    "متى",
   ];
-  
+
   const normalizedText = normalizeArabic(text.toLowerCase());
   return saudiMarkers.some((marker) => normalizedText.includes(marker));
 }
@@ -54,17 +71,49 @@ export function isSaudiDialect(text: string): boolean {
  */
 export function extractArabicKeywords(text: string): string[] {
   const normalized = normalizeArabic(text);
-  
+
   // Arabic stopwords to filter out
   const stopwords = new Set([
-    "من", "الى", "على", "في", "عن", "مع", "هذا", "هذه", "ذلك", "تلك",
-    "الذي", "التي", "هو", "هي", "نحن", "انت", "انتم", "هم", "هن",
-    "كان", "كانت", "يكون", "تكون", "ان", "لا", "ما", "لم", "لن",
-    "قد", "او", "و", "ف", "ب", "ك", "ل", "ال",
+    "من",
+    "الى",
+    "على",
+    "في",
+    "عن",
+    "مع",
+    "هذا",
+    "هذه",
+    "ذلك",
+    "تلك",
+    "الذي",
+    "التي",
+    "هو",
+    "هي",
+    "نحن",
+    "انت",
+    "انتم",
+    "هم",
+    "هن",
+    "كان",
+    "كانت",
+    "يكون",
+    "تكون",
+    "ان",
+    "لا",
+    "ما",
+    "لم",
+    "لن",
+    "قد",
+    "او",
+    "و",
+    "ف",
+    "ب",
+    "ك",
+    "ل",
+    "ال",
   ]);
 
   const words = normalized.split(/\s+/);
-  
+
   return words
     .filter((word) => {
       const cleanWord = word.replace(/[^\u0600-\u06FF]/g, "");
@@ -90,16 +139,18 @@ export function tokenizeArabic(text: string): string[] {
  * - Fixes common encoding issues
  */
 export function cleanArabicText(text: string): string {
-  return text
-    // Normalize quotation marks
-    .replace(/[""]/g, '"')
-    .replace(/['']/g, "'")
-    // Fix common encoding issues
-    .replace(/Ù…/g, "م")
-    .replace(/Ø§/g, "ا")
-    // Add proper RTL markers for mixed content
-    .replace(/^/, "\u200F") // Add RTL mark at start
-    .trim();
+  return (
+    text
+      // Normalize quotation marks
+      .replace(/[""]/g, '"')
+      .replace(/['']/g, "'")
+      // Fix common encoding issues
+      .replace(/Ù…/g, "م")
+      .replace(/Ø§/g, "ا")
+      // Add proper RTL markers for mixed content
+      .replace(/^/, "\u200F") // Add RTL mark at start
+      .trim()
+  );
 }
 
 /**
@@ -107,7 +158,10 @@ export function cleanArabicText(text: string): string {
  */
 export function toArabicNumerals(num: number | string): string {
   const arabicNumerals = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
-  return String(num).replace(/[0-9]/g, (d) => arabicNumerals[parseInt(d)]);
+  return String(num).replace(
+    /[0-9]/g,
+    (d) => arabicNumerals[Number.parseInt(d)]
+  );
 }
 
 /**
@@ -115,14 +169,24 @@ export function toArabicNumerals(num: number | string): string {
  */
 export function formatArabicDate(date: Date): string {
   const months = [
-    "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
-    "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+    "يناير",
+    "فبراير",
+    "مارس",
+    "أبريل",
+    "مايو",
+    "يونيو",
+    "يوليو",
+    "أغسطس",
+    "سبتمبر",
+    "أكتوبر",
+    "نوفمبر",
+    "ديسمبر",
   ];
-  
+
   const day = date.getDate();
   const month = months[date.getMonth()];
   const year = date.getFullYear();
-  
+
   return `${toArabicNumerals(day)} ${month} ${toArabicNumerals(year)}`;
 }
 
@@ -132,16 +196,17 @@ export function formatArabicDate(date: Date): string {
 export function getRelativeTimeArabic(date: Date): string {
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
-  const diffMins = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMs / 3600000);
-  const diffDays = Math.floor(diffMs / 86400000);
+  const diffMins = Math.floor(diffMs / 60_000);
+  const diffHours = Math.floor(diffMs / 3_600_000);
+  const diffDays = Math.floor(diffMs / 86_400_000);
 
   if (diffMins < 1) return "الآن";
   if (diffMins < 60) return `منذ ${toArabicNumerals(diffMins)} دقيقة`;
   if (diffHours < 24) return `منذ ${toArabicNumerals(diffHours)} ساعة`;
   if (diffDays < 7) return `منذ ${toArabicNumerals(diffDays)} يوم`;
-  if (diffDays < 30) return `منذ ${toArabicNumerals(Math.floor(diffDays / 7))} أسبوع`;
-  
+  if (diffDays < 30)
+    return `منذ ${toArabicNumerals(Math.floor(diffDays / 7))} أسبوع`;
+
   return formatArabicDate(date);
 }
 
@@ -150,11 +215,39 @@ export function getRelativeTimeArabic(date: Date): string {
  */
 export function extractBusinessTerms(text: string): string[] {
   const businessTerms = [
-    "سعر", "طلب", "حجز", "موعد", "عنوان", "موقع", "توصيل",
-    "دفع", "فاتورة", "خصم", "عرض", "منتج", "خدمة", "شكوى",
-    "استفسار", "مساعدة", "رد", "تأكيد", "إلغاء", "تعديل",
-    "قائمة", "menu", "مطعم", "كافي", "صالون", "عيادة", "محل",
-    "ساعات", "دوام", "مفتوح", "مغلق", "حساب", "تسجيل",
+    "سعر",
+    "طلب",
+    "حجز",
+    "موعد",
+    "عنوان",
+    "موقع",
+    "توصيل",
+    "دفع",
+    "فاتورة",
+    "خصم",
+    "عرض",
+    "منتج",
+    "خدمة",
+    "شكوى",
+    "استفسار",
+    "مساعدة",
+    "رد",
+    "تأكيد",
+    "إلغاء",
+    "تعديل",
+    "قائمة",
+    "menu",
+    "مطعم",
+    "كافي",
+    "صالون",
+    "عيادة",
+    "محل",
+    "ساعات",
+    "دوام",
+    "مفتوح",
+    "مغلق",
+    "حساب",
+    "تسجيل",
   ];
 
   const normalized = normalizeArabic(text.toLowerCase());
@@ -170,18 +263,18 @@ export const extractHealthTerms = extractBusinessTerms;
 export function enhanceArabicPrompt(text: string): string {
   const isSaudi = isSaudiDialect(text);
   const businessTerms = extractBusinessTerms(text);
-  
+
   let enhanced = text;
-  
+
   // Add context hints for Saudi dialect
   if (isSaudi) {
     enhanced = `[Saudi Arabic dialect] ${enhanced}`;
   }
-  
+
   // Add business context if relevant terms found
   if (businessTerms.length > 0) {
     enhanced = `[Business context: ${businessTerms.join(", ")}] ${enhanced}`;
   }
-  
+
   return enhanced;
 }

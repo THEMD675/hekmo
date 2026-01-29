@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans_Arabic, Geist_Mono, Cairo, Tajawal, Inter } from "next/font/google";
+import {
+  Cairo,
+  Geist_Mono,
+  IBM_Plex_Sans_Arabic,
+  Inter,
+  Tajawal,
+} from "next/font/google";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 
@@ -14,7 +20,8 @@ export const metadata: Metadata = {
     default: "Hekmo — مساعدك الذكي بالعربي",
     template: "%s | Hekmo",
   },
-  description: "مساعدك الذكي بالعربي — برمجة، كتابة، بحث، وأكثر. مدعوم بالذكاء الاصطناعي المتقدم.",
+  description:
+    "مساعدك الذكي بالعربي — برمجة، كتابة، بحث، وأكثر. مدعوم بالذكاء الاصطناعي المتقدم.",
   keywords: [
     "ذكاء اصطناعي",
     "مساعد ذكي",
@@ -47,7 +54,8 @@ export const metadata: Metadata = {
     url: "https://hekmo.ai",
     siteName: "Hekmo",
     title: "Hekmo — مساعدك الذكي بالعربي",
-    description: "مساعدك الذكي بالعربي — برمجة، كتابة، بحث، وأكثر. مدعوم بالذكاء الاصطناعي المتقدم.",
+    description:
+      "مساعدك الذكي بالعربي — برمجة، كتابة، بحث، وأكثر. مدعوم بالذكاء الاصطناعي المتقدم.",
     images: [
       {
         url: "/images/og-image.png",
@@ -60,7 +68,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Hekmo — مساعدك الذكي بالعربي",
-    description: "مساعدك الذكي بالعربي — برمجة، كتابة، بحث، وأكثر. مدعوم بالذكاء الاصطناعي المتقدم.",
+    description:
+      "مساعدك الذكي بالعربي — برمجة، كتابة، بحث، وأكثر. مدعوم بالذكاء الاصطناعي المتقدم.",
     images: ["/images/og-image.png"],
     creator: "@hekmo_ai",
   },
@@ -143,8 +152,8 @@ export default function RootLayout({
       // visual flicker before hydration. Hence the `suppressHydrationWarning`
       // prop is necessary to avoid the React hydration mismatch warning.
       // https://github.com/pacocoursey/next-themes?tab=readme-ov-file#with-app
-      lang="ar"
       dir="rtl"
+      lang="ar"
       suppressHydrationWarning
     >
       <head>
@@ -155,15 +164,14 @@ export default function RootLayout({
           }}
         />
         <script
-          type="application/ld+json"
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: "JSON-LD structured data"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebApplication",
               name: "Hekmo",
               alternateName: "حكمو",
-              description: "مساعدك الذكي بالعربي — برمجة، كتابة، بحث، وأكثر. مدعوم بالذكاء الاصطناعي المتقدم.",
+              description:
+                "مساعدك الذكي بالعربي — برمجة، كتابة، بحث، وأكثر. مدعوم بالذكاء الاصطناعي المتقدم.",
               url: "https://hekmo.ai",
               applicationCategory: "UtilitiesApplication",
               operatingSystem: "Web",
@@ -181,6 +189,8 @@ export default function RootLayout({
               isAccessibleForFree: true,
             }),
           }}
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: "JSON-LD structured data"
+          type="application/ld+json"
         />
       </head>
       <body className="antialiased">

@@ -2,11 +2,24 @@ import { tool } from "ai";
 import { z } from "zod";
 
 export const calculatorTool = tool({
-  description: "Perform mathematical calculations. Use this for any math operations, unit conversions, percentage calculations, BMI, calorie calculations, etc.",
+  description:
+    "Perform mathematical calculations. Use this for any math operations, unit conversions, percentage calculations, BMI, calorie calculations, etc.",
   inputSchema: z.object({
-    expression: z.string().describe("Mathematical expression to evaluate (e.g., '2 + 2', '15% of 200', 'sqrt(144)')"),
-    type: z.enum(["basic", "bmi", "calories", "conversion"]).default("basic").describe("Type of calculation"),
-    additionalParams: z.record(z.number()).optional().describe("Additional parameters for specific calculations (e.g., weight, height for BMI)"),
+    expression: z
+      .string()
+      .describe(
+        "Mathematical expression to evaluate (e.g., '2 + 2', '15% of 200', 'sqrt(144)')"
+      ),
+    type: z
+      .enum(["basic", "bmi", "calories", "conversion"])
+      .default("basic")
+      .describe("Type of calculation"),
+    additionalParams: z
+      .record(z.number())
+      .optional()
+      .describe(
+        "Additional parameters for specific calculations (e.g., weight, height for BMI)"
+      ),
   }),
   execute: async ({ expression, type, additionalParams }) => {
     try {
@@ -18,7 +31,7 @@ export const calculatorTool = tool({
           const bmi = weight / (heightM * heightM);
           let category = "";
           let categoryAr = "";
-          
+
           if (bmi < 18.5) {
             category = "Underweight";
             categoryAr = "نقص في الوزن";
@@ -32,7 +45,7 @@ export const calculatorTool = tool({
             category = "Obese";
             categoryAr = "سمنة";
           }
-          
+
           return {
             success: true,
             type: "bmi",
@@ -51,15 +64,15 @@ export const calculatorTool = tool({
           // Mifflin-St Jeor Equation (male default)
           const bmr = 10 * weight + 6.25 * height - 5 * age + 5;
           const multipliers: Record<number, number> = {
-            1: 1.2,   // Sedentary
+            1: 1.2, // Sedentary
             2: 1.375, // Light
-            3: 1.55,  // Moderate
+            3: 1.55, // Moderate
             4: 1.725, // Active
-            5: 1.9,   // Very Active
+            5: 1.9, // Very Active
           };
           const multiplier = multipliers[activityLevel || 2] || 1.375;
           const tdee = Math.round(bmr * multiplier);
-          
+
           return {
             success: true,
             type: "calories",
@@ -73,7 +86,7 @@ export const calculatorTool = tool({
 
       // Basic calculation using Function (safer than eval)
       // Replace common expressions
-      let safeExpression = expression
+      const safeExpression = expression
         .replace(/×/g, "*")
         .replace(/÷/g, "/")
         .replace(/\^/g, "**")
@@ -88,17 +101,24 @@ export const calculatorTool = tool({
         .replace(/(\d+)%/g, "($1/100)");
 
       // Validate expression contains only safe characters
-      if (!/^[\d\s+\-*/().Math,sqrtsincogtanlope\[\]%]*$/i.test(safeExpression.replace(/Math\.\w+/g, ""))) {
+      if (
+        !/^[\d\s+\-*/().Math,sqrtsincogtanlope[\]%]*$/i.test(
+          safeExpression.replace(/Math\.\w+/g, "")
+        )
+      ) {
         throw new Error("Invalid expression");
       }
 
       const result = Function(`"use strict"; return (${safeExpression})`)();
-      
+
       return {
         success: true,
         type: "basic",
         expression,
-        result: typeof result === "number" ? Math.round(result * 1000000) / 1000000 : result,
+        result:
+          typeof result === "number"
+            ? Math.round(result * 1_000_000) / 1_000_000
+            : result,
       };
     } catch (error) {
       return {

@@ -77,11 +77,13 @@ export class ChatSDKError extends Error {
 
 // Arabic error messages
 const arabicMessages: Record<string, string> = {
-  "bad_request:api": "تعذر معالجة الطلب. يرجى التحقق من المدخلات والمحاولة مرة أخرى.",
+  "bad_request:api":
+    "تعذر معالجة الطلب. يرجى التحقق من المدخلات والمحاولة مرة أخرى.",
   "bad_request:activate_gateway": "حكمو غير متاح مؤقتاً. يرجى المحاولة لاحقاً.",
   "unauthorized:auth": "يجب تسجيل الدخول للمتابعة.",
   "forbidden:auth": "حسابك لا يملك صلاحية الوصول لهذه الميزة.",
-  "rate_limit:chat": "لقد تجاوزت الحد الأقصى للرسائل اليومية. يرجى المحاولة لاحقاً.",
+  "rate_limit:chat":
+    "لقد تجاوزت الحد الأقصى للرسائل اليومية. يرجى المحاولة لاحقاً.",
   "not_found:chat": "المحادثة غير موجودة.",
   "forbidden:chat": "هذه المحادثة تخص مستخدماً آخر.",
   "unauthorized:chat": "يجب تسجيل الدخول لعرض هذه المحادثة.",
@@ -94,7 +96,10 @@ const arabicMessages: Record<string, string> = {
   default: "حدث خطأ. يرجى المحاولة مرة أخرى.",
 };
 
-export function getMessageByErrorCode(errorCode: ErrorCode, locale: "ar" | "en" = "ar"): string {
+export function getMessageByErrorCode(
+  errorCode: ErrorCode,
+  locale: "ar" | "en" = "ar"
+): string {
   if (locale === "ar") {
     if (errorCode.includes("database")) {
       return arabicMessages.database;

@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { Building2, Check, Crown, Loader2, Zap } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Check, Crown, Zap, Building2, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
 
 interface PricingTier {
   id: string;
@@ -201,9 +201,7 @@ export default function PricingPage() {
                         ? tier.price.monthly
                         : Math.round(tier.price.yearly / 12)}
                     </span>
-                    <span className="text-muted-foreground mr-1">
-                      ر.س/شهر
-                    </span>
+                    <span className="text-muted-foreground mr-1">ر.س/شهر</span>
                     {billing === "yearly" && tier.price.yearly > 0 && (
                       <div className="text-sm text-muted-foreground">
                         {tier.price.yearly} ر.س/سنة
@@ -255,18 +253,14 @@ export default function PricingPage() {
               </p>
             </div>
             <div className="p-4 rounded-lg bg-muted/50">
-              <h3 className="font-medium mb-2">
-                ما طرق الدفع المتاحة؟
-              </h3>
+              <h3 className="font-medium mb-2">ما طرق الدفع المتاحة؟</h3>
               <p className="text-sm text-muted-foreground">
-                نقبل جميع البطاقات الائتمانية (Visa, Mastercard, مدى)
-                بالإضافة إلى Apple Pay.
+                نقبل جميع البطاقات الائتمانية (Visa, Mastercard, مدى) بالإضافة
+                إلى Apple Pay.
               </p>
             </div>
             <div className="p-4 rounded-lg bg-muted/50">
-              <h3 className="font-medium mb-2">
-                هل هناك ضمان استرداد المال؟
-              </h3>
+              <h3 className="font-medium mb-2">هل هناك ضمان استرداد المال؟</h3>
               <p className="text-sm text-muted-foreground">
                 نعم، نقدم ضمان استرداد المال خلال 7 أيام من الاشتراك.
               </p>

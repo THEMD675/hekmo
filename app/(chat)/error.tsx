@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { AlertTriangle, MessageSquare, RefreshCw } from "lucide-react";
 import Link from "next/link";
-import { AlertTriangle, RefreshCw, Home, MessageSquare } from "lucide-react";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 export default function ChatError({
@@ -18,10 +18,7 @@ export default function ChatError({
   }, [error]);
 
   return (
-    <div
-      className="flex-1 flex items-center justify-center p-8"
-      dir="rtl"
-    >
+    <div className="flex-1 flex items-center justify-center p-8" dir="rtl">
       <div className="text-center space-y-6 max-w-md">
         <AlertTriangle className="h-12 w-12 text-destructive mx-auto" />
         <h2 className="text-xl font-bold">حدث خطأ في المحادثة</h2>

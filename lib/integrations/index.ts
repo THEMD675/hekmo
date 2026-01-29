@@ -1,5 +1,6 @@
 // Integration exports
-export * from "./slack";
+
 export * from "./discord";
-export * from "./whatsapp";
+export * from "./slack";
 export * from "./telegram";
+export * from "./whatsapp";

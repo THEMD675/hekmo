@@ -31,7 +31,7 @@ export async function addMemory({
   category?: string;
 }): Promise<Memory | null> {
   const client = getMemoryClient();
-  
+
   if (!client) {
     // Fallback: Store in local memory map (for demo)
     console.log(`[Memory] Would store for ${userId}: ${content}`);
@@ -45,9 +45,9 @@ export async function addMemory({
     });
 
     // Handle both array and object response types
-    const resultId = Array.isArray(result) 
-      ? (result[0]?.id || crypto.randomUUID())
-      : ((result as any).id || crypto.randomUUID());
+    const resultId = Array.isArray(result)
+      ? result[0]?.id || crypto.randomUUID()
+      : (result as any).id || crypto.randomUUID();
 
     return {
       id: resultId,
@@ -72,7 +72,7 @@ export async function searchMemories({
   limit?: number;
 }): Promise<Memory[]> {
   const client = getMemoryClient();
-  
+
   if (!client) {
     return [];
   }
@@ -102,7 +102,7 @@ export async function getAllMemories({
   userId: string;
 }): Promise<Memory[]> {
   const client = getMemoryClient();
-  
+
   if (!client) {
     return [];
   }
@@ -129,7 +129,7 @@ export async function deleteMemory({
   memoryId: string;
 }): Promise<boolean> {
   const client = getMemoryClient();
-  
+
   if (!client) {
     return false;
   }
@@ -161,7 +161,7 @@ export function extractMemorableInfo(message: string): string[] {
   ];
 
   const facts: string[] = [];
-  
+
   for (const pattern of patterns) {
     const matches = message.matchAll(pattern);
     for (const match of matches) {
@@ -188,7 +188,7 @@ export function formatMemoriesAsContext(memories: Memory[]): string {
   );
 
   let context = "## ذاكرة المستخدم\n\n";
-  
+
   for (const [category, items] of Object.entries(grouped)) {
     context += `### ${category}\n`;
     for (const item of items) {

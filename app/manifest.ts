@@ -4,7 +4,8 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Hekmo — مساعدك الذكي بالعربي",
     short_name: "Hekmo",
-    description: "مساعدك الذكي بالعربي — برمجة، كتابة، بحث، وأكثر. مدعوم بالذكاء الاصطناعي المتقدم.",
+    description:
+      "مساعدك الذكي بالعربي — برمجة، كتابة، بحث، وأكثر. مدعوم بالذكاء الاصطناعي المتقدم.",
     start_url: "/",
     display: "standalone",
     background_color: "#0a0f0d",

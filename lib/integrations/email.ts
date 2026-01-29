@@ -56,12 +56,9 @@ export async function listEmails(
     options.labelIds.forEach((id) => params.append("labelIds", id));
   }
 
-  const response = await fetch(
-    `${GMAIL_API}/users/me/messages?${params}`,
-    {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    }
-  );
+  const response = await fetch(`${GMAIL_API}/users/me/messages?${params}`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
 
   if (!response.ok) {
     throw new Error("Failed to fetch emails");
@@ -148,7 +145,7 @@ export function parseEmailHeaders(
   headers: Array<{ name: string; value: string }>
 ): Record<string, string> {
   const result: Record<string, string> = {};
-  
+
   for (const header of headers) {
     result[header.name.toLowerCase()] = header.value;
   }
@@ -159,7 +156,7 @@ export function parseEmailHeaders(
 // Decode base64 email body
 export function decodeEmailBody(data: string | undefined): string {
   if (!data) return "";
-  
+
   const decoded = Buffer.from(
     data.replace(/-/g, "+").replace(/_/g, "/"),
     "base64"
@@ -198,7 +195,9 @@ export function extractEmailBody(message: EmailMessage): string {
 }
 
 // Search for business-related emails
-export async function searchBusinessEmails(userId: string): Promise<EmailMessage[]> {
+export async function searchBusinessEmails(
+  userId: string
+): Promise<EmailMessage[]> {
   const businessKeywords = [
     "تقرير طبي",
     "موعد طبيب",
@@ -211,7 +210,7 @@ export async function searchBusinessEmails(userId: string): Promise<EmailMessage
   ];
 
   const query = businessKeywords.map((k) => `"${k}"`).join(" OR ");
-  
+
   return listEmails(userId, { query, maxResults: 20 });
 }
 

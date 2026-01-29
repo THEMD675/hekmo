@@ -1,7 +1,7 @@
+import { eq } from "drizzle-orm";
 import { auth } from "@/app/(auth)/auth";
 import { db } from "@/lib/db/queries";
 import { chat, message } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
 import { generateUUID } from "@/lib/utils";
 
 export async function POST(request: Request) {

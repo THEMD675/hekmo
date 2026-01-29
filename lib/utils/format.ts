@@ -9,7 +9,7 @@ export function toArabicNumerals(num: number | string): string {
   const arabicNumerals = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
   return num
     .toString()
-    .replace(/[0-9]/g, (d) => arabicNumerals[parseInt(d, 10)]);
+    .replace(/[0-9]/g, (d) => arabicNumerals[Number.parseInt(d, 10)]);
 }
 
 /**
@@ -28,7 +28,9 @@ export function formatCurrency(
   options: { symbol?: boolean; decimals?: number } = {}
 ): string {
   const { symbol = true, decimals = 2 } = options;
-  const formatted = amount.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const formatted = amount
+    .toFixed(decimals)
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   return symbol ? `${formatted} ر.س` : formatted;
 }
 
@@ -42,7 +44,7 @@ export function formatFileSize(bytes: number): string {
   const k = 1024;
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-  const size = parseFloat((bytes / Math.pow(k, i)).toFixed(1));
+  const size = Number.parseFloat((bytes / k ** i).toFixed(1));
   return `${size} ${units[i]}`;
 }
 

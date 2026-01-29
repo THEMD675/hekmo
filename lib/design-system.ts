@@ -5,7 +5,7 @@
  * ╠═══════════════════════════════════════════════════════════════════════════╣
  * ║ UNIQUE IDENTITY: Neither Google nor Apple - distinctly Hekmo              ║
  * ╚═══════════════════════════════════════════════════════════════════════════╝
- * 
+ *
  * THE HYBRID APPROACH (10/10):
  * ┌─────────────────────────────────────────────────────────────────────────┐
  * │ 1. WARM STONE PALETTE - Unique brand identity (not copied)             │
@@ -13,7 +13,7 @@
  * │ 3. M3 FOUNDATIONS - Accessibility, spacing, typography                  │
  * │ 4. HEKMO SIGNATURE - Custom elements that define our brand             │
  * └─────────────────────────────────────────────────────────────────────────┘
- * 
+ *
  * COMPONENT CLASSES:
  * - .hekmo-glass     → Premium translucent card (Apple Liquid Glass)
  * - .hekmo-card      → Signature elevated card with subtle shadow
@@ -23,14 +23,14 @@
  * - .hekmo-modal     → Glass modal with frosted background
  * - .hekmo-bubble-*  → Chat message bubbles
  * - .hekmo-shimmer   → Loading animation
- * 
+ *
  * DESIGN PHILOSOPHY:
  * - Premium: Every element feels high-end
  * - Warm: Stone/beige palette, not cold
  * - Original: Not recognizable as "Google app" or "Apple clone"
  * - Accessible: WCAG 2.1 AA compliant
  * - Arabic-first: RTL native, Cairo typography
- * 
+ *
  * @version 5.0.0
  * @locked true
  * @lastUpdated 2026-01-29
@@ -44,13 +44,13 @@
 export const TYPOGRAPHY = {
   /**
    * FONT FAMILY DECISION (LOCKED)
-   * 
+   *
    * Arabic: Cairo
    * - Readability: 10/10 (highest rated)
    * - Performance: Excellent hinting, OpenType support
    * - Source: Google Fonts, variable font
    * - Alternative considered: Tajawal (9.8/10), IBM Plex Arabic (SaaS/dev)
-   * 
+   *
    * Latin: Inter
    * - Industry standard for UI
    * - Excellent legibility at small sizes
@@ -61,29 +61,104 @@ export const TYPOGRAPHY = {
     latin: "Inter, var(--font-inter), system-ui, sans-serif",
     mono: "var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace",
   },
-  
+
   /**
    * TYPE SCALE (Material 3 specification)
    * All values are CSS-ready
    */
   scale: {
-    displayLarge: { size: "57px", lineHeight: "64px", weight: 400, tracking: "-0.25px" },
-    displayMedium: { size: "45px", lineHeight: "52px", weight: 400, tracking: "0px" },
-    displaySmall: { size: "36px", lineHeight: "44px", weight: 400, tracking: "0px" },
-    headlineLarge: { size: "32px", lineHeight: "40px", weight: 400, tracking: "0px" },
-    headlineMedium: { size: "28px", lineHeight: "36px", weight: 400, tracking: "0px" },
-    headlineSmall: { size: "24px", lineHeight: "32px", weight: 400, tracking: "0px" },
-    titleLarge: { size: "22px", lineHeight: "28px", weight: 500, tracking: "0px" },
-    titleMedium: { size: "16px", lineHeight: "24px", weight: 500, tracking: "0.15px" },
-    titleSmall: { size: "14px", lineHeight: "20px", weight: 500, tracking: "0.1px" },
-    bodyLarge: { size: "16px", lineHeight: "24px", weight: 400, tracking: "0.5px" },
-    bodyMedium: { size: "14px", lineHeight: "20px", weight: 400, tracking: "0.25px" },
-    bodySmall: { size: "12px", lineHeight: "16px", weight: 400, tracking: "0.4px" },
-    labelLarge: { size: "14px", lineHeight: "20px", weight: 500, tracking: "0.1px" },
-    labelMedium: { size: "12px", lineHeight: "16px", weight: 500, tracking: "0.5px" },
-    labelSmall: { size: "11px", lineHeight: "16px", weight: 500, tracking: "0.5px" },
+    displayLarge: {
+      size: "57px",
+      lineHeight: "64px",
+      weight: 400,
+      tracking: "-0.25px",
+    },
+    displayMedium: {
+      size: "45px",
+      lineHeight: "52px",
+      weight: 400,
+      tracking: "0px",
+    },
+    displaySmall: {
+      size: "36px",
+      lineHeight: "44px",
+      weight: 400,
+      tracking: "0px",
+    },
+    headlineLarge: {
+      size: "32px",
+      lineHeight: "40px",
+      weight: 400,
+      tracking: "0px",
+    },
+    headlineMedium: {
+      size: "28px",
+      lineHeight: "36px",
+      weight: 400,
+      tracking: "0px",
+    },
+    headlineSmall: {
+      size: "24px",
+      lineHeight: "32px",
+      weight: 400,
+      tracking: "0px",
+    },
+    titleLarge: {
+      size: "22px",
+      lineHeight: "28px",
+      weight: 500,
+      tracking: "0px",
+    },
+    titleMedium: {
+      size: "16px",
+      lineHeight: "24px",
+      weight: 500,
+      tracking: "0.15px",
+    },
+    titleSmall: {
+      size: "14px",
+      lineHeight: "20px",
+      weight: 500,
+      tracking: "0.1px",
+    },
+    bodyLarge: {
+      size: "16px",
+      lineHeight: "24px",
+      weight: 400,
+      tracking: "0.5px",
+    },
+    bodyMedium: {
+      size: "14px",
+      lineHeight: "20px",
+      weight: 400,
+      tracking: "0.25px",
+    },
+    bodySmall: {
+      size: "12px",
+      lineHeight: "16px",
+      weight: 400,
+      tracking: "0.4px",
+    },
+    labelLarge: {
+      size: "14px",
+      lineHeight: "20px",
+      weight: 500,
+      tracking: "0.1px",
+    },
+    labelMedium: {
+      size: "12px",
+      lineHeight: "16px",
+      weight: 500,
+      tracking: "0.5px",
+    },
+    labelSmall: {
+      size: "11px",
+      lineHeight: "16px",
+      weight: 500,
+      tracking: "0.5px",
+    },
   },
-  
+
   /**
    * MESSAGE BUBBLE TYPOGRAPHY (Chat UI Best Practices 2025)
    */
@@ -102,101 +177,101 @@ export const TYPOGRAPHY = {
 export const COLORS = {
   /**
    * BRAND COLOR DECISION (LOCKED v3)
-   * 
+   *
    * VISION: Minimal, warm, stone vibes, Apple + ChatGPT feel
-   * 
+   *
    * Primary: Warm Stone Brown
    * - Conveys: Warmth, trust, sophistication, timelessness
    * - Inspired by: ChatGPT earth tones, Apple elegance
    * - Grounding, natural, premium feel
-   * 
+   *
    * Accent: Subtle warm highlight (not vibrant)
    * - Minimal, not attention-grabbing
    * - Elegant hover states only
-   * 
+   *
    * Background: Warm cream/beige (not pure white)
    * - Soft on eyes, premium feel
    * - Like high-end paper or linen
    */
-  
+
   light: {
     // Primary (Warm Stone) - Subtle, sophisticated
-    primary: "hsl(30 20% 35%)",            // Warm brown stone
+    primary: "hsl(30 20% 35%)", // Warm brown stone
     onPrimary: "hsl(40 30% 98%)",
     primaryContainer: "hsl(35 30% 90%)",
     onPrimaryContainer: "hsl(30 25% 15%)",
-    
+
     // Secondary - Muted stone gray
     secondary: "hsl(30 10% 50%)",
     onSecondary: "hsl(40 30% 98%)",
     secondaryContainer: "hsl(35 15% 92%)",
     onSecondaryContainer: "hsl(30 15% 20%)",
-    
+
     // Tertiary (Warm accent) - Not orange, subtle warmth
-    tertiary: "hsl(25 35% 45%)",           // Muted terracotta
+    tertiary: "hsl(25 35% 45%)", // Muted terracotta
     onTertiary: "hsl(40 30% 98%)",
     tertiaryContainer: "hsl(30 25% 88%)",
     onTertiaryContainer: "hsl(25 30% 15%)",
-    
+
     // Error - Muted, not alarming
     error: "hsl(0 50% 45%)",
     onError: "hsl(0 0% 100%)",
     errorContainer: "hsl(0 40% 92%)",
     onErrorContainer: "hsl(0 50% 20%)",
-    
+
     // Surface (Warm cream - like premium paper)
-    surface: "hsl(40 30% 97%)",            // Warm cream
-    onSurface: "hsl(30 15% 12%)",          // Warm near-black
+    surface: "hsl(40 30% 97%)", // Warm cream
+    onSurface: "hsl(30 15% 12%)", // Warm near-black
     surfaceVariant: "hsl(35 20% 93%)",
     onSurfaceVariant: "hsl(30 10% 40%)",
-    surfaceContainerLowest: "hsl(40 40% 99%)",  // Almost white cream
+    surfaceContainerLowest: "hsl(40 40% 99%)", // Almost white cream
     surfaceContainerLow: "hsl(38 30% 96%)",
     surfaceContainer: "hsl(36 25% 94%)",
     surfaceContainerHigh: "hsl(34 20% 91%)",
     surfaceContainerHighest: "hsl(32 18% 88%)",
-    
+
     // Outline - Warm, subtle
     outline: "hsl(30 10% 60%)",
     outlineVariant: "hsl(35 15% 82%)",
-    
+
     // Background (Same as surface - unified warm cream)
     background: "hsl(40 30% 97%)",
     onBackground: "hsl(30 15% 12%)",
-    
+
     // Inverse
     inverseSurface: "hsl(30 15% 15%)",
     inverseOnSurface: "hsl(40 25% 95%)",
     inversePrimary: "hsl(35 30% 70%)",
-    
+
     // Shadows (Warm tinted)
     shadow: "hsl(30 20% 10%)",
     scrim: "hsl(30 15% 5%)",
   },
-  
+
   dark: {
     // Dark mode - Warm dark, not cold black
     primary: "hsl(35 30% 70%)",
     onPrimary: "hsl(30 25% 12%)",
     primaryContainer: "hsl(30 25% 25%)",
     onPrimaryContainer: "hsl(35 35% 90%)",
-    
+
     secondary: "hsl(35 15% 65%)",
     onSecondary: "hsl(30 20% 12%)",
     secondaryContainer: "hsl(30 15% 22%)",
     onSecondaryContainer: "hsl(35 20% 88%)",
-    
+
     tertiary: "hsl(28 35% 65%)",
     onTertiary: "hsl(25 30% 12%)",
     tertiaryContainer: "hsl(25 25% 22%)",
     onTertiaryContainer: "hsl(28 35% 88%)",
-    
+
     error: "hsl(0 50% 65%)",
     onError: "hsl(0 40% 12%)",
     errorContainer: "hsl(0 40% 22%)",
     onErrorContainer: "hsl(0 45% 88%)",
-    
+
     // Surface (Warm dark - not pure black)
-    surface: "hsl(30 15% 8%)",             // Warm near-black
+    surface: "hsl(30 15% 8%)", // Warm near-black
     onSurface: "hsl(35 20% 90%)",
     surfaceVariant: "hsl(30 12% 15%)",
     onSurfaceVariant: "hsl(35 15% 70%)",
@@ -205,29 +280,29 @@ export const COLORS = {
     surfaceContainer: "hsl(30 10% 13%)",
     surfaceContainerHigh: "hsl(30 8% 16%)",
     surfaceContainerHighest: "hsl(30 6% 20%)",
-    
+
     outline: "hsl(30 10% 45%)",
     outlineVariant: "hsl(30 10% 28%)",
-    
+
     background: "hsl(30 15% 8%)",
     onBackground: "hsl(35 20% 90%)",
-    
+
     inverseSurface: "hsl(35 20% 90%)",
     inverseOnSurface: "hsl(30 15% 15%)",
     inversePrimary: "hsl(30 20% 35%)",
-    
+
     shadow: "hsl(0 0% 0%)",
     scrim: "hsl(0 0% 0%)",
   },
-  
+
   /**
    * SEMANTIC COLORS (LOCKED - Muted, not vibrant)
    */
   semantic: {
-    success: "hsl(140 35% 40%)",      // Muted sage green
-    warning: "hsl(35 50% 50%)",       // Muted amber
-    info: "hsl(210 40% 50%)",         // Muted blue
-    
+    success: "hsl(140 35% 40%)", // Muted sage green
+    warning: "hsl(35 50% 50%)", // Muted amber
+    info: "hsl(210 40% 50%)", // Muted blue
+
     // Citation badge - warm stone tint
     citationBg: "hsla(30, 20%, 35%, 0.12)",
     citationText: "hsl(30 25% 35%)",
@@ -242,9 +317,9 @@ export const COLORS = {
 export const ELEVATION = {
   /**
    * M3 ELEVATION LEVELS (LOCKED)
-   * 
+   *
    * Official CSS box-shadow values from Material Components Web
-   * 
+   *
    * Usage:
    * - Level 0: Flat surfaces (no elevation)
    * - Level 1: Cards at rest, app bars
@@ -257,17 +332,19 @@ export const ELEVATION = {
   level1: "0 1px 4px 0 rgba(0, 0, 0, 0.12)",
   level2: "0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 6px 10px 0 rgba(0, 0, 0, 0.12)",
   level3: "0 11px 7px 0 rgba(0, 0, 0, 0.10), 0 13px 25px 0 rgba(0, 0, 0, 0.12)",
-  level4: "0 14px 12px 0 rgba(0, 0, 0, 0.08), 0 20px 40px 0 rgba(0, 0, 0, 0.12)",
-  level5: "0 17px 17px 0 rgba(0, 0, 0, 0.06), 0 27px 55px 0 rgba(0, 0, 0, 0.12)",
-  
+  level4:
+    "0 14px 12px 0 rgba(0, 0, 0, 0.08), 0 20px 40px 0 rgba(0, 0, 0, 0.12)",
+  level5:
+    "0 17px 17px 0 rgba(0, 0, 0, 0.06), 0 27px 55px 0 rgba(0, 0, 0, 0.12)",
+
   /**
    * M3 CARD ELEVATION PATTERN (LOCKED)
-   * 
+   *
    * Elevated cards:
    * - Rest: level1
    * - Hover: level2
    * - Pressed: level1
-   * 
+   *
    * This creates the "lift on hover" effect users expect
    */
   card: {
@@ -284,12 +361,12 @@ export const ELEVATION = {
 export const MOTION = {
   /**
    * DURATION DECISION (LOCKED)
-   * 
+   *
    * Platform-specific (Material Design research):
    * - Desktop: 150-200ms (user expects speed)
    * - Mobile: 300ms standard
    * - Tablet: ~390ms (30% longer than mobile)
-   * 
+   *
    * AI Responses:
    * - Skeleton shimmer: 1.5s loop
    * - Content fade-in: 200ms
@@ -298,20 +375,20 @@ export const MOTION = {
     instant: "0ms",
     short1: "50ms",
     short2: "100ms",
-    short3: "150ms",      // Desktop minimum
-    short4: "200ms",      // Desktop maximum
+    short3: "150ms", // Desktop minimum
+    short4: "200ms", // Desktop maximum
     medium1: "250ms",
-    medium2: "300ms",     // Mobile standard
+    medium2: "300ms", // Mobile standard
     medium3: "350ms",
-    medium4: "400ms",     // Entry animations
+    medium4: "400ms", // Entry animations
     long1: "450ms",
-    long2: "500ms",       // Full transitions
-    skeleton: "1500ms",   // Shimmer loop
+    long2: "500ms", // Full transitions
+    skeleton: "1500ms", // Shimmer loop
   },
-  
+
   /**
    * EASING CURVES (LOCKED)
-   * 
+   *
    * Material 3: "snappy take offs and very soft landings"
    * - Emphasized: Most transitions
    * - Standard: Utility interactions
@@ -321,19 +398,19 @@ export const MOTION = {
     standard: "cubic-bezier(0.2, 0.0, 0, 1.0)",
     standardAccelerate: "cubic-bezier(0.3, 0.0, 1, 1)",
     standardDecelerate: "cubic-bezier(0, 0, 0, 1)",
-    
+
     // Emphasized (important movements)
     emphasized: "cubic-bezier(0.2, 0.0, 0, 1.0)",
     emphasizedAccelerate: "cubic-bezier(0.3, 0.0, 0.8, 0.15)",
     emphasizedDecelerate: "cubic-bezier(0.05, 0.7, 0.1, 1.0)",
-    
+
     // Spring (Apple-inspired)
     spring: "cubic-bezier(0.34, 1.56, 0.64, 1)",
-    
+
     // Linear (for shimmer)
     linear: "linear",
   },
-  
+
   /**
    * REDUCED MOTION
    * Respect prefers-reduced-motion
@@ -351,7 +428,7 @@ export const MOTION = {
 export const SPACING = {
   /**
    * SPACING SCALE (LOCKED)
-   * 
+   *
    * 4px base unit (industry standard)
    * Component-level: 4-48px
    * Layout-level: 16-192px
@@ -393,7 +470,7 @@ export const SPACING = {
 export const RADIUS = {
   /**
    * RADIUS SCALE (LOCKED)
-   * 
+   *
    * Based on Mozilla Protocol + Material 3
    * - xs (2px): Small badges
    * - sm (4px): Inputs, small cards
@@ -421,7 +498,7 @@ export const RADIUS = {
 export const COMPONENTS = {
   /**
    * CARDS (LOCKED)
-   * 
+   *
    * Decision: ELEVATED cards (not outlined, not filled)
    * Research: Elevated cards +72% engagement
    */
@@ -434,10 +511,10 @@ export const COMPONENTS = {
     padding: "16px",
     gap: "12px",
   },
-  
+
   /**
    * BUTTONS (LOCKED)
-   * 
+   *
    * Primary: Brand color (emerald)
    * CTA: Tertiary (orange) - high conversion
    * Secondary: Outlined
@@ -478,10 +555,10 @@ export const COMPONENTS = {
       paddingX: "16px",
     },
   },
-  
+
   /**
    * INPUT FIELDS (LOCKED)
-   * 
+   *
    * Variant: Filled (Material 3)
    * Focus: 3:1 contrast ratio minimum
    * Height: 56px standard, 48px compact
@@ -496,10 +573,10 @@ export const COMPONENTS = {
     focusRingWidth: "2px",
     focusRingOffset: "2px",
   },
-  
+
   /**
    * CHIPS (LOCKED)
-   * 
+   *
    * Variant: Assist chip (Material 3)
    * Used for: Capabilities, suggestions
    */
@@ -512,10 +589,10 @@ export const COMPONENTS = {
     fontWeight: 500,
     gap: "8px",
   },
-  
+
   /**
    * CHAT BUBBLES (LOCKED)
-   * 
+   *
    * Research: Chat UI Best Practices 2025
    */
   chatBubble: {
@@ -527,10 +604,10 @@ export const COMPONENTS = {
     radius: "lg",
     padding: "16px",
   },
-  
+
   /**
    * SIDEBAR (LOCKED)
-   * 
+   *
    * Width: 280px expanded, 72px collapsed
    * Transition: 200ms standard easing
    */
@@ -542,10 +619,10 @@ export const COMPONENTS = {
     itemPadding: "12px",
     itemRadius: "md",
   },
-  
+
   /**
    * CITATIONS (LOCKED)
-   * 
+   *
    * Pattern: Perplexity-style superscripts
    */
   citation: {
@@ -556,10 +633,10 @@ export const COMPONENTS = {
     hoverCardWidth: "288px",
     hoverCardPadding: "12px",
   },
-  
+
   /**
    * SKELETON LOADING (LOCKED)
-   * 
+   *
    * Shimmer: 1.5s loop, 100deg tilt
    * Match content structure
    */
@@ -578,7 +655,7 @@ export const COMPONENTS = {
 export const INTERACTIONS = {
   /**
    * AI CHAT UX PATTERNS (LOCKED)
-   * 
+   *
    * Research: NN/g, In The Pocket AI Guidelines
    */
   chat: {
@@ -586,20 +663,20 @@ export const INTERACTIONS = {
     showLimitations: true,
     showSources: true, // Citations
     showThinkingState: true, // "جاري التحليل..."
-    
+
     // Speed perception
     showResponseTime: true, // "أجاب في X ثانية"
-    
+
     // Prompt controls
     showSuggestions: true,
     showModeSelector: true, // Quick/Deep/Action
-    
+
     // Memory
     showChatHistory: true,
     enablePinning: true,
     enableArchiving: true,
   },
-  
+
   /**
    * LOADING STATES (LOCKED)
    */
@@ -608,7 +685,7 @@ export const INTERACTIONS = {
     showProgress: true,
     respectReducedMotion: true,
   },
-  
+
   /**
    * FOCUS STATES (LOCKED)
    */
@@ -632,10 +709,10 @@ export const BRAND = {
   nameArabic: "حكمو",
   tagline: "مساعدك الذكي بالعربي",
   taglineEnglish: "Your Smart Assistant in Arabic",
-  
+
   /**
    * POSITIONING (LOCKED)
-   * 
+   *
    * Differentiator: Arabic-first + Speed + Citations
    * Not a niche app - general-purpose AI like ChatGPT
    */
@@ -648,7 +725,7 @@ export const BRAND = {
       "Voice-first interaction",
     ],
   },
-  
+
   /**
    * VOICE & TONE (LOCKED)
    */
@@ -674,7 +751,7 @@ export const A11Y = {
     uiComponents: 3.0, // Buttons, inputs, icons
     focusIndicators: 3.0, // Focus rings
   },
-  
+
   /**
    * TOUCH TARGETS (LOCKED)
    */
@@ -683,7 +760,7 @@ export const A11Y = {
     recommended: "48px",
     spacing: "8px", // Between targets
   },
-  
+
   /**
    * MOTION (LOCKED)
    */
@@ -691,7 +768,7 @@ export const A11Y = {
     respectReducedMotion: true,
     fallbackDuration: "0ms",
   },
-  
+
   /**
    * FOCUS (LOCKED)
    */
@@ -710,18 +787,18 @@ export const A11Y = {
 export const GRID = {
   /**
    * BREAKPOINTS (LOCKED)
-   * 
+   *
    * Mobile-first responsive design
    */
   breakpoints: {
-    xs: "0px",       // Mobile portrait
-    sm: "640px",     // Mobile landscape
-    md: "768px",     // Tablet portrait
-    lg: "1024px",    // Tablet landscape / Small desktop
-    xl: "1280px",    // Desktop
+    xs: "0px", // Mobile portrait
+    sm: "640px", // Mobile landscape
+    md: "768px", // Tablet portrait
+    lg: "1024px", // Tablet landscape / Small desktop
+    xl: "1280px", // Desktop
     "2xl": "1536px", // Large desktop
   },
-  
+
   /**
    * CONTAINER (LOCKED)
    */
@@ -733,7 +810,7 @@ export const GRID = {
       desktop: "32px",
     },
   },
-  
+
   /**
    * COLUMNS (LOCKED)
    */
@@ -742,7 +819,7 @@ export const GRID = {
     tablet: 8,
     desktop: 12,
   },
-  
+
   gutter: "16px",
   margin: "16px",
 } as const;
@@ -754,12 +831,12 @@ export const GRID = {
 export const ICONS = {
   /**
    * ICON SYSTEM (LOCKED)
-   * 
+   *
    * Library: Lucide React (consistent, open-source)
    * Sizing: Optical balance, not pixel-perfect
    */
   library: "lucide-react",
-  
+
   sizes: {
     xs: "12px",
     sm: "16px",
@@ -768,23 +845,23 @@ export const ICONS = {
     xl: "32px",
     "2xl": "48px",
   },
-  
+
   strokeWidth: {
     thin: 1,
     regular: 1.5,
     medium: 2,
     bold: 2.5,
   },
-  
+
   /**
    * ICON USAGE (LOCKED)
    */
   usage: {
     inlineWithText: "md", // 20px
-    buttons: "sm",        // 16px
-    navigation: "lg",     // 24px
-    features: "xl",       // 32px
-    heroSection: "2xl",   // 48px
+    buttons: "sm", // 16px
+    navigation: "lg", // 24px
+    features: "xl", // 32px
+    heroSection: "2xl", // 48px
   },
 } as const;
 
@@ -801,17 +878,17 @@ export const FORMS = {
     validateOnBlur: true,
     validateOnChange: false, // Too aggressive
     debounceMs: 300,
-    
+
     // Error display
     errorPosition: "below", // Below input
     errorColor: "error",
     errorFontSize: "12px",
-    
+
     // Success
     showSuccessState: true,
     successColor: "success",
   },
-  
+
   /**
    * LABELS (LOCKED)
    */
@@ -822,7 +899,7 @@ export const FORMS = {
     requiredIndicator: "*",
     optionalText: "(اختياري)",
   },
-  
+
   /**
    * HELP TEXT (LOCKED)
    */
@@ -847,7 +924,7 @@ export const NAVIGATION = {
     indicatorColor: "primary",
     transition: "200ms standard",
   },
-  
+
   /**
    * BREADCRUMBS (LOCKED)
    */
@@ -857,7 +934,7 @@ export const NAVIGATION = {
     color: "onSurfaceVariant",
     activeColor: "onSurface",
   },
-  
+
   /**
    * DRAWER (LOCKED)
    */
@@ -891,7 +968,7 @@ export const DIALOGS = {
     backdropColor: "hsla(30, 15%, 5%, 0.6)",
     transition: "200ms emphasized",
   },
-  
+
   /**
    * POPOVER (LOCKED)
    */
@@ -902,7 +979,7 @@ export const DIALOGS = {
     offset: "8px",
     animation: "150ms emphasized",
   },
-  
+
   /**
    * TOOLTIP (LOCKED)
    */
@@ -930,7 +1007,7 @@ export const FEEDBACK = {
     duration: "5000ms",
     position: "bottom-right", // RTL: bottom-left visually
   },
-  
+
   /**
    * BANNER (LOCKED)
    */
@@ -940,7 +1017,7 @@ export const FEEDBACK = {
     iconSize: "20px",
     dismissible: true,
   },
-  
+
   /**
    * ALERT (LOCKED)
    */
@@ -967,7 +1044,7 @@ export const STATES = {
     maxWidth: "400px",
     spacing: "16px",
   },
-  
+
   /**
    * ERROR STATE (LOCKED)
    */
@@ -977,7 +1054,7 @@ export const STATES = {
     showRetryButton: true,
     retryButtonVariant: "primary",
   },
-  
+
   /**
    * LOADING STATE (LOCKED)
    */
@@ -986,7 +1063,7 @@ export const STATES = {
     spinnerStrokeWidth: "2px",
     useSkeletons: true, // Prefer skeletons over spinners
   },
-  
+
   /**
    * DISABLED STATE (LOCKED)
    */
@@ -1013,7 +1090,7 @@ export const DEFAULTS = {
 export const TOKENS = {
   /**
    * STYLE DICTIONARY COMPATIBLE
-   * 
+   *
    * Can be exported to:
    * - CSS Custom Properties
    * - Tailwind Config
@@ -1029,7 +1106,7 @@ export const TOKENS = {
     "color-success": { value: "hsl(140 35% 40%)", type: "color" },
     "color-warning": { value: "hsl(35 50% 50%)", type: "color" },
   },
-  
+
   spacing: {
     "spacing-1": { value: "4px", type: "dimension" },
     "spacing-2": { value: "8px", type: "dimension" },
@@ -1038,15 +1115,21 @@ export const TOKENS = {
     "spacing-6": { value: "24px", type: "dimension" },
     "spacing-8": { value: "32px", type: "dimension" },
   },
-  
+
   typography: {
-    "font-family-arabic": { value: "Cairo, system-ui, sans-serif", type: "fontFamily" },
-    "font-family-latin": { value: "Inter, system-ui, sans-serif", type: "fontFamily" },
+    "font-family-arabic": {
+      value: "Cairo, system-ui, sans-serif",
+      type: "fontFamily",
+    },
+    "font-family-latin": {
+      value: "Inter, system-ui, sans-serif",
+      type: "fontFamily",
+    },
     "font-size-body": { value: "14px", type: "dimension" },
     "font-size-title": { value: "22px", type: "dimension" },
     "font-size-heading": { value: "28px", type: "dimension" },
   },
-  
+
   radius: {
     "radius-sm": { value: "4px", type: "dimension" },
     "radius-md": { value: "8px", type: "dimension" },
@@ -1054,11 +1137,23 @@ export const TOKENS = {
     "radius-xl": { value: "16px", type: "dimension" },
     "radius-full": { value: "9999px", type: "dimension" },
   },
-  
+
   shadow: {
-    "shadow-1": { value: "0px 1px 2px 0px rgba(0,0,0,0.1), 0px 1px 3px 1px rgba(0,0,0,0.06)", type: "shadow" },
-    "shadow-2": { value: "0px 1px 2px 0px rgba(0,0,0,0.1), 0px 2px 6px 2px rgba(0,0,0,0.06)", type: "shadow" },
-    "shadow-3": { value: "0px 1px 3px 0px rgba(0,0,0,0.1), 0px 4px 8px 3px rgba(0,0,0,0.06)", type: "shadow" },
+    "shadow-1": {
+      value:
+        "0px 1px 2px 0px rgba(0,0,0,0.1), 0px 1px 3px 1px rgba(0,0,0,0.06)",
+      type: "shadow",
+    },
+    "shadow-2": {
+      value:
+        "0px 1px 2px 0px rgba(0,0,0,0.1), 0px 2px 6px 2px rgba(0,0,0,0.06)",
+      type: "shadow",
+    },
+    "shadow-3": {
+      value:
+        "0px 1px 3px 0px rgba(0,0,0,0.1), 0px 4px 8px 3px rgba(0,0,0,0.06)",
+      type: "shadow",
+    },
   },
 } as const;
 
@@ -1069,7 +1164,7 @@ export const TOKENS = {
 export const DOCUMENTATION = {
   /**
    * COMPONENT DOCS TEMPLATE
-   * 
+   *
    * Each component should have:
    * - Description
    * - Usage guidelines
@@ -1090,7 +1185,7 @@ export const DOCUMENTATION = {
       "Related components",
     ],
   },
-  
+
   /**
    * DO'S AND DON'TS EXAMPLES
    */
@@ -1147,7 +1242,7 @@ export const DOCUMENTATION = {
 export const GOVERNANCE = {
   /**
    * VERSION CONTROL (LOCKED)
-   * 
+   *
    * Semantic versioning:
    * - MAJOR: Breaking changes (color system, typography overhaul)
    * - MINOR: New components, new tokens
@@ -1158,7 +1253,7 @@ export const GOVERNANCE = {
     format: "MAJOR.MINOR.PATCH",
     changelog: "/CHANGELOG.md",
   },
-  
+
   /**
    * OWNERSHIP (LOCKED)
    */
@@ -1167,7 +1262,7 @@ export const GOVERNANCE = {
     coreTeam: ["Design", "Frontend", "Accessibility"],
     contributionModel: "Open with review",
   },
-  
+
   /**
    * CHANGE PROCESS (LOCKED)
    */
@@ -1182,7 +1277,7 @@ export const GOVERNANCE = {
     ],
     approvalRequired: ["Design Lead", "Frontend Lead"],
   },
-  
+
   /**
    * MAINTENANCE SCHEDULE (LOCKED)
    */
@@ -1201,7 +1296,7 @@ export const DESIGN_SYSTEM = {
   version: "3.0.0",
   locked: true,
   lastUpdated: "2026-01-29",
-  
+
   // Foundation
   typography: TYPOGRAPHY,
   colors: COLORS,
@@ -1211,7 +1306,7 @@ export const DESIGN_SYSTEM = {
   motion: MOTION,
   grid: GRID,
   icons: ICONS,
-  
+
   // Components
   components: COMPONENTS,
   forms: FORMS,
@@ -1219,14 +1314,14 @@ export const DESIGN_SYSTEM = {
   dialogs: DIALOGS,
   feedback: FEEDBACK,
   states: STATES,
-  
+
   // Patterns
   interactions: INTERACTIONS,
-  
+
   // Brand & A11y
   brand: BRAND,
   a11y: A11Y,
-  
+
   // System
   defaults: DEFAULTS,
   tokens: TOKENS,
@@ -1283,7 +1378,7 @@ export default DESIGN_SYSTEM;
  * ║ [x] Governance (versioning, ownership, process)                          ║
  * ║ [x] Defaults (theme, direction, locale)                                   ║
  * ╚═══════════════════════════════════════════════════════════════════════════╝
- * 
+ *
  * This design system is comparable to:
  * - Material Design (Google)
  * - Carbon Design System (IBM)

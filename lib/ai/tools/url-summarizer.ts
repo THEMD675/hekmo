@@ -2,10 +2,14 @@ import { tool } from "ai";
 import { z } from "zod";
 
 export const urlSummarizerTool = tool({
-  description: "Fetch and summarize content from a URL. Use when the user shares a link and wants to know what it's about, or asks to summarize an article/webpage.",
+  description:
+    "Fetch and summarize content from a URL. Use when the user shares a link and wants to know what it's about, or asks to summarize an article/webpage.",
   inputSchema: z.object({
     url: z.string().url().describe("The URL to fetch and summarize"),
-    language: z.enum(["ar", "en"]).default("ar").describe("Language for the summary"),
+    language: z
+      .enum(["ar", "en"])
+      .default("ar")
+      .describe("Language for the summary"),
   }),
   execute: async ({ url, language }) => {
     try {
@@ -37,7 +41,9 @@ export const urlSummarizerTool = tool({
       const title = titleMatch ? titleMatch[1].trim() : "Untitled";
 
       // Extract meta description
-      const descMatch = html.match(/<meta[^>]*name=["']description["'][^>]*content=["']([^"']+)["']/i);
+      const descMatch = html.match(
+        /<meta[^>]*name=["']description["'][^>]*content=["']([^"']+)["']/i
+      );
       const description = descMatch ? descMatch[1].trim() : null;
 
       return {
@@ -49,9 +55,10 @@ export const urlSummarizerTool = tool({
         contentLength: textContent.length,
         fetchedAt: new Date().toISOString(),
         language,
-        summaryPrompt: language === "ar" 
-          ? `المحتوى من: ${title}. ${description || ""}`
-          : `Content from: ${title}. ${description || ""}`,
+        summaryPrompt:
+          language === "ar"
+            ? `المحتوى من: ${title}. ${description || ""}`
+            : `Content from: ${title}. ${description || ""}`,
       };
     } catch (error) {
       console.error("URL fetch error:", error);

@@ -38,10 +38,7 @@ export function trackEvent(
 }
 
 // Identify user
-export function identifyUser(
-  userId: string,
-  traits?: Record<string, unknown>
-) {
+export function identifyUser(userId: string, traits?: Record<string, unknown>) {
   if (typeof window === "undefined") return;
 
   if (typeof posthog?.identify === "function") {

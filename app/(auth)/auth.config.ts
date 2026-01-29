@@ -1,8 +1,8 @@
 import type { NextAuthConfig } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
-import Google from "next-auth/providers/google";
-import GitHub from "next-auth/providers/github";
 import Apple from "next-auth/providers/apple";
+import Credentials from "next-auth/providers/credentials";
+import GitHub from "next-auth/providers/github";
+import Google from "next-auth/providers/google";
 
 export const authConfig: NextAuthConfig = {
   pages: {
@@ -42,14 +42,23 @@ export const authConfig: NextAuthConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const pathname = nextUrl.pathname;
-      
+
       // Public routes - no auth required
       const publicPaths = ["/", "/pricing", "/privacy", "/terms"];
-      const publicPrefixes = ["/dashboard", "/onboarding", "/api/whatsapp", "/api/stripe", "/api/business", "/api/health"];
-      
+      const publicPrefixes = [
+        "/dashboard",
+        "/onboarding",
+        "/api/whatsapp",
+        "/api/stripe",
+        "/api/business",
+        "/api/health",
+      ];
+
       const isPublicPath = publicPaths.includes(pathname);
-      const isPublicPrefix = publicPrefixes.some(prefix => pathname.startsWith(prefix));
-      
+      const isPublicPrefix = publicPrefixes.some((prefix) =>
+        pathname.startsWith(prefix)
+      );
+
       if (isPublicPath || isPublicPrefix) {
         return true;
       }
@@ -72,7 +81,8 @@ export const authConfig: NextAuthConfig = {
     jwt({ token, user, account }) {
       if (user?.id) {
         token.id = user.id;
-        token.type = ((user as { type?: "guest" | "regular" }).type || "regular") as "guest" | "regular";
+        token.type = ((user as { type?: "guest" | "regular" }).type ||
+          "regular") as "guest" | "regular";
       }
       if (account) {
         token.provider = account.provider;

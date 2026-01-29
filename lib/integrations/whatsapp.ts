@@ -139,17 +139,20 @@ async function processWhatsAppMessage(
 ): Promise<void> {
   try {
     // Get AI response
-    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/chat`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        messages: [{ role: "user", content: text }],
-        model: "hekmo",
-      }),
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_APP_URL}/api/chat`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [{ role: "user", content: text }],
+          model: "hekmo",
+        }),
+      }
+    );
 
     let replyText = "عذراً، حدث خطأ. يرجى المحاولة لاحقاً.";
-    
+
     if (response.ok) {
       const data = await response.json();
       replyText = data.content || replyText;
