@@ -4,6 +4,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { getLanguageModel } from "@/lib/ai/providers";
 import { db } from "@/lib/db/queries";
 import { business, businessKnowledge } from "@/lib/db/schema";
+import { normalizeArabic, isArabic } from "@/lib/arabic-nlp";
 
 // Business AI Chat - context-aware responses for businesses
 export async function POST(request: NextRequest) {
@@ -18,6 +19,11 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+
+    // Normalize Arabic text for better processing
+    const normalizedMessage = isArabic(customerMessage) 
+      ? normalizeArabic(customerMessage) 
+      : customerMessage;
 
     // Fetch business from database
     let businessRecord;
@@ -73,7 +79,7 @@ export async function POST(request: NextRequest) {
             content: msg.content,
           })
         ),
-        { role: "user" as const, content: customerMessage },
+        { role: "user" as const, content: normalizedMessage },
       ],
     });
 
