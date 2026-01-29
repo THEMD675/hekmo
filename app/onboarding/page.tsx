@@ -73,14 +73,42 @@ export default function OnboardingPage() {
   };
 
   const handleWhatsAppConnect = async () => {
+    if (!business?.id) {
+      setError("يرجى إنشاء النشاط أولاً");
+      return;
+    }
+
     setLoading(true);
-    
-    // For now, skip WhatsApp OAuth - this requires Meta Business setup
-    // Just move to next step
-    await new Promise(r => setTimeout(r, 500));
-    
-    setLoading(false);
-    setStep("knowledge");
+    setError(null);
+
+    try {
+      // Check if WhatsApp is configured
+      const response = await fetch(`/api/whatsapp/connect?businessId=${business.id}`);
+      
+      if (response.status === 503) {
+        // WhatsApp not configured - skip for now
+        setStep("knowledge");
+        return;
+      }
+
+      if (response.redirected) {
+        // Redirect to Meta OAuth
+        window.location.href = response.url;
+        return;
+      }
+
+      const data = await response.json();
+      if (data.error) {
+        // Not configured, skip step
+        setStep("knowledge");
+      }
+    } catch (err) {
+      console.error("WhatsApp connect error:", err);
+      // Skip step on error
+      setStep("knowledge");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleKnowledgeSubmit = async () => {
