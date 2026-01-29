@@ -146,27 +146,30 @@ export function getRelativeTimeArabic(date: Date): string {
 }
 
 /**
- * Detect health-related Arabic terms for Hekmo
+ * Detect business-related Arabic terms for Hekmo
  */
-export function extractHealthTerms(text: string): string[] {
-  const healthTerms = [
-    "نوم", "صحة", "تمارين", "رياضة", "غذاء", "تغذية", "وزن",
-    "ضغط", "سكر", "قلب", "كولسترول", "فيتامين", "بروتين",
-    "كربوهيدرات", "دهون", "سعرات", "حرارية", "ماء", "جفاف",
-    "توتر", "قلق", "اكتئاب", "صداع", "ألم", "مرض", "علاج",
-    "دواء", "مكمل", "صيام", "رمضان", "صلاة", "استشفاء",
+export function extractBusinessTerms(text: string): string[] {
+  const businessTerms = [
+    "سعر", "طلب", "حجز", "موعد", "عنوان", "موقع", "توصيل",
+    "دفع", "فاتورة", "خصم", "عرض", "منتج", "خدمة", "شكوى",
+    "استفسار", "مساعدة", "رد", "تأكيد", "إلغاء", "تعديل",
+    "قائمة", "menu", "مطعم", "كافي", "صالون", "عيادة", "محل",
+    "ساعات", "دوام", "مفتوح", "مغلق", "حساب", "تسجيل",
   ];
 
   const normalized = normalizeArabic(text.toLowerCase());
-  return healthTerms.filter((term) => normalized.includes(term));
+  return businessTerms.filter((term) => normalized.includes(term));
 }
+
+// Legacy alias for backward compatibility
+export const extractHealthTerms = extractBusinessTerms;
 
 /**
  * Enhance Arabic prompt for better AI understanding
  */
 export function enhanceArabicPrompt(text: string): string {
   const isSaudi = isSaudiDialect(text);
-  const healthTerms = extractHealthTerms(text);
+  const businessTerms = extractBusinessTerms(text);
   
   let enhanced = text;
   
@@ -175,9 +178,9 @@ export function enhanceArabicPrompt(text: string): string {
     enhanced = `[Saudi Arabic dialect] ${enhanced}`;
   }
   
-  // Add health context if relevant terms found
-  if (healthTerms.length > 0) {
-    enhanced = `[Health context: ${healthTerms.join(", ")}] ${enhanced}`;
+  // Add business context if relevant terms found
+  if (businessTerms.length > 0) {
+    enhanced = `[Business context: ${businessTerms.join(", ")}] ${enhanced}`;
   }
   
   return enhanced;
