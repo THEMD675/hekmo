@@ -1,4 +1,7 @@
 import { auth } from "@/app/(auth)/auth";
+import { db } from "@/lib/db/queries";
+import { chat, message } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 import { generateUUID } from "@/lib/utils";
 
 export async function POST(request: Request) {
@@ -15,34 +18,50 @@ export async function POST(request: Request) {
       return Response.json({ error: "معرف المحادثة مطلوب" }, { status: 400 });
     }
 
-    // In production, fetch original chat from database
-    // const originalChat = await db.query.chats.findFirst({
-    //   where: eq(chats.id, chatId),
-    // });
+    // Fetch original chat
+    const [originalChat] = await db
+      .select()
+      .from(chat)
+      .where(eq(chat.id, chatId))
+      .limit(1);
 
-    // For now, just create a new chat ID
+    if (!originalChat) {
+      return Response.json({ error: "المحادثة غير موجودة" }, { status: 404 });
+    }
+
+    // Verify ownership
+    if (originalChat.userId !== session.user.id) {
+      return Response.json({ error: "غير مصرح" }, { status: 403 });
+    }
+
+    // Create new chat ID
     const newChatId = generateUUID();
 
-    // In production:
-    // 1. Duplicate the chat record
-    // await db.insert(chats).values({
-    //   id: newChatId,
-    //   userId: session.user.id,
-    //   title: `نسخة من: ${originalChat.title}`,
-    //   createdAt: new Date(),
-    // });
+    // Duplicate the chat record
+    await db.insert(chat).values({
+      id: newChatId,
+      userId: session.user.id,
+      title: `نسخة: ${originalChat.title}`,
+      createdAt: new Date(),
+      visibility: originalChat.visibility,
+    });
 
-    // 2. Duplicate all messages
-    // const messages = await db.query.messages.findMany({
-    //   where: eq(messages.chatId, chatId),
-    // });
-    // for (const msg of messages) {
-    //   await db.insert(messages).values({
-    //     ...msg,
-    //     id: generateUUID(),
-    //     chatId: newChatId,
-    //   });
-    // }
+    // Duplicate all messages
+    const originalMessages = await db
+      .select()
+      .from(message)
+      .where(eq(message.chatId, chatId));
+
+    for (const msg of originalMessages) {
+      await db.insert(message).values({
+        id: generateUUID(),
+        chatId: newChatId,
+        role: msg.role,
+        parts: msg.parts,
+        attachments: msg.attachments,
+        createdAt: msg.createdAt,
+      });
+    }
 
     return Response.json({
       success: true,

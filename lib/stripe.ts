@@ -130,9 +130,42 @@ export async function createPortalSession({
 
 // Get subscription tier by user ID
 export async function getUserSubscriptionTier(userId: string): Promise<SubscriptionTier> {
-  // In production, query database for user's subscription
-  // For now, return free tier
-  return "free";
+  try {
+    // Check if user has a business with an active subscription
+    const { db } = await import("@/lib/db/queries");
+    const { business } = await import("@/lib/db/schema");
+    const { eq } = await import("drizzle-orm");
+
+    const [userBusiness] = await db
+      .select()
+      .from(business)
+      .where(eq(business.userId, userId))
+      .limit(1);
+
+    if (!userBusiness) {
+      return "free";
+    }
+
+    // Map business subscription to user tier
+    if (userBusiness.subscriptionStatus === "active") {
+      if (userBusiness.subscriptionPlan === "enterprise") {
+        return "enterprise";
+      }
+      if (userBusiness.subscriptionPlan === "business" || userBusiness.subscriptionPlan === "starter") {
+        return "pro";
+      }
+    }
+
+    // Trial users get pro features
+    if (userBusiness.subscriptionStatus === "trial") {
+      return "pro";
+    }
+
+    return "free";
+  } catch (error) {
+    console.error("[Stripe] Failed to get subscription tier:", error);
+    return "free";
+  }
 }
 
 // Check if user has access to a feature

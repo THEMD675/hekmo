@@ -1,7 +1,6 @@
 import { eq } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/postgres-js";
-import postgres from "postgres";
 import { auth } from "@/app/(auth)/auth";
+import { db } from "@/lib/db/queries";
 import { user } from "@/lib/db/schema";
 
 export async function GET() {
@@ -12,29 +11,11 @@ export async function GET() {
   }
 
   try {
-    const connectionString = process.env.POSTGRES_URL;
-    if (!connectionString) {
-      // Return session data if no database
-      return Response.json({
-        id: session.user.id,
-        email: session.user.email,
-        name: session.user.name,
-        image: session.user.image,
-        tier: "free",
-        createdAt: new Date().toISOString(),
-      });
-    }
-
-    const client = postgres(connectionString);
-    const db = drizzle(client);
-
     const [userData] = await db
       .select()
       .from(user)
       .where(eq(user.id, session.user.id))
       .limit(1);
-
-    await client.end();
 
     if (!userData) {
       return Response.json({ error: "المستخدم غير موجود" }, { status: 404 });
@@ -43,8 +24,8 @@ export async function GET() {
     return Response.json({
       id: userData.id,
       email: userData.email,
-      name: session.user.name,
-      image: session.user.image,
+      name: userData.name,
+      image: userData.image,
       tier: "free",
     });
   } catch (error) {
@@ -63,12 +44,12 @@ export async function PATCH(request: Request) {
   try {
     const updates = await request.json();
 
-    // Validate updates
-    const allowedFields = ["name"];
+    // Validate updates - only allow name and image
+    const allowedFields = ["name", "image"];
     const filteredUpdates: Record<string, string> = {};
 
     for (const key of allowedFields) {
-      if (key in updates) {
+      if (key in updates && updates[key] !== undefined) {
         filteredUpdates[key] = updates[key];
       }
     }
@@ -77,8 +58,11 @@ export async function PATCH(request: Request) {
       return Response.json({ error: "لا توجد تحديثات صالحة" }, { status: 400 });
     }
 
-    // In production, update the database
-    // await db.update(user).set(filteredUpdates).where(eq(user.id, session.user.id));
+    // Update the database
+    await db
+      .update(user)
+      .set(filteredUpdates)
+      .where(eq(user.id, session.user.id));
 
     return Response.json({
       success: true,
