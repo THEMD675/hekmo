@@ -24,11 +24,14 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const validation = pushSubscriptionSchema.safeParse(body);
-    
+
     if (!validation.success) {
-      return Response.json({ 
-        error: "بيانات الاشتراك غير صالحة" 
-      }, { status: 400 });
+      return Response.json(
+        {
+          error: "بيانات الاشتراك غير صالحة",
+        },
+        { status: 400 }
+      );
     }
 
     const subscription = validation.data as PushSubscriptionJSON;

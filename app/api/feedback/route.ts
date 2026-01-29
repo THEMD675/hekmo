@@ -26,12 +26,15 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const validation = feedbackSchema.safeParse(body);
-    
+
     if (!validation.success) {
-      return Response.json({ 
-        error: "بيانات غير صالحة", 
-        details: validation.error.flatten() 
-      }, { status: 400 });
+      return Response.json(
+        {
+          error: "بيانات غير صالحة",
+          details: validation.error.flatten(),
+        },
+        { status: 400 }
+      );
     }
 
     const { messageId, rating, feedbackType, comment } = validation.data;
