@@ -1,25 +1,34 @@
 /**
  * ╔═══════════════════════════════════════════════════════════════════════════╗
- * ║                    HEKMO DESIGN SYSTEM - LOCKED v3.0                      ║
+ * ║                    HEKMO DESIGN SYSTEM - LOCKED v4.0                      ║
  * ╠═══════════════════════════════════════════════════════════════════════════╣
- * ║ VISION: Minimal colors, warm stone vibes, Apple + ChatGPT feel            ║
- * ║ Enterprise-level design tokens based on deep research.                    ║
+ * ║ FOUNDATION: Material Design 3 (m3.material.io)                            ║
+ * ║ PALETTE: Warm Stone + Apple/ChatGPT elegance                              ║
+ * ║ MODE: Light theme default (M3 Surface Tone 98)                            ║
  * ╚═══════════════════════════════════════════════════════════════════════════╝
  * 
- * DESIGN DIRECTION:
- * - Minimal, not vibrant
- * - Warm stone/beige tones
- * - Apple Liquid Glass elegance
+ * M3 SPECIFICATIONS IMPLEMENTED:
+ * - Surface: Tone 98 for light theme (Feb 2023 update)
+ * - Elevation: z1-z5 shadow values from material-components-web
+ * - Color roles: Primary, Secondary, Tertiary, Surface containers
+ * - State layers: hover (8%), focus (12%), pressed (12%), dragged (16%)
+ * - Button types: Filled, Tonal, Outlined, Text
+ * - Card types: Elevated, Filled, Outlined
+ * 
+ * PALETTE DIRECTION:
+ * - Warm stone/beige (not cold gray)
+ * - Apple-like elegance
  * - ChatGPT earth-tone warmth
  * - Premium, sophisticated, timeless
  * 
- * RESEARCH SOURCES:
- * - Apple Human Interface Guidelines 2025 - Liquid Glass
- * - ChatGPT UI Palettes - Warm neutrals
- * - Arabic Font Comparison 2025 - Cairo rated 10/10 readability
- * - Minimal UI Premium Palettes - Soft elegance
+ * SOURCES:
+ * - m3.material.io/styles/color/system/overview
+ * - m3.material.io/styles/elevation/overview
+ * - m3.material.io/components/cards/guidelines
+ * - m3.material.io/components/buttons/guidelines
+ * - studioncreations.com/blog/material-design-3-box-shadow-css-values
  * 
- * @version 3.0.0
+ * @version 4.0.0
  * @locked true
  * @lastUpdated 2026-01-29
  */
@@ -223,28 +232,46 @@ export const COLORS = {
 } as const;
 
 // ============================================================================
-// ELEVATION - LOCKED (Material 3)
+// ELEVATION - LOCKED (Material 3 Official Values)
+// Source: material-components-web GitHub + studioncreations.com
 // ============================================================================
 
 export const ELEVATION = {
   /**
-   * ELEVATION DECISION (LOCKED)
+   * M3 ELEVATION LEVELS (LOCKED)
    * 
-   * Use elevated cards for:
-   * - Suggestion cards (+72% engagement)
-   * - Dialogs/modals
-   * - Dropdown menus
-   * - Floating action buttons
+   * Official CSS box-shadow values from Material Components Web
    * 
-   * Light mode uses tonal surfaces + shadows
-   * Dark mode uses tonal surfaces only
+   * Usage:
+   * - Level 0: Flat surfaces (no elevation)
+   * - Level 1: Cards at rest, app bars
+   * - Level 2: Cards on hover, raised buttons
+   * - Level 3: FAB at rest, navigation drawers
+   * - Level 4: Dialogs, modals
+   * - Level 5: Dialogs on hover
    */
   level0: "none",
-  level1: "0px 1px 2px 0px rgba(0,0,0,0.1), 0px 1px 3px 1px rgba(0,0,0,0.06)",
-  level2: "0px 1px 2px 0px rgba(0,0,0,0.1), 0px 2px 6px 2px rgba(0,0,0,0.06)",
-  level3: "0px 1px 3px 0px rgba(0,0,0,0.1), 0px 4px 8px 3px rgba(0,0,0,0.06)",
-  level4: "0px 2px 3px 0px rgba(0,0,0,0.1), 0px 6px 10px 4px rgba(0,0,0,0.06)",
-  level5: "0px 4px 4px 0px rgba(0,0,0,0.1), 0px 8px 12px 6px rgba(0,0,0,0.06)",
+  level1: "0 1px 4px 0 rgba(0, 0, 0, 0.12)",
+  level2: "0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 6px 10px 0 rgba(0, 0, 0, 0.12)",
+  level3: "0 11px 7px 0 rgba(0, 0, 0, 0.10), 0 13px 25px 0 rgba(0, 0, 0, 0.12)",
+  level4: "0 14px 12px 0 rgba(0, 0, 0, 0.08), 0 20px 40px 0 rgba(0, 0, 0, 0.12)",
+  level5: "0 17px 17px 0 rgba(0, 0, 0, 0.06), 0 27px 55px 0 rgba(0, 0, 0, 0.12)",
+  
+  /**
+   * M3 CARD ELEVATION PATTERN (LOCKED)
+   * 
+   * Elevated cards:
+   * - Rest: level1
+   * - Hover: level2
+   * - Pressed: level1
+   * 
+   * This creates the "lift on hover" effect users expect
+   */
+  card: {
+    rest: "level1",
+    hover: "level2",
+    pressed: "level1",
+  },
 } as const;
 
 // ============================================================================
