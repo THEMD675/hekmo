@@ -153,16 +153,9 @@ export function cleanArabicText(text: string): string {
   );
 }
 
-/**
- * Format number in Arabic (Eastern Arabic numerals)
- */
-export function toArabicNumerals(num: number | string): string {
-  const arabicNumerals = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
-  return String(num).replace(
-    /[0-9]/g,
-    (d) => arabicNumerals[Number.parseInt(d)]
-  );
-}
+// Import and re-export from format module to avoid duplication
+import { toArabicNumerals as _toArabicNumerals } from "@/lib/utils/format";
+export const toArabicNumerals = _toArabicNumerals;
 
 /**
  * Format date in Arabic

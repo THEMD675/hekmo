@@ -82,7 +82,16 @@ export async function POST(request: Request) {
       return new ChatSDKError("unauthorized:chat").toResponse();
     }
 
-    const userType: UserType = session.user.type;
+    // Determine user type - check subscription for non-guests
+    let userType: UserType = session.user.type;
+    if (userType === "regular") {
+      // Check if user has an active subscription
+      const { getUserSubscriptionTier } = await import("@/lib/stripe");
+      const tier = await getUserSubscriptionTier(session.user.id);
+      if (tier === "pro" || tier === "enterprise") {
+        userType = "pro";
+      }
+    }
 
     const messageCount = await getMessageCountByUserId({
       id: session.user.id,

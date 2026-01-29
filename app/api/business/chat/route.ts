@@ -96,7 +96,10 @@ export async function POST(request: NextRequest) {
       businessId,
     });
   } catch (error) {
-    console.error("[Business Chat] Error:", error);
+    const { captureException } = await import("@/lib/sentry");
+    captureException(error instanceof Error ? error : new Error(String(error)), {
+      tags: { component: "business-chat" },
+    });
     return NextResponse.json(
       { error: "Failed to generate response" },
       { status: 500 }
