@@ -47,16 +47,18 @@ export function PWAInstallPrompt() {
     window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
 
     // For iOS, show the prompt after a delay
+    let timer: ReturnType<typeof setTimeout> | undefined;
     if (ios && !standalone) {
-      const timer = setTimeout(() => setIsVisible(true), 3000);
-      return () => clearTimeout(timer);
+      timer = setTimeout(() => setIsVisible(true), 3000);
     }
 
+    // Cleanup both event listener and timer
     return () => {
       window.removeEventListener(
         "beforeinstallprompt",
         handleBeforeInstallPrompt
       );
+      if (timer) clearTimeout(timer);
     };
   }, []);
 
