@@ -52,6 +52,11 @@ export default function OnboardingPage() {
       const data = await response.json();
 
       if (!response.ok) {
+        // If auth required, redirect to login
+        if (response.status === 401) {
+          window.location.href = `/api/auth/guest?redirectUrl=${encodeURIComponent(window.location.href)}`;
+          return;
+        }
         throw new Error(data.error || "فشل إنشاء النشاط");
       }
 

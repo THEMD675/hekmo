@@ -58,6 +58,12 @@ export default function DashboardPage() {
 
       const response = await fetch(`/api/business/${businessId}`);
       
+      if (response.status === 401) {
+        // Auth required, redirect to guest login
+        window.location.href = `/api/auth/guest?redirectUrl=${encodeURIComponent(window.location.href)}`;
+        return;
+      }
+
       if (response.status === 404) {
         // Business not found, clear localStorage and redirect
         localStorage.removeItem("hekmo_business_id");
