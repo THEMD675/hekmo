@@ -169,7 +169,7 @@ export function getAllCircuitStatuses(): Record<string, CircuitBreakerState> {
 export const CircuitBreakers = {
   OPENAI: "openai",
   AI_COACH: "ai-coach",
-  WHOOP_API: "whoop-api",
+  WHATSAPP_API: "whatsapp-api",
   STRIPE: "stripe",
   VOICE_BRIEF: "voice-brief",
   SMART_INTERVENTIONS: "smart-interventions",

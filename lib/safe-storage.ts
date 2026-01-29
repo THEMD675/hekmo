@@ -219,10 +219,10 @@ export const safeRemoveItem = (key: string): void => {
 const clearOldItems = (): void => {
   const keysToCheck = [
     "morning_brief_cache",
-    "recovery_coach_recommendations",
+    "ai_coach_recommendations",
     "saved_recommendations_local",
-    "whoop_data_cache",
-    "health_insights_cache",
+    "business_data_cache",
+    "conversation_insights_cache",
   ];
 
   for (const key of keysToCheck) {
