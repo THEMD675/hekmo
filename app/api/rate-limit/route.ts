@@ -10,80 +10,90 @@ const LIMITS = {
 };
 
 export async function GET() {
-  const session = await auth();
+  try {
+    const session = await auth();
 
-  if (!session?.user?.id) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
-  }
+    if (!session?.user?.id) {
+      return Response.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-  const userId = session.user.id;
-  const tier = "free"; // Get from user profile
+    const userId = session.user.id;
+    const tier = "free"; // Get from user profile
 
-  const limit = LIMITS[tier as keyof typeof LIMITS] || LIMITS.free;
+    const limit = LIMITS[tier as keyof typeof LIMITS] || LIMITS.free;
 
-  // Check if unlimited
-  if (limit.requests === -1) {
+    // Check if unlimited
+    if (limit.requests === -1) {
+      return Response.json({
+        remaining: -1,
+        limit: -1,
+        reset: 0,
+        unlimited: true,
+      });
+    }
+
+    const now = Date.now();
+    const userLimit = rateLimits.get(userId);
+
+    // Initialize or reset if window expired
+    if (!userLimit || userLimit.resetTime < now) {
+      const resetTime = now + limit.windowMs;
+      rateLimits.set(userId, { count: 0, resetTime });
+      return Response.json({
+        remaining: limit.requests,
+        limit: limit.requests,
+        reset: Math.floor(resetTime / 1000),
+      });
+    }
+
+    const remaining = Math.max(0, limit.requests - userLimit.count);
+
     return Response.json({
-      remaining: -1,
-      limit: -1,
-      reset: 0,
-      unlimited: true,
-    });
-  }
-
-  const now = Date.now();
-  const userLimit = rateLimits.get(userId);
-
-  // Initialize or reset if window expired
-  if (!userLimit || userLimit.resetTime < now) {
-    const resetTime = now + limit.windowMs;
-    rateLimits.set(userId, { count: 0, resetTime });
-    return Response.json({
-      remaining: limit.requests,
+      remaining,
       limit: limit.requests,
-      reset: Math.floor(resetTime / 1000),
+      reset: Math.floor(userLimit.resetTime / 1000),
     });
+  } catch (error) {
+    console.error("[Rate Limit] GET error:", error);
+    return Response.json({ error: "Internal server error" }, { status: 500 });
   }
-
-  const remaining = Math.max(0, limit.requests - userLimit.count);
-
-  return Response.json({
-    remaining,
-    limit: limit.requests,
-    reset: Math.floor(userLimit.resetTime / 1000),
-  });
 }
 
 // Increment rate limit count (called after each request)
 export async function POST() {
-  const session = await auth();
+  try {
+    const session = await auth();
 
-  if (!session?.user?.id) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
-  }
+    if (!session?.user?.id) {
+      return Response.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-  const userId = session.user.id;
-  const tier = "free";
+    const userId = session.user.id;
+    const tier = "free";
 
-  const limit = LIMITS[tier as keyof typeof LIMITS] || LIMITS.free;
+    const limit = LIMITS[tier as keyof typeof LIMITS] || LIMITS.free;
 
-  if (limit.requests === -1) {
+    if (limit.requests === -1) {
+      return Response.json({ success: true });
+    }
+
+    const now = Date.now();
+    const userLimit = rateLimits.get(userId);
+
+    if (!userLimit || userLimit.resetTime < now) {
+      rateLimits.set(userId, {
+        count: 1,
+        resetTime: now + limit.windowMs,
+      });
+    } else {
+      userLimit.count += 1;
+    }
+
     return Response.json({ success: true });
+  } catch (error) {
+    console.error("[Rate Limit] POST error:", error);
+    return Response.json({ error: "Internal server error" }, { status: 500 });
   }
-
-  const now = Date.now();
-  const userLimit = rateLimits.get(userId);
-
-  if (!userLimit || userLimit.resetTime < now) {
-    rateLimits.set(userId, {
-      count: 1,
-      resetTime: now + limit.windowMs,
-    });
-  } else {
-    userLimit.count += 1;
-  }
-
-  return Response.json({ success: true });
 }
 
 // Check if rate limited (middleware helper)
