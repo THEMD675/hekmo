@@ -5,6 +5,19 @@ import { MemoryClient } from "mem0ai";
 
 const MEM0_API_KEY = process.env.MEM0_API_KEY;
 
+// Mem0 API response types
+interface Mem0AddResult {
+  id?: string;
+}
+
+interface Mem0SearchResult {
+  id?: string;
+  memory?: string;
+  content?: string;
+  metadata?: { category?: string };
+  created_at?: string;
+}
+
 // Initialize Mem0 client
 function getMemoryClient() {
   if (!MEM0_API_KEY) {
@@ -47,7 +60,7 @@ export async function addMemory({
     // Handle both array and object response types
     const resultId = Array.isArray(result)
       ? result[0]?.id || crypto.randomUUID()
-      : (result as any).id || crypto.randomUUID();
+      : (result as Mem0AddResult).id || crypto.randomUUID();
 
     return {
       id: resultId,
@@ -83,7 +96,7 @@ export async function searchMemories({
       limit,
     });
 
-    return (results as any[]).map((r) => ({
+    return (results as Mem0SearchResult[]).map((r) => ({
       id: r.id || crypto.randomUUID(),
       content: r.memory || r.content || "",
       category: r.metadata?.category || "general",
@@ -110,7 +123,7 @@ export async function getAllMemories({
   try {
     const results = await client.getAll({ user_id: userId });
 
-    return (results as any[]).map((r) => ({
+    return (results as Mem0SearchResult[]).map((r) => ({
       id: r.id || crypto.randomUUID(),
       content: r.memory || r.content || "",
       category: r.metadata?.category || "general",

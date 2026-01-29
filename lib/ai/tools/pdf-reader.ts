@@ -14,8 +14,11 @@ export const pdfReaderTool = tool({
   execute: async ({ fileUrl, pages }) => {
     try {
       // Dynamically import pdf-parse (Node.js only)
+      // Dynamic import with ESM/CJS compatibility
+      type PDFData = { text: string; numpages: number; info?: { Title?: string; Author?: string; CreationDate?: string } };
       const pdfParseModule = await import("pdf-parse");
-      const pdfParse = (pdfParseModule as any).default || pdfParseModule;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const pdfParse = (pdfParseModule as Record<string, unknown>).default as (buffer: Buffer) => Promise<PDFData> || pdfParseModule;
 
       // Fetch the PDF
       const response = await fetch(fileUrl);

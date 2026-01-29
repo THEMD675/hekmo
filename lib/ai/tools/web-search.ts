@@ -1,6 +1,20 @@
 import { tool } from "ai";
 import { z } from "zod";
 
+// API response types
+interface TavilyResult {
+  title: string;
+  url: string;
+  content: string;
+  score?: number;
+}
+
+interface SerperResult {
+  title: string;
+  link: string;
+  snippet: string;
+}
+
 export const webSearchTool = tool({
   description:
     "Search the web for real-time information. Use this when the user asks about current events, news, recent information, or anything that requires up-to-date data.",
@@ -34,7 +48,7 @@ export const webSearchTool = tool({
             success: true,
             query,
             answer: data.answer,
-            results: (data.results || []).map((r: any) => ({
+            results: (data.results || []).map((r: TavilyResult) => ({
               title: r.title,
               url: r.url,
               snippet: r.content,
@@ -66,7 +80,7 @@ export const webSearchTool = tool({
           return {
             success: true,
             query,
-            results: (data.organic || []).slice(0, 5).map((r: any) => ({
+            results: (data.organic || []).slice(0, 5).map((r: SerperResult) => ({
               title: r.title,
               url: r.link,
               snippet: r.snippet,

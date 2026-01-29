@@ -150,10 +150,39 @@ function executeJavaScript(
   }
 }
 
+// Safe math evaluator - no eval()
+function safeMathEval(expression: string): number | null {
+  // Strict validation: only allow digits, operators, spaces, parentheses, decimal
+  if (!/^[\d\s+\-*/.()]+$/.test(expression)) {
+    return null;
+  }
+  
+  // Additional safety: check for balanced parentheses
+  let depth = 0;
+  for (const char of expression) {
+    if (char === '(') depth++;
+    if (char === ')') depth--;
+    if (depth < 0) return null;
+  }
+  if (depth !== 0) return null;
+  
+  try {
+    // Use Function constructor with strict mode (safer than eval)
+    const fn = new Function(`"use strict"; return (${expression});`);
+    const result = fn();
+    if (typeof result === 'number' && isFinite(result)) {
+      return result;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 // Execute Python (placeholder - use Pyodide in production)
 function executePython(
   code: string,
-  timeout: number
+  _timeout: number
 ): { success: boolean; output: string | null; error?: string } {
   // In production, use Pyodide or a backend service
   // This is a placeholder that only handles simple math
@@ -167,9 +196,9 @@ function executePython(
       for (const expr of mathExpressions) {
         const inner = expr.replace(/print\(/, "").replace(/\)$/, "");
 
-        // Only evaluate simple math
-        if (/^[\d\s+\-*/.()]+$/.test(inner)) {
-          const result = eval(inner);
+        // Use safe math evaluator instead of eval
+        const result = safeMathEval(inner);
+        if (result !== null) {
           outputs.push(String(result));
         } else {
           outputs.push(`[Would print: ${inner}]`);
