@@ -44,7 +44,9 @@ export const authConfig: NextAuthConfig = {
       const isOnChat = nextUrl.pathname.startsWith("/chat");
       const isOnRegister = nextUrl.pathname.startsWith("/register");
       const isOnLogin = nextUrl.pathname.startsWith("/login");
-      const isOnPublic = ["/", "/pricing", "/privacy", "/terms"].includes(nextUrl.pathname);
+      const isOnPublic = ["/", "/pricing", "/privacy", "/terms", "/dashboard", "/onboarding"].includes(nextUrl.pathname) || 
+        nextUrl.pathname.startsWith("/api/whatsapp") ||
+        nextUrl.pathname.startsWith("/api/stripe");
 
       if (isOnPublic) {
         return true;
