@@ -1,3 +1,4 @@
+"use client";
 import { memo } from "react";
 import { initialArtifactData, useArtifact } from "@/hooks/use-artifact";
 import { CrossIcon } from "./icons";

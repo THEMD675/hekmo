@@ -1,3 +1,4 @@
+"use client";
 import type { UseChatHelpers } from "@ai-sdk/react";
 import type { DataUIPart } from "ai";
 import type { ComponentType, Dispatch, ReactNode, SetStateAction } from "react";

@@ -1,3 +1,4 @@
+"use client";
 import { type Dispatch, memo, type SetStateAction, useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
