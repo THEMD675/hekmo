@@ -1,4 +1,13 @@
+import { z } from "zod";
 import { auth } from "@/app/(auth)/auth";
+
+// Feedback validation schema
+const feedbackSchema = z.object({
+  messageId: z.string().uuid().optional(),
+  rating: z.number().min(1).max(5).optional(),
+  feedbackType: z.enum(["positive", "negative", "suggestion", "bug", "other"]),
+  comment: z.string().max(1000).optional(),
+});
 
 // Feedback storage (use database in production)
 const feedbackStore: Array<{
@@ -15,11 +24,17 @@ export async function POST(request: Request) {
   const session = await auth();
 
   try {
-    const { messageId, rating, feedbackType, comment } = await request.json();
-
-    if (!feedbackType) {
-      return Response.json({ error: "نوع الملاحظة مطلوب" }, { status: 400 });
+    const body = await request.json();
+    const validation = feedbackSchema.safeParse(body);
+    
+    if (!validation.success) {
+      return Response.json({ 
+        error: "بيانات غير صالحة", 
+        details: validation.error.flatten() 
+      }, { status: 400 });
     }
+
+    const { messageId, rating, feedbackType, comment } = validation.data;
 
     const feedback = {
       id: crypto.randomUUID(),
