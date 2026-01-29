@@ -35,13 +35,13 @@ export type ToolHeaderProps = {
 
 const getStatusBadge = (status: ToolUIPart["state"]) => {
   const labels: Record<ToolUIPart["state"], string> = {
-    "input-streaming": "Pending",
-    "input-available": "Running",
-    "approval-requested": "Pending",
-    "approval-responded": "Approved",
-    "output-available": "Completed",
-    "output-error": "Error",
-    "output-denied": "Denied",
+    "input-streaming": "قيد الانتظار",
+    "input-available": "جاري التنفيذ",
+    "approval-requested": "بانتظار الموافقة",
+    "approval-responded": "تمت الموافقة",
+    "output-available": "مكتمل",
+    "output-error": "خطأ",
+    "output-denied": "مرفوض",
   };
 
   const icons: Record<ToolUIPart["state"], ReactNode> = {
@@ -134,7 +134,7 @@ export const ToolOutput = ({
   return (
     <div className={cn("space-y-2 p-4", className)} {...props}>
       <h4 className="font-medium text-muted-foreground text-xs uppercase tracking-wide">
-        {errorText ? "Error" : "Result"}
+        {errorText ? "خطأ" : "النتيجة"}
       </h4>
       <div
         className={cn(
