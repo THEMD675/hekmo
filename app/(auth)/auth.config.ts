@@ -41,21 +41,28 @@ export const authConfig: NextAuthConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnChat = nextUrl.pathname.startsWith("/chat");
-      const isOnRegister = nextUrl.pathname.startsWith("/register");
-      const isOnLogin = nextUrl.pathname.startsWith("/login");
-      const isOnPublic = ["/", "/pricing", "/privacy", "/terms", "/dashboard", "/onboarding"].includes(nextUrl.pathname) || 
-        nextUrl.pathname.startsWith("/api/whatsapp") ||
-        nextUrl.pathname.startsWith("/api/stripe");
-
-      if (isOnPublic) {
+      const pathname = nextUrl.pathname;
+      
+      // Public routes - no auth required
+      const publicPaths = ["/", "/pricing", "/privacy", "/terms"];
+      const publicPrefixes = ["/dashboard", "/onboarding", "/api/whatsapp", "/api/stripe", "/api/business"];
+      
+      const isPublicPath = publicPaths.includes(pathname);
+      const isPublicPrefix = publicPrefixes.some(prefix => pathname.startsWith(prefix));
+      
+      if (isPublicPath || isPublicPrefix) {
         return true;
       }
 
+      // Redirect logged-in users away from auth pages
+      const isOnRegister = pathname.startsWith("/register");
+      const isOnLogin = pathname.startsWith("/login");
       if (isLoggedIn && (isOnLogin || isOnRegister)) {
         return Response.redirect(new URL("/", nextUrl as unknown as URL));
       }
 
+      // Protect chat routes
+      const isOnChat = pathname.startsWith("/chat");
       if (isOnChat && !isLoggedIn) {
         return false;
       }
