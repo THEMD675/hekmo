@@ -141,13 +141,13 @@ const PurePreviewMessage = ({
                       className={cn({
                         "wrap-break-word w-fit rounded-2xl px-3 py-2 text-right text-white":
                           message.role === "user",
-                        "bg-transparent px-0 py-0 text-left":
+                        "bg-transparent px-0 py-0 text-right":
                           message.role === "assistant",
                       })}
                       data-testid="message-content"
                       style={
                         message.role === "user"
-                          ? { backgroundColor: "hsl(160 84% 39%)" }
+                          ? { backgroundColor: "hsl(30 20% 35%)" } // Warm stone
                           : undefined
                       }
                     >

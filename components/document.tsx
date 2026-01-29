@@ -76,7 +76,7 @@ function PureDocumentToolResult({
           <MessageIcon />
         ) : null}
       </div>
-      <div className="text-left">
+      <div className="text-right">
         {`${getActionText(type, "past")} "${result.title}"`}
       </div>
     </button>
@@ -140,7 +140,7 @@ function PureDocumentToolCall({
           ) : null}
         </div>
 
-        <div className="text-left">
+        <div className="text-right">
           {`${getActionText(type, "present")} ${
             type === "create" && "title" in args && args.title
               ? `"${args.title}"`

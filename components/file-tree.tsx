@@ -80,7 +80,7 @@ function TreeNode({
     <div>
       <button
         className={cn(
-          "flex w-full items-center gap-1 py-1 px-2 rounded hover:bg-muted/50 transition-colors text-left",
+          "flex w-full items-center gap-1 py-1 px-2 rounded hover:bg-muted/50 transition-colors text-right",
           "focus:outline-none focus:ring-1 focus:ring-primary"
         )}
         onClick={handleClick}

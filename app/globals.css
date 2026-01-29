@@ -242,6 +242,37 @@
   html {
     overflow-x: hidden;
   }
+  
+  /* RTL Arabic-first styling */
+  html[dir="rtl"] {
+    text-align: right;
+  }
+  
+  html[dir="rtl"] p,
+  html[dir="rtl"] li,
+  html[dir="rtl"] h1,
+  html[dir="rtl"] h2,
+  html[dir="rtl"] h3,
+  html[dir="rtl"] h4,
+  html[dir="rtl"] h5,
+  html[dir="rtl"] h6,
+  html[dir="rtl"] span,
+  html[dir="rtl"] div {
+    text-align: right;
+  }
+  
+  /* Prose/markdown content RTL */
+  html[dir="rtl"] .prose {
+    text-align: right;
+    direction: rtl;
+  }
+  
+  /* Code blocks stay LTR */
+  html[dir="rtl"] pre,
+  html[dir="rtl"] code {
+    direction: ltr;
+    text-align: left;
+  }
 }
 
 .skeleton {
