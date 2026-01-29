@@ -2,50 +2,117 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 type Step = "business" | "whatsapp" | "knowledge" | "done";
+
+interface BusinessData {
+  id?: string;
+  name: string;
+  nameAr?: string;
+  type: string;
+  workingHours?: string;
+  phone?: string;
+}
 
 export default function OnboardingPage() {
   const router = useRouter();
   const [step, setStep] = useState<Step>("business");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [business, setBusiness] = useState<BusinessData | null>(null);
   
   // Form state
   const [businessName, setBusinessName] = useState("");
   const [businessType, setBusinessType] = useState("restaurant");
   const [workingHours, setWorkingHours] = useState("");
   const [phone, setPhone] = useState("");
+  
+  // Knowledge state
+  const [knowledgeItems, setKnowledgeItems] = useState<{ type: string; title: string; content: string }[]>([]);
 
   const handleBusinessSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
     
-    // TODO: Save to database via API
-    await new Promise(r => setTimeout(r, 1000)); // Simulate API call
-    
-    setLoading(false);
-    setStep("whatsapp");
+    try {
+      const response = await fetch("/api/business/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: businessName,
+          nameAr: businessName,
+          type: businessType,
+          workingHours,
+          workingHoursAr: workingHours,
+          phone,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "فشل إنشاء النشاط");
+      }
+
+      setBusiness(data.business);
+      // Store business ID in localStorage for dashboard
+      localStorage.setItem("hekmo_business_id", data.business.id);
+      setStep("whatsapp");
+      
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "حدث خطأ");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleWhatsAppConnect = async () => {
     setLoading(true);
     
-    // TODO: Redirect to WhatsApp Business API OAuth
-    await new Promise(r => setTimeout(r, 1500)); // Simulate connection
+    // For now, skip WhatsApp OAuth - this requires Meta Business setup
+    // Just move to next step
+    await new Promise(r => setTimeout(r, 500));
     
     setLoading(false);
     setStep("knowledge");
   };
 
   const handleKnowledgeSubmit = async () => {
+    if (!business?.id || knowledgeItems.length === 0) {
+      setStep("done");
+      return;
+    }
+
     setLoading(true);
-    
-    // TODO: Process uploaded files
-    await new Promise(r => setTimeout(r, 1000));
-    
-    setLoading(false);
-    setStep("done");
+    setError(null);
+
+    try {
+      // Upload each knowledge item
+      for (const item of knowledgeItems) {
+        const response = await fetch("/api/business/knowledge", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            businessId: business.id,
+            type: item.type,
+            title: item.title,
+            content: item.content,
+          }),
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.error || "فشل رفع المعلومات");
+        }
+      }
+
+      setStep("done");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "حدث خطأ");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleFinish = () => {
@@ -62,6 +129,13 @@ export default function OnboardingPage() {
           <ProgressDot active={step === "knowledge"} completed={step === "done"} />
           <ProgressDot active={step === "done"} completed={false} />
         </div>
+
+        {/* Error Banner */}
+        {error && (
+          <div className="mb-6 p-4 bg-red-500/20 border border-red-500 rounded-lg text-red-400">
+            {error}
+          </div>
+        )}
 
         {/* Step 1: Business Info */}
         {step === "business" && (
@@ -171,26 +245,38 @@ export default function OnboardingPage() {
           <div className="space-y-6">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold mb-2">تدريب الذكاء الاصطناعي</h1>
-              <p className="text-gray-400">ارفع معلومات نشاطك عشان Hekmo يرد على العملاء صح</p>
+              <p className="text-gray-400">أضف معلومات نشاطك عشان Hekmo يرد على العملاء صح</p>
             </div>
 
             <div className="space-y-4">
-              <UploadCard
+              <KnowledgeCard
                 title="قائمة الطعام / الخدمات"
-                description="PDF أو صورة"
+                description="اكتب القائمة هنا"
                 icon="📋"
+                type="menu"
+                onAdd={(content) => setKnowledgeItems([...knowledgeItems, { type: "menu", title: "قائمة الطعام", content }])}
               />
-              <UploadCard
+              <KnowledgeCard
                 title="الأسئلة الشائعة"
                 description="الأسئلة اللي يسألها العملاء كثير"
                 icon="❓"
+                type="faq"
+                onAdd={(content) => setKnowledgeItems([...knowledgeItems, { type: "faq", title: "الأسئلة الشائعة", content }])}
               />
-              <UploadCard
+              <KnowledgeCard
                 title="معلومات إضافية"
                 description="أي شي تبي Hekmo يعرفه"
                 icon="📝"
+                type="info"
+                onAdd={(content) => setKnowledgeItems([...knowledgeItems, { type: "info", title: "معلومات إضافية", content }])}
               />
             </div>
+
+            {knowledgeItems.length > 0 && (
+              <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-lg">
+                <p className="text-emerald-400">✓ تم إضافة {knowledgeItems.length} عنصر</p>
+              </div>
+            )}
 
             <div className="flex gap-4">
               <button
@@ -249,35 +335,73 @@ function ProgressDot({ active, completed }: { active: boolean; completed: boolea
   );
 }
 
-function UploadCard({ title, description, icon }: { title: string; description: string; icon: string }) {
-  const [uploaded, setUploaded] = useState(false);
+function KnowledgeCard({ 
+  title, 
+  description, 
+  icon, 
+  type,
+  onAdd 
+}: { 
+  title: string; 
+  description: string; 
+  icon: string;
+  type: string;
+  onAdd: (content: string) => void;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const [content, setContent] = useState("");
+  const [added, setAdded] = useState(false);
+
+  const handleAdd = () => {
+    if (content.trim()) {
+      onAdd(content);
+      setAdded(true);
+      setExpanded(false);
+    }
+  };
 
   return (
-    <label
-      className={`block p-4 border rounded-lg cursor-pointer transition ${
-        uploaded
+    <div
+      className={`p-4 border rounded-lg transition ${
+        added
           ? "border-emerald-500 bg-emerald-500/10"
-          : "border-gray-700 bg-gray-900 hover:border-gray-600"
+          : "border-gray-700 bg-gray-900"
       }`}
     >
-      <input
-        type="file"
-        className="hidden"
-        onChange={() => setUploaded(true)}
-        accept=".pdf,.jpg,.jpeg,.png,.txt,.docx"
-      />
-      <div className="flex items-center gap-4">
+      <div 
+        className="flex items-center gap-4 cursor-pointer"
+        onClick={() => !added && setExpanded(!expanded)}
+      >
         <div className="text-3xl">{icon}</div>
         <div className="flex-1">
           <p className="font-bold">{title}</p>
           <p className="text-sm text-gray-400">{description}</p>
         </div>
-        {uploaded ? (
+        {added ? (
           <span className="text-emerald-400">✓</span>
         ) : (
-          <span className="text-gray-500">رفع</span>
+          <span className="text-gray-500">{expanded ? "▼" : "+"}</span>
         )}
       </div>
-    </label>
+      
+      {expanded && !added && (
+        <div className="mt-4 space-y-3">
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder={`اكتب ${title} هنا...`}
+            rows={4}
+            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:border-emerald-500 focus:outline-none resize-none"
+          />
+          <button
+            onClick={handleAdd}
+            disabled={!content.trim()}
+            className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 rounded-lg font-bold transition"
+          >
+            إضافة
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
