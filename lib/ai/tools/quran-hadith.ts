@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const quranHadithTool = tool({
   description: "Search the Quran and Hadith for Islamic guidance. Use when users ask about Quranic verses, Hadith, or Islamic rulings related to health, fasting, etc.",
-  parameters: z.object({
+  inputSchema: z.object({
     query: z.string().describe("Search query (can be in Arabic or English)"),
     source: z.enum(["quran", "hadith", "both"]).default("both").describe("Which source to search"),
     limit: z.number().default(5).describe("Number of results to return"),

@@ -6,12 +6,12 @@ import { z } from "zod";
 
 export const codeSandboxTool = tool({
   description: "Execute code safely in a sandboxed environment. Supports Python and JavaScript. Use for calculations, data processing, or demonstrating code.",
-  parameters: z.object({
+  inputSchema: z.object({
     code: z.string().describe("The code to execute"),
     language: z.enum(["python", "javascript"]).describe("Programming language"),
     timeout: z.number().optional().default(5000).describe("Timeout in milliseconds"),
   }),
-  execute: async ({ code, language, timeout }: { code: string; language: "python" | "javascript"; timeout?: number }) => {
+  execute: async ({ code, language, timeout = 5000 }) => {
     try {
       // Validate code for safety
       const safetyCheck = validateCode(code, language);

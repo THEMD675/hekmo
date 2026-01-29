@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const youtubeSummarizerTool = tool({
   description: "Get information about a YouTube video including title, channel, and description. Use when users share a YouTube link or ask about a video.",
-  parameters: z.object({
+  inputSchema: z.object({
     url: z.string().describe("YouTube video URL (youtube.com or youtu.be)"),
     language: z.enum(["ar", "en"]).default("ar").describe("Language for response"),
   }),

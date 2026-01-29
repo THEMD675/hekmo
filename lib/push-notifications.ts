@@ -166,11 +166,11 @@ export function createHekmoNotification(notification: HekmoNotification): void {
       break;
     case "reminder":
       options.requireInteraction = true;
-      options.vibrate = [200, 100, 200];
+      (options as NotificationOptions & { vibrate?: number[] }).vibrate = [200, 100, 200];
       break;
     case "alert":
       options.requireInteraction = true;
-      options.vibrate = [200, 100, 200, 100, 200];
+      (options as NotificationOptions & { vibrate?: number[] }).vibrate = [200, 100, 200, 100, 200];
       break;
     default:
       break;

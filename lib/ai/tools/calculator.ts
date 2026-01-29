@@ -3,12 +3,12 @@ import { z } from "zod";
 
 export const calculatorTool = tool({
   description: "Perform mathematical calculations. Use this for any math operations, unit conversions, percentage calculations, BMI, calorie calculations, etc.",
-  parameters: z.object({
+  inputSchema: z.object({
     expression: z.string().describe("Mathematical expression to evaluate (e.g., '2 + 2', '15% of 200', 'sqrt(144)')"),
     type: z.enum(["basic", "bmi", "calories", "conversion"]).default("basic").describe("Type of calculation"),
     additionalParams: z.record(z.number()).optional().describe("Additional parameters for specific calculations (e.g., weight, height for BMI)"),
   }),
-  execute: async ({ expression, type, additionalParams }: { expression: string; type: "basic" | "bmi" | "calories" | "conversion"; additionalParams?: Record<string, number> }) => {
+  execute: async ({ expression, type, additionalParams }) => {
     try {
       if (type === "bmi" && additionalParams) {
         const weight = additionalParams.weight; // kg

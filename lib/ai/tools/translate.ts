@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const translateTool = tool({
   description: "Translate text between languages. Supports Arabic, English, and many other languages. Use when the user asks for translation or to convert text to another language.",
-  parameters: z.object({
+  inputSchema: z.object({
     text: z.string().describe("The text to translate"),
     from: z.string().describe("Source language code (e.g., 'ar' for Arabic, 'en' for English, 'auto' for auto-detect)"),
     to: z.string().describe("Target language code (e.g., 'ar' for Arabic, 'en' for English)"),

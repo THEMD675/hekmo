@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const webSearchTool = tool({
   description: "Search the web for real-time information. Use this when the user asks about current events, news, recent information, or anything that requires up-to-date data.",
-  parameters: z.object({
+  inputSchema: z.object({
     query: z.string().describe("The search query to look up"),
     language: z.enum(["ar", "en"]).default("ar").describe("Language for search results"),
   }),

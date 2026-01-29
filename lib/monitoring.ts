@@ -26,8 +26,8 @@ export function trackWebVitals(metric: {
 
   if (vitals.includes(metric.name)) {
     // Send to analytics
-    if (typeof window !== "undefined" && (window as { posthog?: { capture: (name: string, data: Record<string, unknown>) => void } }).posthog) {
-      (window as { posthog: { capture: (name: string, data: Record<string, unknown>) => void } }).posthog.capture("web_vitals", {
+    if (typeof window !== "undefined" && (window as unknown as { posthog?: { capture: (name: string, data: Record<string, unknown>) => void } }).posthog) {
+      (window as unknown as { posthog: { capture: (name: string, data: Record<string, unknown>) => void } }).posthog.capture("web_vitals", {
         metric_name: metric.name,
         metric_value: metric.value,
         metric_id: metric.id,
@@ -181,8 +181,8 @@ export function reportError(
   console.error("[Error]", error, context);
 
   // Send to Sentry or other error tracking
-  if (typeof window !== "undefined" && (window as { Sentry?: { captureException: (error: Error, options: Record<string, unknown>) => void } }).Sentry) {
-    (window as { Sentry: { captureException: (error: Error, options: Record<string, unknown>) => void } }).Sentry.captureException(error, { extra: context });
+  if (typeof window !== "undefined" && (window as unknown as { Sentry?: { captureException: (error: Error, options: Record<string, unknown>) => void } }).Sentry) {
+    (window as unknown as { Sentry: { captureException: (error: Error, options: Record<string, unknown>) => void } }).Sentry.captureException(error, { extra: context });
   }
 }
 

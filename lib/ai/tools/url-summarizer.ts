@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const urlSummarizerTool = tool({
   description: "Fetch and summarize content from a URL. Use when the user shares a link and wants to know what it's about, or asks to summarize an article/webpage.",
-  parameters: z.object({
+  inputSchema: z.object({
     url: z.string().url().describe("The URL to fetch and summarize"),
     language: z.enum(["ar", "en"]).default("ar").describe("Language for the summary"),
   }),

@@ -44,8 +44,13 @@ export async function addMemory({
       metadata: { category },
     });
 
+    // Handle both array and object response types
+    const resultId = Array.isArray(result) 
+      ? (result[0]?.id || crypto.randomUUID())
+      : ((result as any).id || crypto.randomUUID());
+
     return {
-      id: result.id || crypto.randomUUID(),
+      id: resultId,
       content,
       category,
       createdAt: new Date(),
@@ -78,9 +83,9 @@ export async function searchMemories({
       limit,
     });
 
-    return results.map((r: { id: string; memory: string; metadata?: { category?: string }; created_at?: string }) => ({
-      id: r.id,
-      content: r.memory,
+    return (results as any[]).map((r) => ({
+      id: r.id || crypto.randomUUID(),
+      content: r.memory || r.content || "",
       category: r.metadata?.category || "general",
       createdAt: new Date(r.created_at || Date.now()),
     }));
@@ -105,9 +110,9 @@ export async function getAllMemories({
   try {
     const results = await client.getAll({ user_id: userId });
 
-    return results.map((r: { id: string; memory: string; metadata?: { category?: string }; created_at?: string }) => ({
-      id: r.id,
-      content: r.memory,
+    return (results as any[]).map((r) => ({
+      id: r.id || crypto.randomUUID(),
+      content: r.memory || r.content || "",
       category: r.metadata?.category || "general",
       createdAt: new Date(r.created_at || Date.now()),
     }));

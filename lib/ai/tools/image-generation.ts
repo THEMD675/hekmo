@@ -3,12 +3,12 @@ import { z } from "zod";
 
 export const imageGenerationTool = tool({
   description: "Generate an image from a text description. Use when users ask to create, generate, or draw an image.",
-  parameters: z.object({
+  inputSchema: z.object({
     prompt: z.string().describe("Detailed description of the image to generate"),
     style: z.enum(["realistic", "artistic", "cartoon", "sketch", "3d"]).default("realistic").describe("Image style"),
     size: z.enum(["square", "portrait", "landscape"]).default("square").describe("Image dimensions"),
   }),
-  execute: async ({ prompt, style, size }: { prompt: string; style: "realistic" | "artistic" | "cartoon" | "sketch" | "3d"; size: "square" | "portrait" | "landscape" }) => {
+  execute: async ({ prompt, style, size }) => {
     try {
       const apiKey = process.env.OPENAI_API_KEY;
       

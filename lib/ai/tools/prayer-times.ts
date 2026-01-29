@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const prayerTimesTool = tool({
   description: "Get Islamic prayer times for a specific city in Saudi Arabia or any location. Use this when the user asks about prayer times, salah times, or أوقات الصلاة.",
-  parameters: z.object({
+  inputSchema: z.object({
     city: z.string().describe("City name (e.g., Riyadh, Jeddah, Mecca)"),
     country: z.string().default("Saudi Arabia").describe("Country name"),
     date: z.string().optional().describe("Date in DD-MM-YYYY format, defaults to today"),

@@ -3,11 +3,11 @@ import { z } from "zod";
 
 export const grammarCheckerTool = tool({
   description: "Check and correct grammar and spelling in Arabic or English text. Use when users ask to proofread, check grammar, or fix spelling.",
-  parameters: z.object({
+  inputSchema: z.object({
     text: z.string().describe("The text to check for grammar and spelling errors"),
     language: z.enum(["ar", "en", "auto"]).default("auto").describe("Language of the text"),
   }),
-  execute: async ({ text, language }: { text: string; language: "ar" | "en" | "auto" }) => {
+  execute: async ({ text, language }) => {
     try {
       // Detect language if auto
       const detectedLanguage = language === "auto" 

@@ -3,14 +3,15 @@ import { z } from "zod";
 
 export const pdfReaderTool = tool({
   description: "Extract and read text content from a PDF file. Use when users upload a PDF or ask to read/analyze a PDF document.",
-  parameters: z.object({
+  inputSchema: z.object({
     fileUrl: z.string().describe("URL of the PDF file to read"),
     pages: z.string().optional().describe("Specific pages to extract (e.g., '1-5' or '1,3,5')"),
   }),
   execute: async ({ fileUrl, pages }) => {
     try {
       // Dynamically import pdf-parse (Node.js only)
-      const pdfParse = (await import("pdf-parse")).default;
+      const pdfParseModule = await import("pdf-parse");
+      const pdfParse = (pdfParseModule as any).default || pdfParseModule;
       
       // Fetch the PDF
       const response = await fetch(fileUrl);
