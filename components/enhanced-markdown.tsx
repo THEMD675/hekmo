@@ -58,10 +58,10 @@ function processCitations(
     const citation = citations.find((c) => c.id === citationId);
 
     if (citation) {
-      // Render citation badge
+      // Render citation badge - warm stone style
       parts.push(
         <a
-          className="inline-flex items-center justify-center h-4 min-w-4 px-1 mx-0.5 text-[10px] font-medium bg-primary/15 text-primary rounded hover:bg-primary/25 transition-colors align-super -translate-y-0.5 no-underline"
+          className="inline-flex items-center justify-center h-4 min-w-4 px-1 mx-0.5 text-[10px] font-medium bg-stone-200 text-stone-700 rounded hover:bg-stone-300 transition-colors align-super -translate-y-0.5 no-underline"
           href={citation.url}
           key={`cite-${keyCounter++}`}
           rel="noopener noreferrer"

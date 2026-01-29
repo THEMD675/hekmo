@@ -3,18 +3,18 @@ import { BookOpen, Briefcase, Code, Lightbulb, PenTool, Sparkles } from "lucide-
 import { cn } from "@/lib/utils";
 
 /**
- * HEKMO GREETING - LOCKED DESIGN
- * Font: Cairo | Theme: Light | Pattern: Material 3
+ * HEKMO GREETING - LOCKED DESIGN v3
+ * Vision: Minimal, warm stone vibes, Apple + ChatGPT feel
  */
 
-// General-purpose AI capabilities - world-class design
+// General-purpose AI capabilities - warm stone minimal design
 const CAPABILITIES = [
-  { icon: Code, label: "برمجة", gradient: "from-emerald-500 to-teal-600" },
-  { icon: PenTool, label: "كتابة", gradient: "from-violet-500 to-purple-600" },
-  { icon: Lightbulb, label: "أفكار", gradient: "from-amber-400 to-orange-500" },
-  { icon: BookOpen, label: "بحث", gradient: "from-cyan-400 to-blue-500" },
-  { icon: Briefcase, label: "عمل", gradient: "from-slate-500 to-zinc-600" },
-  { icon: Sparkles, label: "إبداع", gradient: "from-pink-400 to-rose-500" },
+  { icon: Code, label: "برمجة", gradient: "from-stone-500 to-stone-600" },
+  { icon: PenTool, label: "كتابة", gradient: "from-amber-700 to-amber-800" },
+  { icon: Lightbulb, label: "أفكار", gradient: "from-stone-400 to-stone-500" },
+  { icon: BookOpen, label: "بحث", gradient: "from-stone-600 to-stone-700" },
+  { icon: Briefcase, label: "عمل", gradient: "from-stone-500 to-stone-600" },
+  { icon: Sparkles, label: "إبداع", gradient: "from-amber-600 to-amber-700" },
 ];
 
 export const Greeting = () => {
@@ -86,12 +86,12 @@ export const Greeting = () => {
         transition={{ delay: 0.4, duration: 0.2 }}
       >
         <div className="flex items-center gap-1.5">
-          <span className="inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
+          <span className="inline-flex h-1.5 w-1.5 rounded-full bg-stone-500" />
           <span>يفهم لهجتك</span>
         </div>
-        <span className="text-border">|</span>
+        <span className="text-stone-300">|</span>
         <span>أدوات متقدمة</span>
-        <span className="text-border">|</span>
+        <span className="text-stone-300">|</span>
         <span>خصوصية تامة</span>
       </motion.div>
     </div>

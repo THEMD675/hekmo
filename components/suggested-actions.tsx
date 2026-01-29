@@ -14,31 +14,31 @@ type SuggestedActionsProps = {
   selectedVisibilityType: VisibilityType;
 };
 
-// General-purpose suggested actions - inspired by ChatGPT/Claude
+// General-purpose suggested actions - warm stone minimal design
 const SUGGESTED_ACTIONS = [
   {
     icon: Code,
     title: "اكتب كود",
     prompt: "اكتب لي كود بايثون لتحليل البيانات",
-    gradient: "from-emerald-500 to-teal-500",
+    gradient: "from-stone-500 to-stone-600",
   },
   {
     icon: PenTool,
     title: "ساعدني أكتب",
     prompt: "ساعدني أكتب إيميل احترافي",
-    gradient: "from-violet-500 to-purple-500",
+    gradient: "from-amber-700 to-amber-800",
   },
   {
     icon: Lightbulb,
     title: "اشرح لي",
     prompt: "اشرح لي الذكاء الاصطناعي بطريقة بسيطة",
-    gradient: "from-amber-500 to-orange-500",
+    gradient: "from-stone-400 to-stone-500",
   },
   {
     icon: FileText,
     title: "لخص محتوى",
     prompt: "لخص لي هذا المقال في نقاط رئيسية",
-    gradient: "from-cyan-500 to-blue-500",
+    gradient: "from-stone-600 to-stone-700",
   },
 ];
 

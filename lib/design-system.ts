@@ -1,20 +1,25 @@
 /**
  * ╔═══════════════════════════════════════════════════════════════════════════╗
- * ║                    HEKMO DESIGN SYSTEM - LOCKED v2.0                      ║
+ * ║                    HEKMO DESIGN SYSTEM - LOCKED v3.0                      ║
  * ╠═══════════════════════════════════════════════════════════════════════════╣
+ * ║ VISION: Minimal colors, warm stone vibes, Apple + ChatGPT feel            ║
  * ║ Enterprise-level design tokens based on deep research.                    ║
- * ║ All decisions are FINAL and must be followed consistently.                ║
  * ╚═══════════════════════════════════════════════════════════════════════════╝
  * 
- * RESEARCH SOURCES:
- * - Material Design 3 (m3.material.io) - Color, elevation, motion
- * - Arabic Font Comparison 2025 - Cairo rated 10/10 readability
- * - CTA Color A/B Testing (2,588 tests) - Blue 31%, Orange +32%
- * - NN/g & In The Pocket AI Guidelines - Interaction patterns
- * - Carbon Design System - Spacing tokens
- * - Chat UI Design Patterns 2025 - Message bubble specs
+ * DESIGN DIRECTION:
+ * - Minimal, not vibrant
+ * - Warm stone/beige tones
+ * - Apple Liquid Glass elegance
+ * - ChatGPT earth-tone warmth
+ * - Premium, sophisticated, timeless
  * 
- * @version 2.0.0
+ * RESEARCH SOURCES:
+ * - Apple Human Interface Guidelines 2025 - Liquid Glass
+ * - ChatGPT UI Palettes - Warm neutrals
+ * - Arabic Font Comparison 2025 - Cairo rated 10/10 readability
+ * - Minimal UI Premium Palettes - Soft elegance
+ * 
+ * @version 3.0.0
  * @locked true
  * @lastUpdated 2026-01-29
  */
@@ -79,138 +84,141 @@ export const TYPOGRAPHY = {
 } as const;
 
 // ============================================================================
-// COLOR SYSTEM - LOCKED (Material 3 + Research)
+// COLOR SYSTEM - LOCKED (Warm Stone / Apple / ChatGPT)
 // ============================================================================
 
 export const COLORS = {
   /**
-   * BRAND COLOR DECISION (LOCKED)
+   * BRAND COLOR DECISION (LOCKED v3)
    * 
-   * Primary: Emerald Green (HSL 160)
-   * - Conveys: Growth, renewal, sophistication, trust
-   * - Differentiates from typical blue tech (38% of tech uses blue)
-   * - "Expensive energy" - modern luxury positioning
-   * - Natural connection: Sustainable, organic values
+   * VISION: Minimal, warm, stone vibes, Apple + ChatGPT feel
    * 
-   * CTA/Tertiary: Orange (#ff7900)
-   * - Research: Orange CTAs = +32% conversion rate
-   * - Red outperforms green by 5-34% in A/B tests
-   * - Orange sparks enthusiasm and action
-   * - Contrast: High visibility against emerald
+   * Primary: Warm Stone Brown
+   * - Conveys: Warmth, trust, sophistication, timelessness
+   * - Inspired by: ChatGPT earth tones, Apple elegance
+   * - Grounding, natural, premium feel
+   * 
+   * Accent: Subtle warm highlight (not vibrant)
+   * - Minimal, not attention-grabbing
+   * - Elegant hover states only
+   * 
+   * Background: Warm cream/beige (not pure white)
+   * - Soft on eyes, premium feel
+   * - Like high-end paper or linen
    */
   
   light: {
-    // Primary (Emerald) - Main brand color
-    primary: "hsl(160 84% 39%)",           // #10b981
-    onPrimary: "hsl(0 0% 100%)",
-    primaryContainer: "hsl(160 100% 90%)",
-    onPrimaryContainer: "hsl(160 100% 10%)",
+    // Primary (Warm Stone) - Subtle, sophisticated
+    primary: "hsl(30 20% 35%)",            // Warm brown stone
+    onPrimary: "hsl(40 30% 98%)",
+    primaryContainer: "hsl(35 30% 90%)",
+    onPrimaryContainer: "hsl(30 25% 15%)",
     
-    // Secondary - De-emphasized elements
-    secondary: "hsl(160 30% 40%)",
-    onSecondary: "hsl(0 0% 100%)",
-    secondaryContainer: "hsl(160 50% 90%)",
-    onSecondaryContainer: "hsl(160 30% 10%)",
+    // Secondary - Muted stone gray
+    secondary: "hsl(30 10% 50%)",
+    onSecondary: "hsl(40 30% 98%)",
+    secondaryContainer: "hsl(35 15% 92%)",
+    onSecondaryContainer: "hsl(30 15% 20%)",
     
-    // Tertiary (Orange CTA) - High-conversion actions
-    // Source: 2,588 A/B tests show orange/red +21-34%
-    tertiary: "hsl(27 100% 50%)",          // #ff7900
-    onTertiary: "hsl(0 0% 100%)",
-    tertiaryContainer: "hsl(27 100% 90%)",
-    onTertiaryContainer: "hsl(27 100% 10%)",
+    // Tertiary (Warm accent) - Not orange, subtle warmth
+    tertiary: "hsl(25 35% 45%)",           // Muted terracotta
+    onTertiary: "hsl(40 30% 98%)",
+    tertiaryContainer: "hsl(30 25% 88%)",
+    onTertiaryContainer: "hsl(25 30% 15%)",
     
-    // Error - Critical states
-    error: "hsl(0 75% 42%)",
+    // Error - Muted, not alarming
+    error: "hsl(0 50% 45%)",
     onError: "hsl(0 0% 100%)",
-    errorContainer: "hsl(0 100% 92%)",
-    onErrorContainer: "hsl(0 100% 10%)",
+    errorContainer: "hsl(0 40% 92%)",
+    onErrorContainer: "hsl(0 50% 20%)",
     
-    // Surface (Material 3 - Tone 98 for light)
-    surface: "hsl(160 20% 98%)",
-    onSurface: "hsl(160 10% 10%)",
-    surfaceVariant: "hsl(160 20% 92%)",
-    onSurfaceVariant: "hsl(160 10% 35%)",  // Increased contrast
-    surfaceContainerLowest: "hsl(0 0% 100%)",
-    surfaceContainerLow: "hsl(160 20% 96%)",
-    surfaceContainer: "hsl(160 20% 94%)",
-    surfaceContainerHigh: "hsl(160 20% 92%)",
-    surfaceContainerHighest: "hsl(160 20% 90%)",
+    // Surface (Warm cream - like premium paper)
+    surface: "hsl(40 30% 97%)",            // Warm cream
+    onSurface: "hsl(30 15% 12%)",          // Warm near-black
+    surfaceVariant: "hsl(35 20% 93%)",
+    onSurfaceVariant: "hsl(30 10% 40%)",
+    surfaceContainerLowest: "hsl(40 40% 99%)",  // Almost white cream
+    surfaceContainerLow: "hsl(38 30% 96%)",
+    surfaceContainer: "hsl(36 25% 94%)",
+    surfaceContainerHigh: "hsl(34 20% 91%)",
+    surfaceContainerHighest: "hsl(32 18% 88%)",
     
-    // Outline
-    outline: "hsl(160 10% 50%)",
-    outlineVariant: "hsl(160 20% 80%)",
+    // Outline - Warm, subtle
+    outline: "hsl(30 10% 60%)",
+    outlineVariant: "hsl(35 15% 82%)",
     
-    // Background
-    background: "hsl(160 20% 98%)",
-    onBackground: "hsl(160 10% 10%)",
+    // Background (Same as surface - unified warm cream)
+    background: "hsl(40 30% 97%)",
+    onBackground: "hsl(30 15% 12%)",
     
     // Inverse
-    inverseSurface: "hsl(160 10% 20%)",
-    inverseOnSurface: "hsl(160 20% 95%)",
-    inversePrimary: "hsl(160 70% 70%)",
+    inverseSurface: "hsl(30 15% 15%)",
+    inverseOnSurface: "hsl(40 25% 95%)",
+    inversePrimary: "hsl(35 30% 70%)",
     
-    // Shadows
-    shadow: "hsl(0 0% 0%)",
-    scrim: "hsl(0 0% 0%)",
+    // Shadows (Warm tinted)
+    shadow: "hsl(30 20% 10%)",
+    scrim: "hsl(30 15% 5%)",
   },
   
   dark: {
-    // Dark mode for users who prefer it
-    primary: "hsl(160 70% 65%)",
-    onPrimary: "hsl(160 100% 10%)",
-    primaryContainer: "hsl(160 80% 25%)",
-    onPrimaryContainer: "hsl(160 100% 90%)",
+    // Dark mode - Warm dark, not cold black
+    primary: "hsl(35 30% 70%)",
+    onPrimary: "hsl(30 25% 12%)",
+    primaryContainer: "hsl(30 25% 25%)",
+    onPrimaryContainer: "hsl(35 35% 90%)",
     
-    secondary: "hsl(160 40% 70%)",
-    onSecondary: "hsl(160 30% 10%)",
-    secondaryContainer: "hsl(160 30% 25%)",
-    onSecondaryContainer: "hsl(160 50% 90%)",
+    secondary: "hsl(35 15% 65%)",
+    onSecondary: "hsl(30 20% 12%)",
+    secondaryContainer: "hsl(30 15% 22%)",
+    onSecondaryContainer: "hsl(35 20% 88%)",
     
-    tertiary: "hsl(27 100% 60%)",
-    onTertiary: "hsl(27 100% 10%)",
-    tertiaryContainer: "hsl(27 80% 25%)",
-    onTertiaryContainer: "hsl(27 100% 90%)",
+    tertiary: "hsl(28 35% 65%)",
+    onTertiary: "hsl(25 30% 12%)",
+    tertiaryContainer: "hsl(25 25% 22%)",
+    onTertiaryContainer: "hsl(28 35% 88%)",
     
-    error: "hsl(0 80% 70%)",
-    onError: "hsl(0 100% 10%)",
-    errorContainer: "hsl(0 60% 25%)",
-    onErrorContainer: "hsl(0 100% 90%)",
+    error: "hsl(0 50% 65%)",
+    onError: "hsl(0 40% 12%)",
+    errorContainer: "hsl(0 40% 22%)",
+    onErrorContainer: "hsl(0 45% 88%)",
     
-    surface: "hsl(160 15% 6%)",
-    onSurface: "hsl(160 10% 90%)",
-    surfaceVariant: "hsl(160 10% 15%)",
-    onSurfaceVariant: "hsl(160 10% 70%)",
-    surfaceContainerLowest: "hsl(160 15% 4%)",
-    surfaceContainerLow: "hsl(160 12% 8%)",
-    surfaceContainer: "hsl(160 10% 12%)",
-    surfaceContainerHigh: "hsl(160 8% 15%)",
-    surfaceContainerHighest: "hsl(160 6% 18%)",
+    // Surface (Warm dark - not pure black)
+    surface: "hsl(30 15% 8%)",             // Warm near-black
+    onSurface: "hsl(35 20% 90%)",
+    surfaceVariant: "hsl(30 12% 15%)",
+    onSurfaceVariant: "hsl(35 15% 70%)",
+    surfaceContainerLowest: "hsl(30 15% 5%)",
+    surfaceContainerLow: "hsl(30 12% 10%)",
+    surfaceContainer: "hsl(30 10% 13%)",
+    surfaceContainerHigh: "hsl(30 8% 16%)",
+    surfaceContainerHighest: "hsl(30 6% 20%)",
     
-    outline: "hsl(160 10% 50%)",
-    outlineVariant: "hsl(160 10% 25%)",
+    outline: "hsl(30 10% 45%)",
+    outlineVariant: "hsl(30 10% 28%)",
     
-    background: "hsl(160 15% 6%)",
-    onBackground: "hsl(160 10% 90%)",
+    background: "hsl(30 15% 8%)",
+    onBackground: "hsl(35 20% 90%)",
     
-    inverseSurface: "hsl(160 20% 90%)",
-    inverseOnSurface: "hsl(160 10% 20%)",
-    inversePrimary: "hsl(160 84% 39%)",
+    inverseSurface: "hsl(35 20% 90%)",
+    inverseOnSurface: "hsl(30 15% 15%)",
+    inversePrimary: "hsl(30 20% 35%)",
     
     shadow: "hsl(0 0% 0%)",
     scrim: "hsl(0 0% 0%)",
   },
   
   /**
-   * SEMANTIC COLORS (LOCKED)
+   * SEMANTIC COLORS (LOCKED - Muted, not vibrant)
    */
   semantic: {
-    success: "hsl(142 76% 36%)",      // Green
-    warning: "hsl(38 92% 50%)",       // Amber
-    info: "hsl(217 91% 60%)",         // Blue
+    success: "hsl(140 35% 40%)",      // Muted sage green
+    warning: "hsl(35 50% 50%)",       // Muted amber
+    info: "hsl(210 40% 50%)",         // Muted blue
     
-    // Citation badge
-    citationBg: "hsla(160, 84%, 39%, 0.15)",
-    citationText: "hsl(160 84% 39%)",
+    // Citation badge - warm stone tint
+    citationBg: "hsla(30, 20%, 35%, 0.12)",
+    citationText: "hsl(30 25% 35%)",
   },
 } as const;
 

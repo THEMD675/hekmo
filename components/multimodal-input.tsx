@@ -634,14 +634,14 @@ function PureVoiceButton({
     return null;
   }
 
-  // Prominent voice button - Orange CTA for +21% conversion
+  // Voice button - Warm stone minimal design
   return (
     <Button
       className={cn(
         "flex h-9 items-center gap-1.5 rounded-xl px-3 text-sm font-medium transition-all duration-150",
         isListening
-          ? "bg-red-500 text-white shadow-lg shadow-red-500/25 hover:bg-red-600"
-          : "bg-orange-500 text-white shadow-sm hover:bg-orange-600 hover:shadow-md"
+          ? "bg-red-400 text-white shadow-lg shadow-red-400/20 hover:bg-red-500"
+          : "bg-stone-600 text-white shadow-sm hover:bg-stone-700 hover:shadow-md"
       )}
       data-testid="voice-button"
       disabled={status !== "ready"}
