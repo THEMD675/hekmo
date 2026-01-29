@@ -1,34 +1,37 @@
 /**
  * ╔═══════════════════════════════════════════════════════════════════════════╗
- * ║                    HEKMO DESIGN SYSTEM - LOCKED v4.0                      ║
+ * ║                    HEKMO DESIGN SYSTEM - LOCKED v5.0                      ║
+ * ║                           "The 10/10 System"                              ║
  * ╠═══════════════════════════════════════════════════════════════════════════╣
- * ║ FOUNDATION: Material Design 3 (m3.material.io)                            ║
- * ║ PALETTE: Warm Stone + Apple/ChatGPT elegance                              ║
- * ║ MODE: Light theme default (M3 Surface Tone 98)                            ║
+ * ║ UNIQUE IDENTITY: Neither Google nor Apple - distinctly Hekmo              ║
  * ╚═══════════════════════════════════════════════════════════════════════════╝
  * 
- * M3 SPECIFICATIONS IMPLEMENTED:
- * - Surface: Tone 98 for light theme (Feb 2023 update)
- * - Elevation: z1-z5 shadow values from material-components-web
- * - Color roles: Primary, Secondary, Tertiary, Surface containers
- * - State layers: hover (8%), focus (12%), pressed (12%), dragged (16%)
- * - Button types: Filled, Tonal, Outlined, Text
- * - Card types: Elevated, Filled, Outlined
+ * THE HYBRID APPROACH (10/10):
+ * ┌─────────────────────────────────────────────────────────────────────────┐
+ * │ 1. WARM STONE PALETTE - Unique brand identity (not copied)             │
+ * │ 2. APPLE LIQUID GLASS - Premium glassmorphism on key elements          │
+ * │ 3. M3 FOUNDATIONS - Accessibility, spacing, typography                  │
+ * │ 4. HEKMO SIGNATURE - Custom elements that define our brand             │
+ * └─────────────────────────────────────────────────────────────────────────┘
  * 
- * PALETTE DIRECTION:
- * - Warm stone/beige (not cold gray)
- * - Apple-like elegance
- * - ChatGPT earth-tone warmth
- * - Premium, sophisticated, timeless
+ * COMPONENT CLASSES:
+ * - .hekmo-glass     → Premium translucent card (Apple Liquid Glass)
+ * - .hekmo-card      → Signature elevated card with subtle shadow
+ * - .hekmo-input     → Glass input field with backdrop blur
+ * - .hekmo-button    → Premium filled button with inner glow
+ * - .hekmo-chip      → Soft pill chip
+ * - .hekmo-modal     → Glass modal with frosted background
+ * - .hekmo-bubble-*  → Chat message bubbles
+ * - .hekmo-shimmer   → Loading animation
  * 
- * SOURCES:
- * - m3.material.io/styles/color/system/overview
- * - m3.material.io/styles/elevation/overview
- * - m3.material.io/components/cards/guidelines
- * - m3.material.io/components/buttons/guidelines
- * - studioncreations.com/blog/material-design-3-box-shadow-css-values
+ * DESIGN PHILOSOPHY:
+ * - Premium: Every element feels high-end
+ * - Warm: Stone/beige palette, not cold
+ * - Original: Not recognizable as "Google app" or "Apple clone"
+ * - Accessible: WCAG 2.1 AA compliant
+ * - Arabic-first: RTL native, Cairo typography
  * 
- * @version 4.0.0
+ * @version 5.0.0
  * @locked true
  * @lastUpdated 2026-01-29
  */

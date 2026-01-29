@@ -54,10 +54,9 @@ export const Greeting = () => {
           <motion.div
             animate={{ opacity: 1, scale: 1 }}
             className={cn(
-              // Material 3 Assist Chip
+              // Hekmo Chip - Premium glass chip
               "group flex cursor-default items-center gap-2 rounded-full px-4 py-2 text-sm",
-              "bg-secondary shadow-sm transition-all duration-150",
-              "hover:shadow-[var(--elevation-1)] hover:bg-secondary/80"
+              "hekmo-glass"
             )}
             initial={{ opacity: 0, scale: 0.95 }}
             key={capability.label}

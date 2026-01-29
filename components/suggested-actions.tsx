@@ -52,11 +52,9 @@ function PureSuggestedActions({ chatId, sendMessage }: SuggestedActionsProps) {
         <motion.button
           animate={{ opacity: 1, y: 0 }}
           className={cn(
-            // Material 3 Elevated Card pattern
-            "group relative flex items-center gap-3 rounded-2xl bg-card p-4 text-right",
-            "shadow-[var(--elevation-1)] transition-all duration-200",
-            "hover:shadow-[var(--elevation-2)] hover:scale-[1.01]",
-            "active:scale-[0.99]"
+            // Hekmo Glass - Premium translucent card
+            "group relative flex items-center gap-3 rounded-2xl p-4 text-right",
+            "hekmo-glass"
           )}
           exit={{ opacity: 0, y: 20 }}
           initial={{ opacity: 0, y: 20 }}
