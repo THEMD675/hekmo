@@ -190,7 +190,6 @@ export default function RootLayout({
               isAccessibleForFree: true,
             }),
           }}
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: "JSON-LD structured data"
           type="application/ld+json"
         />
       </head>
