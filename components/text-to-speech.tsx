@@ -77,7 +77,7 @@ export function TextToSpeech({
     setIsPaused(false);
   }, []);
 
-  const stop = useCallback(() => {
+  const _stop = useCallback(() => {
     window.speechSynthesis.cancel();
     setIsPlaying(false);
     setIsPaused(false);
@@ -129,7 +129,9 @@ export function useTextToSpeech() {
   }
 
   const speak = useCallback((text: string, lang = "ar-SA") => {
-    if (!("speechSynthesis" in window)) return;
+    if (!("speechSynthesis" in window)) {
+      return;
+    }
 
     window.speechSynthesis.cancel();
 

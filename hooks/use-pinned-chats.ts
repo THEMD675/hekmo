@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const PINNED_CHATS_KEY = "hekmo-pinned-chats";
 
@@ -23,29 +23,41 @@ export function usePinnedChats() {
     setPinnedChatIds(ids);
   }, []);
 
-  const pinChat = useCallback((chatId: string) => {
-    if (!pinnedChatIds.includes(chatId)) {
-      const newPinned = [chatId, ...pinnedChatIds];
+  const pinChat = useCallback(
+    (chatId: string) => {
+      if (!pinnedChatIds.includes(chatId)) {
+        const newPinned = [chatId, ...pinnedChatIds];
+        savePinnedChats(newPinned);
+      }
+    },
+    [pinnedChatIds, savePinnedChats]
+  );
+
+  const unpinChat = useCallback(
+    (chatId: string) => {
+      const newPinned = pinnedChatIds.filter((id) => id !== chatId);
       savePinnedChats(newPinned);
-    }
-  }, [pinnedChatIds, savePinnedChats]);
+    },
+    [pinnedChatIds, savePinnedChats]
+  );
 
-  const unpinChat = useCallback((chatId: string) => {
-    const newPinned = pinnedChatIds.filter((id) => id !== chatId);
-    savePinnedChats(newPinned);
-  }, [pinnedChatIds, savePinnedChats]);
+  const togglePin = useCallback(
+    (chatId: string) => {
+      if (pinnedChatIds.includes(chatId)) {
+        unpinChat(chatId);
+      } else {
+        pinChat(chatId);
+      }
+    },
+    [pinnedChatIds, pinChat, unpinChat]
+  );
 
-  const togglePin = useCallback((chatId: string) => {
-    if (pinnedChatIds.includes(chatId)) {
-      unpinChat(chatId);
-    } else {
-      pinChat(chatId);
-    }
-  }, [pinnedChatIds, pinChat, unpinChat]);
-
-  const isPinned = useCallback((chatId: string) => {
-    return pinnedChatIds.includes(chatId);
-  }, [pinnedChatIds]);
+  const isPinned = useCallback(
+    (chatId: string) => {
+      return pinnedChatIds.includes(chatId);
+    },
+    [pinnedChatIds]
+  );
 
   return {
     pinnedChatIds,

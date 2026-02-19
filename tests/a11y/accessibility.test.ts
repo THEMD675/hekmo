@@ -1,5 +1,5 @@
-import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { expect, test } from "@playwright/test";
 
 test.describe("Accessibility Tests", () => {
   test("home page should have no critical accessibility violations", async ({
@@ -69,7 +69,7 @@ test.describe("Accessibility Tests", () => {
 
     const headings = await page.$$eval("h1, h2, h3, h4, h5, h6", (elements) =>
       elements.map((el) => ({
-        level: parseInt(el.tagName[1]),
+        level: Number.parseInt(el.tagName[1], 10),
         text: el.textContent?.trim(),
       }))
     );
@@ -83,7 +83,9 @@ test.describe("Accessibility Tests", () => {
     for (const heading of headings) {
       if (heading.level > prevLevel + 1 && prevLevel !== 0) {
         // Skipped level warning (not fail)
-        console.warn(`Heading level skipped: h${prevLevel} to h${heading.level}`);
+        console.warn(
+          `Heading level skipped: h${prevLevel} to h${heading.level}`
+        );
       }
       prevLevel = heading.level;
     }
@@ -124,7 +126,9 @@ test.describe("Accessibility Tests", () => {
       });
 
       // Body means we've tabbed past all elements
-      if (focusedElement.tag === "BODY") break;
+      if (focusedElement.tag === "BODY") {
+        break;
+      }
     }
   });
 
@@ -167,7 +171,9 @@ test.describe("Accessibility Tests", () => {
     await page.goto("/");
 
     const imagesWithoutAlt = await page.$$eval("img", (images) =>
-      images.filter((img) => !img.getAttribute("alt") && !img.getAttribute("role"))
+      images.filter(
+        (img) => !img.getAttribute("alt") && !img.getAttribute("role")
+      )
     );
 
     // All meaningful images should have alt text
@@ -178,7 +184,9 @@ test.describe("Accessibility Tests", () => {
     await page.goto("/");
 
     // Check that interactive elements can receive focus
-    const interactiveElements = await page.$$("a, button, [role='button'], input, textarea, select");
+    const interactiveElements = await page.$$(
+      "a, button, [role='button'], input, textarea, select"
+    );
 
     for (const element of interactiveElements.slice(0, 10)) {
       const tabIndex = await element.getAttribute("tabindex");

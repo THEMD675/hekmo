@@ -29,7 +29,9 @@ export function ScrollToTop({ threshold = 300, className }: ScrollToTopProps) {
     });
   };
 
-  if (!show) return null;
+  if (!show) {
+    return null;
+  }
 
   return (
     <Button

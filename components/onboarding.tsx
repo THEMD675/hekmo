@@ -43,8 +43,7 @@ const STEPS: OnboardingStep[] = [
   {
     icon: <Shield className="h-12 w-12" />,
     title: "خصوصية تامة",
-    description:
-      "بياناتك آمنة ومحمية. لا نشارك معلوماتك مع أي طرف ثالث.",
+    description: "بياناتك آمنة ومحمية. لا نشارك معلوماتك مع أي طرف ثالث.",
   },
 ];
 
@@ -87,7 +86,9 @@ export function Onboarding() {
     handleComplete();
   };
 
-  if (!show) return null;
+  if (!show) {
+    return null;
+  }
 
   const currentStep = STEPS[step];
 

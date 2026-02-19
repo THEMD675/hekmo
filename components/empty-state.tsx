@@ -76,7 +76,8 @@ export function WelcomeScreen({ onStart }: { onStart: () => void }) {
       <div className="text-6xl mb-6">✨</div>
       <h1 className="text-3xl font-bold mb-4">مرحباً بك في حكمو</h1>
       <p className="text-muted-foreground mb-8 max-w-md leading-relaxed">
-        مساعدك الذكي بالعربي. اسألني عن أي موضوع - برمجة، كتابة، بحث، ترجمة، أو أي شيء آخر.
+        مساعدك الذكي بالعربي. اسألني عن أي موضوع - برمجة، كتابة، بحث، ترجمة، أو
+        أي شيء آخر.
       </p>
       <div className="flex flex-wrap gap-3 justify-center mb-8">
         <div className="flex items-center gap-2 px-3 py-1.5 bg-muted rounded-full text-sm">

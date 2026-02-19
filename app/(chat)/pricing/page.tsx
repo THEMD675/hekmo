@@ -103,7 +103,9 @@ export default function PricingPage() {
         }),
       });
 
-      if (!response.ok) throw new Error();
+      if (!response.ok) {
+        throw new Error();
+      }
 
       const { url } = await response.json();
       window.location.href = url;

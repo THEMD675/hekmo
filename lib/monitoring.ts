@@ -167,7 +167,9 @@ export function recordMetric(metric: PerformanceMetric): void {
 }
 
 async function flushMetrics(): Promise<void> {
-  if (metricsBuffer.length === 0) return;
+  if (metricsBuffer.length === 0) {
+    return;
+  }
 
   const metrics = [...metricsBuffer];
   metricsBuffer.length = 0;

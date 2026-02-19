@@ -1,11 +1,11 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import {
-  normalizeArabic,
+  extractArabicKeywords,
+  extractBusinessTerms,
   isArabic,
   isSaudiDialect,
-  extractArabicKeywords,
+  normalizeArabic,
   toArabicNumerals,
-  extractBusinessTerms,
 } from "@/lib/arabic-nlp";
 
 describe("Arabic NLP", () => {

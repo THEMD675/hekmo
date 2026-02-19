@@ -33,7 +33,7 @@ export const grammarCheckerTool = tool({
 
       if (detectedLanguage === "ar") {
         // Arabic common corrections
-        const arabicPatterns: Array<[RegExp, string, string]> = [
+        const arabicPatterns: [RegExp, string, string][] = [
           [/انشاء الله/g, "إن شاء الله", "التهجئة الصحيحة"],
           [/ان شاء الله/g, "إن شاء الله", "إضافة الهمزة"],
           [/الى/g, "إلى", "إضافة الهمزة"],
@@ -58,7 +58,7 @@ export const grammarCheckerTool = tool({
         }
       } else {
         // English common corrections
-        const englishPatterns: Array<[RegExp, string, string]> = [
+        const englishPatterns: [RegExp, string, string][] = [
           [/\bi\b/g, "I", "Capitalize first person pronoun"],
           [/\bteh\b/gi, "the", "Common typo"],
           [/\brecieve\b/gi, "receive", "Spelling: i before e except after c"],

@@ -103,7 +103,8 @@ function PureMultimodalInput({
       const domValue = textareaRef.current.value;
       // Prefer DOM value over localStorage to handle hydration
       // Also filter out "undefined" string that may have been saved incorrectly
-      const storedValue = localStorageInput === "undefined" ? "" : localStorageInput;
+      const storedValue =
+        localStorageInput === "undefined" ? "" : localStorageInput;
       const finalValue = domValue || storedValue || "";
       setInput(finalValue);
       adjustHeight();

@@ -44,7 +44,9 @@ export function ThemeCustomizer() {
     document.documentElement.style.setProperty("--primary", color);
   };
 
-  if (!mounted) return null;
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <Popover>

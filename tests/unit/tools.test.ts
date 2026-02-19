@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 
 describe("AI Tools", () => {
   describe("Calculator Tool", () => {
@@ -12,13 +12,13 @@ describe("AI Tools", () => {
           "*": (a, b) => a * b,
           "/": (a, b) => a / b,
         };
-        
+
         const match = expression.match(/(\d+)\s*([+\-*/])\s*(\d+)/);
         if (match) {
           const [, a, op, b] = match;
           return ops[op](Number(a), Number(b));
         }
-        return NaN;
+        return Number.NaN;
       };
 
       expect(calculate("2 + 3")).toBe(5);
@@ -41,14 +41,14 @@ describe("AI Tools", () => {
     it("should detect Arabic spelling errors", () => {
       const checkArabic = (text: string) => {
         const errors: string[] = [];
-        
+
         if (text.includes("انشاء الله")) {
           errors.push("انشاء الله → إن شاء الله");
         }
         if (text.includes("لاكن")) {
           errors.push("لاكن → لكن");
         }
-        
+
         return errors;
       };
 
@@ -60,14 +60,14 @@ describe("AI Tools", () => {
     it("should detect English spelling errors", () => {
       const checkEnglish = (text: string) => {
         const errors: string[] = [];
-        
+
         if (text.includes("recieve")) {
           errors.push("recieve → receive");
         }
         if (text.includes("teh")) {
           errors.push("teh → the");
         }
-        
+
         return errors;
       };
 
@@ -95,7 +95,7 @@ describe("AI Tools", () => {
     it("should format prayer times correctly", () => {
       const formatTime = (time: string) => {
         const [hours, minutes] = time.split(":");
-        const h = parseInt(hours);
+        const h = Number.parseInt(hours, 10);
         const period = h >= 12 ? "م" : "ص";
         const hour12 = h > 12 ? h - 12 : h === 0 ? 12 : h;
         return `${hour12}:${minutes} ${period}`;

@@ -81,14 +81,18 @@ export function ChatActions({
   };
 
   const handleDelete = async () => {
-    if (!confirm("هل أنت متأكد من حذف هذه المحادثة؟")) return;
+    if (!confirm("هل أنت متأكد من حذف هذه المحادثة؟")) {
+      return;
+    }
 
     try {
       const response = await fetch(`/api/chat?id=${chatId}`, {
         method: "DELETE",
       });
 
-      if (!response.ok) throw new Error();
+      if (!response.ok) {
+        throw new Error();
+      }
 
       onDelete?.();
       toast.success("تم حذف المحادثة");
@@ -107,7 +111,9 @@ export function ChatActions({
         body: JSON.stringify({ chatId }),
       });
 
-      if (!response.ok) throw new Error();
+      if (!response.ok) {
+        throw new Error();
+      }
 
       const { id } = await response.json();
       toast.success("تم نسخ المحادثة");
@@ -212,7 +218,9 @@ const PINNED_KEY = "hekmo-pinned-chats";
 const ARCHIVED_KEY = "hekmo-archived-chats";
 
 export function getPinnedChats(): string[] {
-  if (typeof window === "undefined") return [];
+  if (typeof window === "undefined") {
+    return [];
+  }
   try {
     return JSON.parse(localStorage.getItem(PINNED_KEY) || "[]");
   } catch {
@@ -225,7 +233,9 @@ export function setPinnedChats(ids: string[]) {
 }
 
 export function getArchivedChats(): string[] {
-  if (typeof window === "undefined") return [];
+  if (typeof window === "undefined") {
+    return [];
+  }
   try {
     return JSON.parse(localStorage.getItem(ARCHIVED_KEY) || "[]");
   } catch {

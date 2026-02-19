@@ -100,7 +100,9 @@ export async function POST() {
 export function isRateLimited(userId: string, tier = "free"): boolean {
   const limit = LIMITS[tier as keyof typeof LIMITS] || LIMITS.free;
 
-  if (limit.requests === -1) return false;
+  if (limit.requests === -1) {
+    return false;
+  }
 
   const now = Date.now();
   const userLimit = rateLimits.get(userId);

@@ -70,8 +70,12 @@ export function ChatHeader({
               className="h-8 w-48"
               onChange={(e) => setEditedTitle(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter") handleSaveTitle();
-                if (e.key === "Escape") handleCancelEdit();
+                if (e.key === "Enter") {
+                  handleSaveTitle();
+                }
+                if (e.key === "Escape") {
+                  handleCancelEdit();
+                }
               }}
               value={editedTitle}
             />

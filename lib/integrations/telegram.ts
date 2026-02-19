@@ -64,7 +64,9 @@ export async function sendTelegramMessage(
 
 // Send typing indicator
 export async function sendTelegramTyping(chatId: number): Promise<void> {
-  if (!TELEGRAM_BOT_TOKEN) return;
+  if (!TELEGRAM_BOT_TOKEN) {
+    return;
+  }
 
   await fetch(`${TELEGRAM_API}/sendChatAction`, {
     method: "POST",
@@ -223,7 +225,9 @@ async function getHekmoResponse(question: string): Promise<string> {
 
 // Set webhook for Telegram bot
 export async function setTelegramWebhook(webhookUrl: string): Promise<boolean> {
-  if (!TELEGRAM_BOT_TOKEN) return false;
+  if (!TELEGRAM_BOT_TOKEN) {
+    return false;
+  }
 
   try {
     const response = await fetch(`${TELEGRAM_API}/setWebhook`, {

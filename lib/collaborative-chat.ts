@@ -36,7 +36,9 @@ export function createCollaborativeSession(
   const existingSessionId = chatToSession.get(chatId);
   if (existingSessionId) {
     const existing = sessions.get(existingSessionId);
-    if (existing) return existing;
+    if (existing) {
+      return existing;
+    }
   }
 
   const session: CollaborativeSession = {
@@ -74,7 +76,9 @@ export function getSessionByChatId(
   chatId: string
 ): CollaborativeSession | null {
   const sessionId = chatToSession.get(chatId);
-  if (!sessionId) return null;
+  if (!sessionId) {
+    return null;
+  }
   return sessions.get(sessionId) || null;
 }
 
@@ -114,14 +118,20 @@ export function joinSession(
   role: "editor" | "viewer"
 ): boolean {
   const session = sessions.get(sessionId);
-  if (!session) return false;
+  if (!session) {
+    return false;
+  }
 
   // Check if already a participant
   const existing = session.participants.find((p) => p.id === userId);
-  if (existing) return true;
+  if (existing) {
+    return true;
+  }
 
   // Check if invites allowed
-  if (!session.settings.allowInvites) return false;
+  if (!session.settings.allowInvites) {
+    return false;
+  }
 
   session.participants.push({
     id: userId,
@@ -136,10 +146,14 @@ export function joinSession(
 // Leave session
 export function leaveSession(sessionId: string, userId: string): boolean {
   const session = sessions.get(sessionId);
-  if (!session) return false;
+  if (!session) {
+    return false;
+  }
 
   // Owner cannot leave
-  if (session.creatorId === userId) return false;
+  if (session.creatorId === userId) {
+    return false;
+  }
 
   session.participants = session.participants.filter((p) => p.id !== userId);
   return true;
@@ -153,14 +167,20 @@ export function updateParticipantRole(
   newRole: "editor" | "viewer"
 ): boolean {
   const session = sessions.get(sessionId);
-  if (!session) return false;
+  if (!session) {
+    return false;
+  }
 
   // Only owner can change roles
   const requester = session.participants.find((p) => p.id === requesterId);
-  if (!requester || requester.role !== "owner") return false;
+  if (!requester || requester.role !== "owner") {
+    return false;
+  }
 
   const target = session.participants.find((p) => p.id === targetId);
-  if (!target || target.role === "owner") return false;
+  if (!target || target.role === "owner") {
+    return false;
+  }
 
   target.role = newRole;
   return true;
@@ -173,14 +193,20 @@ export function removeParticipant(
   targetId: string
 ): boolean {
   const session = sessions.get(sessionId);
-  if (!session) return false;
+  if (!session) {
+    return false;
+  }
 
   // Only owner can remove
   const requester = session.participants.find((p) => p.id === requesterId);
-  if (!requester || requester.role !== "owner") return false;
+  if (!requester || requester.role !== "owner") {
+    return false;
+  }
 
   // Cannot remove owner
-  if (targetId === session.creatorId) return false;
+  if (targetId === session.creatorId) {
+    return false;
+  }
 
   session.participants = session.participants.filter((p) => p.id !== targetId);
   return true;
@@ -193,10 +219,14 @@ export function updateSessionSettings(
   settings: Partial<CollaborativeSession["settings"]>
 ): boolean {
   const session = sessions.get(sessionId);
-  if (!session) return false;
+  if (!session) {
+    return false;
+  }
 
   // Only owner can update settings
-  if (session.creatorId !== requesterId) return false;
+  if (session.creatorId !== requesterId) {
+    return false;
+  }
 
   session.settings = { ...session.settings, ...settings };
   return true;
@@ -205,10 +235,14 @@ export function updateSessionSettings(
 // Delete session
 export function deleteSession(sessionId: string, requesterId: string): boolean {
   const session = sessions.get(sessionId);
-  if (!session) return false;
+  if (!session) {
+    return false;
+  }
 
   // Only owner can delete
-  if (session.creatorId !== requesterId) return false;
+  if (session.creatorId !== requesterId) {
+    return false;
+  }
 
   sessions.delete(sessionId);
   chatToSession.delete(session.chatId);
@@ -218,8 +252,12 @@ export function deleteSession(sessionId: string, requesterId: string): boolean {
 // Check if user can edit
 export function canEdit(sessionId: string, userId: string): boolean {
   const session = sessions.get(sessionId);
-  if (!session) return false;
-  if (!session.settings.allowEditing) return false;
+  if (!session) {
+    return false;
+  }
+  if (!session.settings.allowEditing) {
+    return false;
+  }
 
   const participant = session.participants.find((p) => p.id === userId);
   return participant?.role === "owner" || participant?.role === "editor";

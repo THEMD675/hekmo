@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * INLINE CITATIONS - Perplexity Pattern
- * 
+ *
  * Features:
  * - Superscript numbered references [1], [2], etc.
  * - Hover preview with source info
@@ -122,7 +122,9 @@ export function CitationsSourcesPanel({
   citations,
   className,
 }: CitationsSourcesPanelProps) {
-  if (citations.length === 0) return null;
+  if (citations.length === 0) {
+    return null;
+  }
 
   const getDomain = (url: string) => {
     try {
@@ -133,12 +135,7 @@ export function CitationsSourcesPanel({
   };
 
   return (
-    <div
-      className={cn(
-        "mt-4 pt-4 border-t border-border/50",
-        className
-      )}
-    >
+    <div className={cn("mt-4 pt-4 border-t border-border/50", className)}>
       <h4 className="text-xs font-medium text-muted-foreground mb-3">
         المصادر ({citations.length})
       </h4>
@@ -192,7 +189,7 @@ export function parseCitationsInText(
     }
 
     // Find the citation
-    const citationId = parseInt(match[1], 10);
+    const citationId = Number.parseInt(match[1], 10);
     const citation = citations.find((c) => c.id === citationId);
 
     if (citation) {

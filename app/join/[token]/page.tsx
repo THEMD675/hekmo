@@ -47,7 +47,9 @@ export default function JoinPage({ params }: JoinPageProps) {
   }, [params]);
 
   const handleJoin = async () => {
-    if (!session?.user || !sessionInfo) return;
+    if (!session?.user || !sessionInfo) {
+      return;
+    }
 
     try {
       setLoading(true);

@@ -1,5 +1,12 @@
 import { motion } from "framer-motion";
-import { BookOpen, Briefcase, Code, Lightbulb, PenTool, Sparkles } from "lucide-react";
+import {
+  BookOpen,
+  Briefcase,
+  Code,
+  Lightbulb,
+  PenTool,
+  Sparkles,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**

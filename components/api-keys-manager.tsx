@@ -25,7 +25,7 @@ export function ApiKeysManager() {
 
   useEffect(() => {
     fetchKeys();
-  }, []);
+  }, [fetchKeys]);
 
   const fetchKeys = async () => {
     try {
@@ -72,7 +72,9 @@ export function ApiKeysManager() {
   };
 
   const deleteKey = async (id: string) => {
-    if (!confirm("هل أنت متأكد من حذف هذا المفتاح؟")) return;
+    if (!confirm("هل أنت متأكد من حذف هذا المفتاح؟")) {
+      return;
+    }
 
     try {
       const response = await fetch(`/api/keys?id=${id}`, {

@@ -23,7 +23,9 @@ export function verifySlackRequest(
   timestamp: string,
   body: string
 ): boolean {
-  if (!SLACK_SIGNING_SECRET) return false;
+  if (!SLACK_SIGNING_SECRET) {
+    return false;
+  }
 
   const crypto = require("node:crypto");
   const sigBasestring = `v0:${timestamp}:${body}`;

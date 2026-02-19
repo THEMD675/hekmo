@@ -20,7 +20,9 @@ export function UpgradeBanner({
   const router = useRouter();
   const [dismissed, setDismissed] = useState(false);
 
-  if (dismissed) return null;
+  if (dismissed) {
+    return null;
+  }
 
   const handleUpgrade = () => {
     router.push("/pricing");
@@ -141,7 +143,9 @@ export function UsageLimitWarning({
   const percentage = (current / limit) * 100;
   const router = useRouter();
 
-  if (percentage < 80) return null;
+  if (percentage < 80) {
+    return null;
+  }
 
   const isExceeded = percentage >= 100;
 

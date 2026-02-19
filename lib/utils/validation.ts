@@ -35,7 +35,9 @@ export function isValidSaudiPhone(phone: string): boolean {
 export function isValidNationalId(id: string): boolean {
   // Saudi National ID is 10 digits starting with 1 or 2
   const regex = /^[12][0-9]{9}$/;
-  if (!regex.test(id)) return false;
+  if (!regex.test(id)) {
+    return false;
+  }
 
   // Luhn algorithm validation
   let sum = 0;
@@ -43,7 +45,9 @@ export function isValidNationalId(id: string): boolean {
     let digit = Number.parseInt(id[i], 10);
     if (i % 2 === 0) {
       digit *= 2;
-      if (digit > 9) digit -= 9;
+      if (digit > 9) {
+        digit -= 9;
+      }
     }
     sum += digit;
   }
@@ -155,11 +159,13 @@ export function formatPhoneNumber(phone: string): string {
  */
 export function maskEmail(email: string): string {
   const [local, domain] = email.split("@");
-  if (!domain) return email;
+  if (!domain) {
+    return email;
+  }
 
   const maskedLocal =
     local.length > 2
-      ? `${local[0]}${"*".repeat(local.length - 2)}${local[local.length - 1]}`
+      ? `${local[0]}${"*".repeat(local.length - 2)}${local.at(-1)}`
       : "*".repeat(local.length);
 
   return `${maskedLocal}@${domain}`;
@@ -167,7 +173,9 @@ export function maskEmail(email: string): string {
 
 export function maskPhone(phone: string): string {
   const cleaned = phone.replace(/\D/g, "");
-  if (cleaned.length < 4) return phone;
+  if (cleaned.length < 4) {
+    return phone;
+  }
 
   return `${"*".repeat(cleaned.length - 4)}${cleaned.slice(-4)}`;
 }

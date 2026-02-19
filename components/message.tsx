@@ -74,7 +74,7 @@ const PurePreviewMessage = ({
           <div
             className={cn(
               "-mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary ring-1 ring-primary/30",
-              { "invisible": !isFirstInGroup }
+              { invisible: !isFirstInGroup }
             )}
           >
             <SparklesIcon size={14} />
@@ -377,7 +377,10 @@ const PurePreviewMessage = ({
               if (state === "input-available" || state === "input-streaming") {
                 return (
                   <Tool defaultOpen={true} key={toolCallId}>
-                    <ToolHeader state={state as "input-available" | "input-streaming"} type={type as `tool-${string}`} />
+                    <ToolHeader
+                      state={state as "input-available" | "input-streaming"}
+                      type={type as `tool-${string}`}
+                    />
                   </Tool>
                 );
               }

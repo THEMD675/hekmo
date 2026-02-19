@@ -16,7 +16,9 @@ interface SourceCitationProps {
 }
 
 export function SourceCitation({ sources, className }: SourceCitationProps) {
-  if (!sources || sources.length === 0) return null;
+  if (!sources || sources.length === 0) {
+    return null;
+  }
 
   return (
     <div className={cn("mt-4 border-t pt-4", className)}>

@@ -2,7 +2,9 @@ import posthog from "posthog-js";
 
 // Initialize PostHog (call once on app load)
 export function initAnalytics() {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined") {
+    return;
+  }
 
   const key = process.env.NEXT_PUBLIC_POSTHOG_API_KEY;
   if (!key) {
@@ -24,7 +26,9 @@ export function trackEvent(
   eventName: string,
   properties?: Record<string, unknown>
 ) {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined") {
+    return;
+  }
 
   // Check if PostHog is initialized
   if (typeof posthog?.capture === "function") {
@@ -39,7 +43,9 @@ export function trackEvent(
 
 // Identify user
 export function identifyUser(userId: string, traits?: Record<string, unknown>) {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined") {
+    return;
+  }
 
   if (typeof posthog?.identify === "function") {
     posthog.identify(userId, traits);
@@ -48,7 +54,9 @@ export function identifyUser(userId: string, traits?: Record<string, unknown>) {
 
 // Reset user (on logout)
 export function resetUser() {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined") {
+    return;
+  }
 
   if (typeof posthog?.reset === "function") {
     posthog.reset();
@@ -125,7 +133,9 @@ export function startTimer(name: string) {
 
 export function endTimer(name: string, properties?: Record<string, unknown>) {
   const start = timers[name];
-  if (!start) return;
+  if (!start) {
+    return;
+  }
 
   const duration = performance.now() - start;
   delete timers[name];

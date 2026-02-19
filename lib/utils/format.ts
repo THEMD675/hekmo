@@ -38,7 +38,9 @@ export function formatCurrency(
  * Format file size
  */
 export function formatFileSize(bytes: number): string {
-  if (bytes === 0) return "0 بايت";
+  if (bytes === 0) {
+    return "0 بايت";
+  }
 
   const units = ["بايت", "كيلوبايت", "ميجابايت", "جيجابايت"];
   const k = 1024;
@@ -56,7 +58,9 @@ export function formatPercentage(
   total: number,
   decimals = 0
 ): string {
-  if (total === 0) return "0%";
+  if (total === 0) {
+    return "0%";
+  }
   const percentage = (value / total) * 100;
   return `${percentage.toFixed(decimals)}%`;
 }
@@ -65,7 +69,9 @@ export function formatPercentage(
  * Truncate text with ellipsis
  */
 export function truncate(text: string, maxLength: number): string {
-  if (text.length <= maxLength) return text;
+  if (text.length <= maxLength) {
+    return text;
+  }
   return `${text.slice(0, maxLength - 3)}...`;
 }
 
@@ -73,7 +79,9 @@ export function truncate(text: string, maxLength: number): string {
  * Capitalize first letter (works with Arabic)
  */
 export function capitalize(text: string): string {
-  if (!text) return text;
+  if (!text) {
+    return text;
+  }
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
@@ -86,10 +94,18 @@ export function formatCount(
   dual: string,
   plural: string
 ): string {
-  if (count === 0) return `لا ${plural}`;
-  if (count === 1) return `${singular} واحد`;
-  if (count === 2) return `${dual}`;
-  if (count >= 3 && count <= 10) return `${count} ${plural}`;
+  if (count === 0) {
+    return `لا ${plural}`;
+  }
+  if (count === 1) {
+    return `${singular} واحد`;
+  }
+  if (count === 2) {
+    return `${dual}`;
+  }
+  if (count >= 3 && count <= 10) {
+    return `${count} ${plural}`;
+  }
   return `${count} ${singular}`;
 }
 
@@ -123,14 +139,16 @@ export function slugify(text: string): string {
  * Extract initials from name
  */
 export function getInitials(name: string): string {
-  if (!name) return "?";
+  if (!name) {
+    return "?";
+  }
 
   const words = name.trim().split(/\s+/);
   if (words.length === 1) {
     return words[0].slice(0, 2).toUpperCase();
   }
 
-  return (words[0][0] + words[words.length - 1][0]).toUpperCase();
+  return (words[0][0] + words.at(-1)[0]).toUpperCase();
 }
 
 /**

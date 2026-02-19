@@ -17,7 +17,7 @@ interface CalendarEvent {
 }
 
 // Get Google Calendar access token from user
-async function getGoogleAccessToken(userId: string): Promise<string | null> {
+async function getGoogleAccessToken(_userId: string): Promise<string | null> {
   // In production, fetch from database based on user's OAuth tokens
   // This is a placeholder
   return process.env.GOOGLE_CALENDAR_ACCESS_TOKEN || null;

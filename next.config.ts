@@ -31,7 +31,10 @@ const nextConfig: NextConfig = {
   compress: true,
   // Bundle analyzer (enable with ANALYZE=true)
   ...(process.env.ANALYZE === "true" && {
-    webpack: (config: { plugins: unknown[] }, { isServer }: { isServer: boolean }) => {
+    webpack: (
+      config: { plugins: unknown[] },
+      { isServer }: { isServer: boolean }
+    ) => {
       if (!isServer) {
         const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
         config.plugins.push(

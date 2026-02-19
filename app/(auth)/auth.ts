@@ -41,7 +41,10 @@ export const {
     Credentials({
       credentials: {},
       async authorize(credentials) {
-        const { email, password } = credentials as { email: string; password: string };
+        const { email, password } = credentials as {
+          email: string;
+          password: string;
+        };
         const users = await getUser(email);
 
         if (users.length === 0) {

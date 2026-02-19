@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useMemo, type ReactNode } from "react";
+import { memo, type ReactNode, useMemo } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeKatex from "rehype-katex";
 import remarkGfm from "remark-gfm";
@@ -13,7 +13,12 @@ import "katex/dist/katex.min.css";
 interface EnhancedMarkdownProps {
   content: string;
   className?: string;
-  citations?: Array<{ id: number; title: string; url: string; snippet?: string }>;
+  citations?: Array<{
+    id: number;
+    title: string;
+    url: string;
+    snippet?: string;
+  }>;
 }
 
 /**
@@ -21,22 +26,29 @@ interface EnhancedMarkdownProps {
  */
 function processCitations(
   children: ReactNode,
-  citations?: Array<{ id: number; title: string; url: string; snippet?: string }>
+  citations?: Array<{
+    id: number;
+    title: string;
+    url: string;
+    snippet?: string;
+  }>
 ): ReactNode {
-  if (!citations || citations.length === 0) return children;
-  
+  if (!citations || citations.length === 0) {
+    return children;
+  }
+
   // Only process string children
   if (typeof children !== "string") {
     // Handle arrays of children
     if (Array.isArray(children)) {
-      return children.map((child, i) => {
+      return children.map((child, _i) => {
         const processed = processCitations(child, citations);
         return processed;
       }) as ReactNode;
     }
     return children;
   }
-  
+
   const text = children;
   const parts: ReactNode[] = [];
   const regex = /\[(\d+)\]/g;
@@ -51,7 +63,7 @@ function processCitations(
     }
 
     // Find the citation
-    const citationId = parseInt(match[1], 10);
+    const citationId = Number.parseInt(match[1], 10);
     const citation = citations.find((c) => c.id === citationId);
 
     if (citation) {
@@ -214,14 +226,10 @@ export const EnhancedMarkdown = memo(function EnhancedMarkdown({
               </p>
             );
           },
-          
+
           // List items - with citation support
           li({ children }) {
-            return (
-              <li>
-                {processCitations(children, citations)}
-              </li>
-            );
+            return <li>{processCitations(children, citations)}</li>;
           },
 
           // Images

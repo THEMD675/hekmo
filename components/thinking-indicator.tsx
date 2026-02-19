@@ -20,16 +20,20 @@ export function ThinkingIndicator({
 
   // Animate dots while streaming
   useEffect(() => {
-    if (!isStreaming) return;
+    if (!isStreaming) {
+      return;
+    }
 
     const interval = setInterval(() => {
-      setDots((prev) => (prev.length >= 3 ? "." : prev + "."));
+      setDots((prev) => (prev.length >= 3 ? "." : `${prev}.`));
     }, 500);
 
     return () => clearInterval(interval);
   }, [isStreaming]);
 
-  if (!thinking && !isStreaming) return null;
+  if (!thinking && !isStreaming) {
+    return null;
+  }
 
   return (
     <div

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { describe, expect, it } from "vitest";
 
 const BASE_URL = process.env.TEST_BASE_URL || "http://localhost:3000";
 
@@ -7,7 +7,7 @@ describe("API Integration Tests", () => {
     it("should return healthy status", async () => {
       const response = await fetch(`${BASE_URL}/api/health`);
       expect(response.ok).toBe(true);
-      
+
       const data = await response.json();
       expect(data.status).toBeDefined();
       expect(data.timestamp).toBeDefined();
@@ -71,7 +71,7 @@ describe("API Integration Tests", () => {
     it("should return valid sitemap", async () => {
       const response = await fetch(`${BASE_URL}/sitemap.xml`);
       expect(response.ok).toBe(true);
-      
+
       const contentType = response.headers.get("content-type");
       expect(contentType).toContain("xml");
     });
@@ -81,7 +81,7 @@ describe("API Integration Tests", () => {
     it("should return robots.txt", async () => {
       const response = await fetch(`${BASE_URL}/robots.txt`);
       expect(response.ok).toBe(true);
-      
+
       const text = await response.text();
       expect(text).toContain("User-agent");
     });
@@ -91,7 +91,7 @@ describe("API Integration Tests", () => {
     it("should return valid manifest", async () => {
       const response = await fetch(`${BASE_URL}/manifest.webmanifest`);
       expect(response.ok).toBe(true);
-      
+
       const data = await response.json();
       expect(data.name).toBeDefined();
       expect(data.icons).toBeDefined();
@@ -108,7 +108,7 @@ describe("Chat API", () => {
         messages: [{ role: "user", content: "test" }],
       }),
     });
-    
+
     // Should require auth
     expect(response.status).toBe(401);
   });

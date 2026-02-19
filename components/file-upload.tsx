@@ -42,8 +42,12 @@ export function FileUpload({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const getFileIcon = (type: string) => {
-    if (type.startsWith("image/")) return FILE_ICONS.image;
-    if (type === "application/pdf") return FILE_ICONS.pdf;
+    if (type.startsWith("image/")) {
+      return FILE_ICONS.image;
+    }
+    if (type === "application/pdf") {
+      return FILE_ICONS.pdf;
+    }
     return FILE_ICONS.default;
   };
 
@@ -78,7 +82,9 @@ export function FileUpload({
             body: formData,
           });
 
-          if (!response.ok) throw new Error();
+          if (!response.ok) {
+            throw new Error();
+          }
 
           const data = await response.json();
           uploaded.push({

@@ -116,12 +116,16 @@ export async function sendWhatsAppTemplate(
 export async function handleWhatsAppWebhook(
   webhook: WhatsAppWebhook
 ): Promise<void> {
-  if (webhook.object !== "whatsapp_business_account") return;
+  if (webhook.object !== "whatsapp_business_account") {
+    return;
+  }
 
   for (const entry of webhook.entry) {
     for (const change of entry.changes) {
       const messages = change.value.messages;
-      if (!messages) continue;
+      if (!messages) {
+        continue;
+      }
 
       for (const message of messages) {
         if (message.type === "text" && message.text) {
@@ -170,7 +174,9 @@ async function processWhatsAppMessage(
 export async function markWhatsAppMessageRead(
   messageId: string
 ): Promise<void> {
-  if (!WHATSAPP_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) return;
+  if (!WHATSAPP_TOKEN || !WHATSAPP_PHONE_NUMBER_ID) {
+    return;
+  }
 
   await fetch(
     `https://graph.facebook.com/v18.0/${WHATSAPP_PHONE_NUMBER_ID}/messages`,

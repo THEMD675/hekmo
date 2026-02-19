@@ -22,7 +22,9 @@ export function verifyDiscordRequest(
   timestamp: string,
   body: string
 ): boolean {
-  if (!DISCORD_PUBLIC_KEY) return false;
+  if (!DISCORD_PUBLIC_KEY) {
+    return false;
+  }
 
   try {
     const crypto = require("node:crypto");
@@ -165,7 +167,9 @@ async function getHekmoResponse(question: string): Promise<string> {
 export async function registerDiscordCommands(
   applicationId: string
 ): Promise<void> {
-  if (!DISCORD_BOT_TOKEN) return;
+  if (!DISCORD_BOT_TOKEN) {
+    return;
+  }
 
   const commands = [
     {

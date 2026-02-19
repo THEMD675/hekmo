@@ -37,7 +37,9 @@ export default function ResetPasswordPage() {
         body: JSON.stringify({ email }),
       });
 
-      if (!response.ok) throw new Error();
+      if (!response.ok) {
+        throw new Error();
+      }
 
       setSent(true);
       toast.success("تم إرسال رابط إعادة تعيين كلمة المرور");
@@ -70,7 +72,9 @@ export default function ResetPasswordPage() {
         body: JSON.stringify({ token, password }),
       });
 
-      if (!response.ok) throw new Error();
+      if (!response.ok) {
+        throw new Error();
+      }
 
       setReset(true);
       toast.success("تم تغيير كلمة المرور بنجاح");

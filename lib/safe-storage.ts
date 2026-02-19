@@ -14,7 +14,9 @@ const sessionMemoryFallback = new Map<string, string>();
  * Use this for migrating old keys to new keys at module load time
  */
 export const safeMigrateKey = (oldKey: string, newKey: string): void => {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined") {
+    return;
+  }
   try {
     const oldValue = localStorage.getItem(oldKey);
     if (oldValue !== null && localStorage.getItem(newKey) === null) {

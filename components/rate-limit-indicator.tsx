@@ -44,7 +44,9 @@ export function RateLimitIndicator({
   }, []);
 
   useEffect(() => {
-    if (!rateLimit?.reset) return;
+    if (!rateLimit?.reset) {
+      return;
+    }
 
     const updateTimer = () => {
       const now = Date.now();
@@ -72,7 +74,9 @@ export function RateLimitIndicator({
     return () => clearInterval(interval);
   }, [rateLimit?.reset]);
 
-  if (!rateLimit) return null;
+  if (!rateLimit) {
+    return null;
+  }
 
   const usagePercent =
     ((rateLimit.limit - rateLimit.remaining) / rateLimit.limit) * 100;
@@ -80,7 +84,9 @@ export function RateLimitIndicator({
   const isExhausted = rateLimit.remaining === 0;
 
   // Only show if usage is significant or showAlways is true
-  if (!showAlways && usagePercent < 50) return null;
+  if (!showAlways && usagePercent < 50) {
+    return null;
+  }
 
   return (
     <div

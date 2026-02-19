@@ -58,7 +58,9 @@ export function PWAInstallPrompt() {
         "beforeinstallprompt",
         handleBeforeInstallPrompt
       );
-      if (timer) clearTimeout(timer);
+      if (timer) {
+        clearTimeout(timer);
+      }
     };
   }, []);
 
@@ -78,7 +80,9 @@ export function PWAInstallPrompt() {
     setIsVisible(false);
   };
 
-  if (!isVisible || isStandalone) return null;
+  if (!isVisible || isStandalone) {
+    return null;
+  }
 
   return (
     <div

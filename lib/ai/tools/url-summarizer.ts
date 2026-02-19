@@ -51,7 +51,7 @@ export const urlSummarizerTool = tool({
         url,
         title,
         description,
-        contentPreview: textContent.slice(0, 500) + "...",
+        contentPreview: `${textContent.slice(0, 500)}...`,
         contentLength: textContent.length,
         fetchedAt: new Date().toISOString(),
         language,

@@ -5,12 +5,7 @@ const CACHE_NAME = "hekmo-v1";
 const OFFLINE_URL = "/offline";
 
 // Assets to cache on install
-const PRECACHE_ASSETS = [
-  "/",
-  "/offline",
-  "/icon-192.png",
-  "/icon-512.png",
-];
+const PRECACHE_ASSETS = ["/", "/offline", "/icon-192.png", "/icon-512.png"];
 
 // Install event - cache assets
 self.addEventListener("install", (event) => {
@@ -39,10 +34,14 @@ self.addEventListener("activate", (event) => {
 // Fetch event - serve from cache, fallback to network
 self.addEventListener("fetch", (event) => {
   // Skip non-GET requests
-  if (event.request.method !== "GET") return;
+  if (event.request.method !== "GET") {
+    return;
+  }
 
   // Skip API requests
-  if (event.request.url.includes("/api/")) return;
+  if (event.request.url.includes("/api/")) {
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request).then((response) => {
@@ -74,7 +73,9 @@ self.addEventListener("fetch", (event) => {
 
 // Push event - show notification
 self.addEventListener("push", (event) => {
-  if (!event.data) return;
+  if (!event.data) {
+    return;
+  }
 
   const data = event.data.json();
 
@@ -112,23 +113,25 @@ self.addEventListener("notificationclick", (event) => {
 
   // Open or focus the app
   event.waitUntil(
-    clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
-      // If app is already open, focus it
-      for (const client of clientList) {
-        if (client.url.includes(self.location.origin) && "focus" in client) {
-          return client.focus().then((focused) => {
-            if (data.url) {
-              focused.navigate(data.url);
-            }
-          });
+    clients
+      .matchAll({ type: "window", includeUncontrolled: true })
+      .then((clientList) => {
+        // If app is already open, focus it
+        for (const client of clientList) {
+          if (client.url.includes(self.location.origin) && "focus" in client) {
+            return client.focus().then((focused) => {
+              if (data.url) {
+                focused.navigate(data.url);
+              }
+            });
+          }
         }
-      }
 
-      // Otherwise open new window
-      if (clients.openWindow) {
-        return clients.openWindow(data.url || "/");
-      }
-    })
+        // Otherwise open new window
+        if (clients.openWindow) {
+          return clients.openWindow(data.url || "/");
+        }
+      })
   );
 });
 
@@ -150,7 +153,7 @@ async function syncMessages() {
       if (response.ok) {
         await cache.delete(request);
       }
-    } catch (error) {
+    } catch (_error) {
       console.error("Sync failed for:", request.url);
     }
   }

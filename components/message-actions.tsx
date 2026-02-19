@@ -38,7 +38,9 @@ export function MessageActions({
   const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
 
   const handleCopy = async () => {
-    if (!content) return;
+    if (!content) {
+      return;
+    }
     try {
       await navigator.clipboard.writeText(content);
       setCopied(true);

@@ -65,7 +65,9 @@ export async function storeDocument({
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
   return data;
 }
 
@@ -92,7 +94,9 @@ export async function searchDocuments({
     filter_user_id: userId,
   });
 
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
   return data || [];
 }
 

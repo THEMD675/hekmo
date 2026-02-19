@@ -25,7 +25,7 @@ interface SendEmailOptions {
 }
 
 // Get Gmail access token
-async function getGmailAccessToken(userId: string): Promise<string | null> {
+async function getGmailAccessToken(_userId: string): Promise<string | null> {
   // In production, fetch from database
   return process.env.GMAIL_ACCESS_TOKEN || null;
 }
@@ -155,7 +155,9 @@ export function parseEmailHeaders(
 
 // Decode base64 email body
 export function decodeEmailBody(data: string | undefined): string {
-  if (!data) return "";
+  if (!data) {
+    return "";
+  }
 
   const decoded = Buffer.from(
     data.replace(/-/g, "+").replace(/_/g, "/"),

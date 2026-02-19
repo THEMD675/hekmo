@@ -26,7 +26,10 @@ interface PyodideInterface {
   setStdout: (config: { batched: (output: string) => void }) => void;
   setStderr: (config: { batched: (output: string) => void }) => void;
   runPythonAsync: (code: string) => Promise<unknown>;
-  loadPackagesFromImports: (code: string, options?: { messageCallback?: (msg: string) => void }) => Promise<void>;
+  loadPackagesFromImports: (
+    code: string,
+    options?: { messageCallback?: (msg: string) => void }
+  ) => Promise<void>;
 }
 
 const OUTPUT_HANDLERS = {
@@ -146,7 +149,7 @@ export const codeArtifact = new Artifact<"code", Metadata>({
         }));
 
         try {
-const currentPyodideInstance = await globalThis.loadPyodide({
+          const currentPyodideInstance = await globalThis.loadPyodide({
             indexURL: "https://cdn.jsdelivr.net/pyodide/v0.23.4/full/",
           });
 

@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 
 test.describe("Chat Feature", () => {
   test.beforeEach(async ({ page }) => {
@@ -7,7 +7,9 @@ test.describe("Chat Feature", () => {
 
   test("should display the chat interface", async ({ page }) => {
     // Check for main elements
-    await expect(page.locator("textarea, input[type='text']").first()).toBeVisible();
+    await expect(
+      page.locator("textarea, input[type='text']").first()
+    ).toBeVisible();
   });
 
   test("should show Arabic text direction", async ({ page }) => {
@@ -29,15 +31,17 @@ test.describe("Chat Feature", () => {
 
   test("should show login/register if not authenticated", async ({ page }) => {
     // Check for auth buttons
-    const authButton = page.locator("text=تسجيل, text=دخول").first();
+    const _authButton = page.locator("text=تسجيل, text=دخول").first();
     // May or may not be visible depending on auth state
   });
 
   test("should be responsive on mobile", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
-    
+
     // Should still be functional
-    await expect(page.locator("textarea, input[type='text']").first()).toBeVisible();
+    await expect(
+      page.locator("textarea, input[type='text']").first()
+    ).toBeVisible();
   });
 });
 
@@ -68,7 +72,7 @@ test.describe("Navigation", () => {
 test.describe("Accessibility", () => {
   test("should have proper heading structure", async ({ page }) => {
     await page.goto("/");
-    
+
     // Check for h1
     const h1 = page.locator("h1").first();
     await expect(h1).toBeVisible();
@@ -76,18 +80,18 @@ test.describe("Accessibility", () => {
 
   test("should have accessible form inputs", async ({ page }) => {
     await page.goto("/");
-    
+
     // Input should have placeholder or label
     const input = page.locator("textarea, input[type='text']").first();
     const placeholder = await input.getAttribute("placeholder");
     const ariaLabel = await input.getAttribute("aria-label");
-    
+
     expect(placeholder || ariaLabel).toBeTruthy();
   });
 
   test("should support keyboard navigation", async ({ page }) => {
     await page.goto("/");
-    
+
     // Tab should move focus
     await page.keyboard.press("Tab");
     const focusedElement = page.locator(":focus");
@@ -98,12 +102,12 @@ test.describe("Accessibility", () => {
 test.describe("Theme", () => {
   test("should support dark mode", async ({ page }) => {
     await page.goto("/");
-    
+
     // Check if dark class can be applied
     await page.evaluate(() => {
       document.documentElement.classList.add("dark");
     });
-    
+
     const html = page.locator("html");
     await expect(html).toHaveClass(/dark/);
   });

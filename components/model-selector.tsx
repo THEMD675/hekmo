@@ -85,8 +85,12 @@ export function ModelSelector({
   const currentModel = MODELS.find((m) => m.id === selectedModel) || MODELS[0];
 
   const canUseModel = (model: Model) => {
-    if (userTier === "enterprise") return true;
-    if (userTier === "pro") return model.tier !== "enterprise";
+    if (userTier === "enterprise") {
+      return true;
+    }
+    if (userTier === "pro") {
+      return model.tier !== "enterprise";
+    }
     return model.tier === "free";
   };
 

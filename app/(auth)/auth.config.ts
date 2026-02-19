@@ -32,7 +32,7 @@ export const authConfig: NextAuthConfig = {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(_credentials) {
         // This is handled by the main auth.ts file
         return null;
       },

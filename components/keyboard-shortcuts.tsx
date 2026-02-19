@@ -138,15 +138,22 @@ export function useKeyboardShortcut(
       };
 
       const keyMatch = keys.every((key) => {
-        if (key === "⌘" || key === "cmd")
+        if (key === "⌘" || key === "cmd") {
           return modifiers.meta || modifiers.ctrl;
-        if (key === "shift") return modifiers.shift;
-        if (key === "alt") return modifiers.alt;
+        }
+        if (key === "shift") {
+          return modifiers.shift;
+        }
+        if (key === "alt") {
+          return modifiers.alt;
+        }
         return e.key.toLowerCase() === key.toLowerCase();
       });
 
       if (keyMatch) {
-        if (options.preventDefault) e.preventDefault();
+        if (options.preventDefault) {
+          e.preventDefault();
+        }
         callback();
       }
     };

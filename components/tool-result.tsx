@@ -6,7 +6,6 @@ import {
   ChevronDown,
   ChevronUp,
   Clock,
-  ExternalLink,
   FileText,
   Globe,
   Image,
@@ -14,7 +13,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { CitationsSourcesPanel, extractCitationsFromSearchResults } from "./citations";
+import { extractCitationsFromSearchResults } from "./citations";
 
 interface ToolResultProps {
   toolName: string;
@@ -72,7 +71,9 @@ export function ToolResult({ toolName, result, className }: ToolResultProps) {
   };
 
   const renderResult = () => {
-    if (!result) return null;
+    if (!result) {
+      return null;
+    }
 
     // Web search results - Perplexity citation pattern
     if (
@@ -85,10 +86,10 @@ export function ToolResult({ toolName, result, className }: ToolResultProps) {
           results: Array<{ title: string; url: string; snippet: string }>;
         }
       ).results;
-      
+
       // Convert to citations format
       const citations = extractCitationsFromSearchResults(searchResults);
-      
+
       return (
         <div className="space-y-3">
           {/* Compact source chips - Perplexity style */}
@@ -120,7 +121,7 @@ export function ToolResult({ toolName, result, className }: ToolResultProps) {
               </a>
             ))}
           </div>
-          
+
           {/* Hint for using citations */}
           <p className="text-[10px] text-muted-foreground/70">
             استخدم [1] [2] [3] للإشارة للمصادر في إجابتك

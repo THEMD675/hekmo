@@ -53,7 +53,9 @@ export function FeedbackDialog({ messageId, trigger }: FeedbackDialogProps) {
         }),
       });
 
-      if (!response.ok) throw new Error();
+      if (!response.ok) {
+        throw new Error();
+      }
 
       toast.success("شكراً على ملاحظاتك!");
       setOpen(false);

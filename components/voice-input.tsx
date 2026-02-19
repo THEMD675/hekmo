@@ -89,7 +89,9 @@ export function VoiceInput({
   }, [language, onTranscript, onListeningChange]);
 
   const toggleListening = useCallback(() => {
-    if (!recognitionRef.current) return;
+    if (!recognitionRef.current) {
+      return;
+    }
 
     if (listening) {
       recognitionRef.current.stop();
@@ -163,10 +165,12 @@ export function VoiceOutput({
     if (autoPlay && text && supported) {
       speak();
     }
-  }, [text, autoPlay, supported]);
+  }, [text, autoPlay, supported, speak]);
 
   const speak = () => {
-    if (!supported || !text) return;
+    if (!supported || !text) {
+      return;
+    }
 
     // Cancel any ongoing speech
     window.speechSynthesis.cancel();
@@ -197,7 +201,9 @@ export function VoiceOutput({
     setSpeaking(false);
   };
 
-  if (!supported) return null;
+  if (!supported) {
+    return null;
+  }
 
   return (
     <Button

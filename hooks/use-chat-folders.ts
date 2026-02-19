@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const FOLDERS_KEY = "hekmo-chat-folders";
 
@@ -32,10 +32,12 @@ export function useChatFolders() {
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
-        setFolders(parsed.map((f: ChatFolder) => ({
-          ...f,
-          createdAt: new Date(f.createdAt),
-        })));
+        setFolders(
+          parsed.map((f: ChatFolder) => ({
+            ...f,
+            createdAt: new Date(f.createdAt),
+          }))
+        );
       } catch {
         setFolders([]);
       }
@@ -50,70 +52,90 @@ export function useChatFolders() {
   }, []);
 
   // Create a new folder
-  const createFolder = useCallback((name: string, color?: string) => {
-    const newFolder: ChatFolder = {
-      id: crypto.randomUUID(),
-      name,
-      color: color || DEFAULT_COLORS[folders.length % DEFAULT_COLORS.length],
-      chatIds: [],
-      createdAt: new Date(),
-    };
-    saveFolders([...folders, newFolder]);
-    return newFolder;
-  }, [folders, saveFolders]);
+  const createFolder = useCallback(
+    (name: string, color?: string) => {
+      const newFolder: ChatFolder = {
+        id: crypto.randomUUID(),
+        name,
+        color: color || DEFAULT_COLORS[folders.length % DEFAULT_COLORS.length],
+        chatIds: [],
+        createdAt: new Date(),
+      };
+      saveFolders([...folders, newFolder]);
+      return newFolder;
+    },
+    [folders, saveFolders]
+  );
 
   // Delete a folder
-  const deleteFolder = useCallback((folderId: string) => {
-    saveFolders(folders.filter((f) => f.id !== folderId));
-  }, [folders, saveFolders]);
+  const deleteFolder = useCallback(
+    (folderId: string) => {
+      saveFolders(folders.filter((f) => f.id !== folderId));
+    },
+    [folders, saveFolders]
+  );
 
   // Rename a folder
-  const renameFolder = useCallback((folderId: string, newName: string) => {
-    saveFolders(
-      folders.map((f) =>
-        f.id === folderId ? { ...f, name: newName } : f
-      )
-    );
-  }, [folders, saveFolders]);
+  const renameFolder = useCallback(
+    (folderId: string, newName: string) => {
+      saveFolders(
+        folders.map((f) => (f.id === folderId ? { ...f, name: newName } : f))
+      );
+    },
+    [folders, saveFolders]
+  );
 
   // Add chat to folder
-  const addChatToFolder = useCallback((chatId: string, folderId: string) => {
-    saveFolders(
-      folders.map((f) =>
-        f.id === folderId && !f.chatIds.includes(chatId)
-          ? { ...f, chatIds: [...f.chatIds, chatId] }
-          : f
-      )
-    );
-  }, [folders, saveFolders]);
+  const addChatToFolder = useCallback(
+    (chatId: string, folderId: string) => {
+      saveFolders(
+        folders.map((f) =>
+          f.id === folderId && !f.chatIds.includes(chatId)
+            ? { ...f, chatIds: [...f.chatIds, chatId] }
+            : f
+        )
+      );
+    },
+    [folders, saveFolders]
+  );
 
   // Remove chat from folder
-  const removeChatFromFolder = useCallback((chatId: string, folderId: string) => {
-    saveFolders(
-      folders.map((f) =>
-        f.id === folderId
-          ? { ...f, chatIds: f.chatIds.filter((id) => id !== chatId) }
-          : f
-      )
-    );
-  }, [folders, saveFolders]);
+  const removeChatFromFolder = useCallback(
+    (chatId: string, folderId: string) => {
+      saveFolders(
+        folders.map((f) =>
+          f.id === folderId
+            ? { ...f, chatIds: f.chatIds.filter((id) => id !== chatId) }
+            : f
+        )
+      );
+    },
+    [folders, saveFolders]
+  );
 
   // Get folder for a chat
-  const getFolderForChat = useCallback((chatId: string) => {
-    return folders.find((f) => f.chatIds.includes(chatId));
-  }, [folders]);
+  const getFolderForChat = useCallback(
+    (chatId: string) => {
+      return folders.find((f) => f.chatIds.includes(chatId));
+    },
+    [folders]
+  );
 
   // Move chat between folders
-  const moveChatToFolder = useCallback((chatId: string, toFolderId: string | null) => {
-    saveFolders(
-      folders.map((f) => ({
-        ...f,
-        chatIds: toFolderId === f.id
-          ? [...f.chatIds.filter((id) => id !== chatId), chatId]
-          : f.chatIds.filter((id) => id !== chatId),
-      }))
-    );
-  }, [folders, saveFolders]);
+  const moveChatToFolder = useCallback(
+    (chatId: string, toFolderId: string | null) => {
+      saveFolders(
+        folders.map((f) => ({
+          ...f,
+          chatIds:
+            toFolderId === f.id
+              ? [...f.chatIds.filter((id) => id !== chatId), chatId]
+              : f.chatIds.filter((id) => id !== chatId),
+        }))
+      );
+    },
+    [folders, saveFolders]
+  );
 
   return {
     folders,

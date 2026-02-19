@@ -55,7 +55,9 @@ export function PWAInstallPrompt() {
   }, []);
 
   const handleInstall = async () => {
-    if (!deferredPrompt) return;
+    if (!deferredPrompt) {
+      return;
+    }
 
     await deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
@@ -73,7 +75,9 @@ export function PWAInstallPrompt() {
     setShowPrompt(false);
   };
 
-  if (!showPrompt || isInstalled) return null;
+  if (!showPrompt || isInstalled) {
+    return null;
+  }
 
   return (
     <div
@@ -135,7 +139,9 @@ export function IOSInstallInstructions() {
     }
   }, []);
 
-  if (!show) return null;
+  if (!show) {
+    return null;
+  }
 
   return (
     <div className="fixed bottom-4 left-4 right-4 p-4 rounded-lg border bg-card shadow-lg z-50">

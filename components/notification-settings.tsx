@@ -69,7 +69,7 @@ export function NotificationSettings() {
           toast.error("فشل إلغاء الإشعارات");
         }
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error("حدث خطأ");
     } finally {
       setLoading(false);

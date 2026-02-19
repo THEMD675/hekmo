@@ -41,7 +41,7 @@ export function ShareChatDialog({ chatId, trigger }: ShareChatDialogProps) {
 
       const data = await response.json();
       setInviteLink(data.inviteLink);
-    } catch (error) {
+    } catch (_error) {
       toast.error("فشل إنشاء رابط المشاركة");
     } finally {
       setLoading(false);
@@ -49,7 +49,9 @@ export function ShareChatDialog({ chatId, trigger }: ShareChatDialogProps) {
   };
 
   const copyLink = async () => {
-    if (!inviteLink) return;
+    if (!inviteLink) {
+      return;
+    }
 
     await navigator.clipboard.writeText(inviteLink);
     setCopied(true);

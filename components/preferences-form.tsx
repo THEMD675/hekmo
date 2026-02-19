@@ -30,7 +30,7 @@ export function PreferencesForm() {
 
   useEffect(() => {
     fetchPreferences();
-  }, []);
+  }, [fetchPreferences]);
 
   const fetchPreferences = async () => {
     try {
@@ -47,7 +47,9 @@ export function PreferencesForm() {
   };
 
   const savePreferences = async () => {
-    if (!preferences) return;
+    if (!preferences) {
+      return;
+    }
 
     setSaving(true);
     try {
@@ -74,7 +76,9 @@ export function PreferencesForm() {
     key: string,
     value: boolean
   ) => {
-    if (!preferences) return;
+    if (!preferences) {
+      return;
+    }
 
     setPreferences({
       ...preferences,

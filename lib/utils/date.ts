@@ -27,7 +27,7 @@ const ARABIC_DAYS = [
   "السبت",
 ];
 
-const HIJRI_MONTHS = [
+const _HIJRI_MONTHS = [
   "محرم",
   "صفر",
   "ربيع الأول",
@@ -87,13 +87,27 @@ export function getRelativeTime(date: Date): string {
   const diffMonths = Math.floor(diffDays / 30);
   const diffYears = Math.floor(diffDays / 365);
 
-  if (diffSeconds < 60) return "الآن";
-  if (diffMinutes < 60) return `منذ ${diffMinutes} دقيقة`;
-  if (diffHours < 24) return `منذ ${diffHours} ساعة`;
-  if (diffDays === 1) return "أمس";
-  if (diffDays < 7) return `منذ ${diffDays} أيام`;
-  if (diffWeeks < 4) return `منذ ${diffWeeks} أسابيع`;
-  if (diffMonths < 12) return `منذ ${diffMonths} أشهر`;
+  if (diffSeconds < 60) {
+    return "الآن";
+  }
+  if (diffMinutes < 60) {
+    return `منذ ${diffMinutes} دقيقة`;
+  }
+  if (diffHours < 24) {
+    return `منذ ${diffHours} ساعة`;
+  }
+  if (diffDays === 1) {
+    return "أمس";
+  }
+  if (diffDays < 7) {
+    return `منذ ${diffDays} أيام`;
+  }
+  if (diffWeeks < 4) {
+    return `منذ ${diffWeeks} أسابيع`;
+  }
+  if (diffMonths < 12) {
+    return `منذ ${diffMonths} أشهر`;
+  }
   return `منذ ${diffYears} سنة`;
 }
 
@@ -143,15 +157,21 @@ export function isYesterday(date: Date): boolean {
  * Format chat date for sidebar
  */
 export function formatChatDate(date: Date): string {
-  if (isToday(date)) return "اليوم";
-  if (isYesterday(date)) return "أمس";
+  if (isToday(date)) {
+    return "اليوم";
+  }
+  if (isYesterday(date)) {
+    return "أمس";
+  }
 
   const now = new Date();
   const diffDays = Math.floor(
     (now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24)
   );
 
-  if (diffDays < 7) return formatDateWithDay(date);
+  if (diffDays < 7) {
+    return formatDateWithDay(date);
+  }
   return formatDateArabic(date);
 }
 
@@ -161,10 +181,18 @@ export function formatChatDate(date: Date): string {
 export function getGreeting(): string {
   const hour = new Date().getHours();
 
-  if (hour < 6) return "مرحباً";
-  if (hour < 12) return "صباح الخير";
-  if (hour < 17) return "مساء الخير";
-  if (hour < 21) return "مساء الخير";
+  if (hour < 6) {
+    return "مرحباً";
+  }
+  if (hour < 12) {
+    return "صباح الخير";
+  }
+  if (hour < 17) {
+    return "مساء الخير";
+  }
+  if (hour < 21) {
+    return "مساء الخير";
+  }
   return "مرحباً";
 }
 
@@ -174,7 +202,9 @@ export function getGreeting(): string {
 export function parseDate(input: string): Date | null {
   // Try standard formats
   const date = new Date(input);
-  if (!Number.isNaN(date.getTime())) return date;
+  if (!Number.isNaN(date.getTime())) {
+    return date;
+  }
 
   // Try Arabic format (e.g., "١٥ يناير ٢٠٢٤")
   // Add more parsing logic as needed

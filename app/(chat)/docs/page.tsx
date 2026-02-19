@@ -5,9 +5,9 @@ import { CodeBlock } from "@/components/code-block";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function DocsPage() {
-  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+  const [_copiedCode, setCopiedCode] = useState<string | null>(null);
 
-  const copyCode = (code: string, id: string) => {
+  const _copyCode = (code: string, id: string) => {
     navigator.clipboard.writeText(code);
     setCopiedCode(id);
     setTimeout(() => setCopiedCode(null), 2000);

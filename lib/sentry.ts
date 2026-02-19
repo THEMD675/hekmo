@@ -39,7 +39,7 @@ export function captureMessage(
   }
 }
 
-export function setUser(user: { id: string; email?: string } | null) {
+export function setUser(_user: { id: string; email?: string } | null) {
   if (SENTRY_DSN) {
     // Sentry.setUser(user);
   }

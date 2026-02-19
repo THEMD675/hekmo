@@ -12,7 +12,7 @@ interface MobileNavProps {
 
 export function MobileNav({ className }: MobileNavProps) {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
+  const [_isOpen, _setIsOpen] = useState(false);
 
   const navItems = [
     { href: "/", icon: Home, label: "الرئيسية" },
@@ -79,7 +79,9 @@ export function useSwipeGesture(
     };
 
     const handleTouchEnd = () => {
-      if (!touchStart.current || !touchEnd.current) return;
+      if (!touchStart.current || !touchEnd.current) {
+        return;
+      }
 
       const distance = touchStart.current - touchEnd.current;
       const isLeftSwipe = distance > threshold;
@@ -130,7 +132,9 @@ export function PullToRefresh({
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isPulling) return;
+    if (!isPulling) {
+      return;
+    }
 
     const currentY = e.touches[0].clientY;
     const diff = currentY - startY.current;

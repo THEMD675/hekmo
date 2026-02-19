@@ -132,7 +132,9 @@ export function parseFileListToTree(fileList: string): FileTreeNode[] {
 
   for (const line of lines) {
     const trimmed = line.trim();
-    if (!trimmed) continue;
+    if (!trimmed) {
+      continue;
+    }
 
     const parts = trimmed.split("/");
     let current = root;
@@ -164,8 +166,12 @@ export function parseFileListToTree(fileList: string): FileTreeNode[] {
   const sortNodes = (nodes: FileTreeNode[]): FileTreeNode[] => {
     return nodes
       .sort((a, b) => {
-        if (a.type === "folder" && b.type === "file") return -1;
-        if (a.type === "file" && b.type === "folder") return 1;
+        if (a.type === "folder" && b.type === "file") {
+          return -1;
+        }
+        if (a.type === "file" && b.type === "folder") {
+          return 1;
+        }
         return a.name.localeCompare(b.name);
       })
       .map((node) => ({

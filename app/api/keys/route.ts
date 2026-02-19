@@ -42,7 +42,7 @@ export async function GET() {
     keys: userKeys.map((k) => ({
       id: k.id,
       name: k.name,
-      keyPrefix: k.key.slice(0, 12) + "...",
+      keyPrefix: `${k.key.slice(0, 12)}...`,
       createdAt: k.createdAt,
       lastUsed: k.lastUsed,
       scopes: k.scopes,

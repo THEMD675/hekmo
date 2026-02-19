@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const ARCHIVED_CHATS_KEY = "hekmo-archived-chats";
 
@@ -23,29 +23,41 @@ export function useArchivedChats() {
     setArchivedChatIds(ids);
   }, []);
 
-  const archiveChat = useCallback((chatId: string) => {
-    if (!archivedChatIds.includes(chatId)) {
-      const newArchived = [...archivedChatIds, chatId];
+  const archiveChat = useCallback(
+    (chatId: string) => {
+      if (!archivedChatIds.includes(chatId)) {
+        const newArchived = [...archivedChatIds, chatId];
+        saveArchivedChats(newArchived);
+      }
+    },
+    [archivedChatIds, saveArchivedChats]
+  );
+
+  const unarchiveChat = useCallback(
+    (chatId: string) => {
+      const newArchived = archivedChatIds.filter((id) => id !== chatId);
       saveArchivedChats(newArchived);
-    }
-  }, [archivedChatIds, saveArchivedChats]);
+    },
+    [archivedChatIds, saveArchivedChats]
+  );
 
-  const unarchiveChat = useCallback((chatId: string) => {
-    const newArchived = archivedChatIds.filter((id) => id !== chatId);
-    saveArchivedChats(newArchived);
-  }, [archivedChatIds, saveArchivedChats]);
+  const toggleArchive = useCallback(
+    (chatId: string) => {
+      if (archivedChatIds.includes(chatId)) {
+        unarchiveChat(chatId);
+      } else {
+        archiveChat(chatId);
+      }
+    },
+    [archivedChatIds, archiveChat, unarchiveChat]
+  );
 
-  const toggleArchive = useCallback((chatId: string) => {
-    if (archivedChatIds.includes(chatId)) {
-      unarchiveChat(chatId);
-    } else {
-      archiveChat(chatId);
-    }
-  }, [archivedChatIds, archiveChat, unarchiveChat]);
-
-  const isArchived = useCallback((chatId: string) => {
-    return archivedChatIds.includes(chatId);
-  }, [archivedChatIds]);
+  const isArchived = useCallback(
+    (chatId: string) => {
+      return archivedChatIds.includes(chatId);
+    },
+    [archivedChatIds]
+  );
 
   return {
     archivedChatIds,

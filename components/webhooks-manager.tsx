@@ -34,7 +34,7 @@ export function WebhooksManager() {
 
   useEffect(() => {
     fetchWebhooks();
-  }, []);
+  }, [fetchWebhooks]);
 
   const fetchWebhooks = async () => {
     try {
@@ -88,7 +88,9 @@ export function WebhooksManager() {
   };
 
   const deleteWebhook = async (id: string) => {
-    if (!confirm("هل أنت متأكد من حذف هذا الويب هوك؟")) return;
+    if (!confirm("هل أنت متأكد من حذف هذا الويب هوك؟")) {
+      return;
+    }
 
     try {
       const response = await fetch(`/api/webhooks?id=${id}`, {

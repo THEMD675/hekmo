@@ -16,14 +16,16 @@ type MessageGroup = {
 };
 
 function groupConsecutiveMessages(messages: ChatMessage[]): MessageGroup[] {
-  if (messages.length === 0) return [];
-  
+  if (messages.length === 0) {
+    return [];
+  }
+
   const groups: MessageGroup[] = [];
   let currentGroup: MessageGroup = {
     role: messages[0].role,
     messages: [messages[0]],
   };
-  
+
   for (let i = 1; i < messages.length; i++) {
     const message = messages[i];
     if (message.role === currentGroup.role) {
@@ -36,7 +38,7 @@ function groupConsecutiveMessages(messages: ChatMessage[]): MessageGroup[] {
       };
     }
   }
-  
+
   groups.push(currentGroup);
   return groups;
 }
@@ -101,10 +103,13 @@ function PureMessages({
               key={`group-${groupIndex}-${group.role}`}
             >
               {group.messages.map((message, messageIndex) => {
-                const globalIndex = messages.findIndex((m) => m.id === message.id);
+                const globalIndex = messages.findIndex(
+                  (m) => m.id === message.id
+                );
                 const isFirstInGroup = messageIndex === 0;
-                const isLastInGroup = messageIndex === group.messages.length - 1;
-                
+                const isLastInGroup =
+                  messageIndex === group.messages.length - 1;
+
                 return (
                   <PreviewMessage
                     addToolApprovalResponse={addToolApprovalResponse}
@@ -112,7 +117,8 @@ function PureMessages({
                     isFirstInGroup={isFirstInGroup}
                     isLastInGroup={isLastInGroup}
                     isLoading={
-                      status === "streaming" && messages.length - 1 === globalIndex
+                      status === "streaming" &&
+                      messages.length - 1 === globalIndex
                     }
                     isReadonly={isReadonly}
                     key={message.id}
@@ -141,14 +147,14 @@ function PureMessages({
             ) && <ThinkingMessage />}
 
           {/* Speed Indicator - shows after response completes */}
-          {responseTime !== null && messages.length > 0 && status === "ready" && (
-            <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground animate-in fade-in duration-300">
-              <Zap className="h-3 w-3 text-primary" />
-              <span>
-                أجاب في {responseTime.toFixed(1)} ثانية
-              </span>
-            </div>
-          )}
+          {responseTime !== null &&
+            messages.length > 0 &&
+            status === "ready" && (
+              <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground animate-in fade-in duration-300">
+                <Zap className="h-3 w-3 text-primary" />
+                <span>أجاب في {responseTime.toFixed(1)} ثانية</span>
+              </div>
+            )}
 
           <div
             className="min-h-[24px] min-w-[24px] shrink-0"

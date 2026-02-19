@@ -48,7 +48,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     fetchDashboardData();
-  }, []);
+  }, [fetchDashboardData]);
 
   const fetchDashboardData = async () => {
     try {
@@ -706,9 +706,17 @@ function formatTime(dateString: string): string {
   const diffHours = Math.floor(diffMs / 3_600_000);
   const diffDays = Math.floor(diffMs / 86_400_000);
 
-  if (diffMins < 1) return "الآن";
-  if (diffMins < 60) return `منذ ${diffMins} د`;
-  if (diffHours < 24) return `منذ ${diffHours} س`;
-  if (diffDays < 7) return `منذ ${diffDays} ي`;
+  if (diffMins < 1) {
+    return "الآن";
+  }
+  if (diffMins < 60) {
+    return `منذ ${diffMins} د`;
+  }
+  if (diffHours < 24) {
+    return `منذ ${diffHours} س`;
+  }
+  if (diffDays < 7) {
+    return `منذ ${diffDays} ي`;
+  }
   return date.toLocaleDateString("ar-SA");
 }

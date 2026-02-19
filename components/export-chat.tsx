@@ -25,7 +25,7 @@ interface ExportChatProps {
 }
 
 export function ExportChat({ chatId, chatTitle, messages }: ExportChatProps) {
-  const [loading, setLoading] = useState(false);
+  const [loading, _setLoading] = useState(false);
 
   const exportAsJSON = () => {
     try {

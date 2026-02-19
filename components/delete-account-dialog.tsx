@@ -36,7 +36,9 @@ export function DeleteAccountDialog() {
         body: JSON.stringify({ confirmation }),
       });
 
-      if (!response.ok) throw new Error();
+      if (!response.ok) {
+        throw new Error();
+      }
 
       toast.success("تم حذف الحساب بنجاح");
 
@@ -54,7 +56,9 @@ export function DeleteAccountDialog() {
     try {
       const response = await fetch("/api/user/delete");
 
-      if (!response.ok) throw new Error();
+      if (!response.ok) {
+        throw new Error();
+      }
 
       // Download the file
       const blob = await response.blob();

@@ -11,7 +11,7 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const limit = Number.parseInt(searchParams.get("limit") || "50", 10);
-    const offset = Number.parseInt(searchParams.get("offset") || "0", 10);
+    const _offset = Number.parseInt(searchParams.get("offset") || "0", 10);
 
     const result = await getChatsByUserId({
       id: session.user.id,

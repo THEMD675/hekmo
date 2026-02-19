@@ -55,7 +55,9 @@ export function UsageStats() {
     );
   }
 
-  if (!stats) return null;
+  if (!stats) {
+    return null;
+  }
 
   const messagesPercent = (stats.messagesUsed / stats.messagesLimit) * 100;
   const tokensPercent = (stats.tokensUsed / stats.tokensLimit) * 100;

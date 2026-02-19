@@ -1,5 +1,5 @@
-import { expect, afterEach } from "vitest";
 import { cleanup } from "@testing-library/react";
+import { afterEach } from "vitest";
 import "@testing-library/jest-dom/vitest";
 
 // Cleanup after each test
@@ -49,7 +49,7 @@ Object.defineProperty(window, "ResizeObserver", {
 // Mock crypto.randomUUID
 Object.defineProperty(globalThis, "crypto", {
   value: {
-    randomUUID: () => "test-uuid-" + Math.random().toString(36).slice(2),
+    randomUUID: () => `test-uuid-${Math.random().toString(36).slice(2)}`,
     getRandomValues: (arr: Uint8Array) => {
       for (let i = 0; i < arr.length; i++) {
         arr[i] = Math.floor(Math.random() * 256);
